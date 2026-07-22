@@ -82,14 +82,14 @@ const shortTagline =
   class="site-sidebar hidden lg:flex fixed left-3 top-3 bottom-3 z-40 w-[240px] flex-col gap-2"
   aria-label="Site sidebar"
 >
-  <!-- Brand card — GIATTECH as bold accent text, socials on the right -->
+  <!-- Brand card — GIATTECH as filled accent pill, social chips right -->
   <div class="sidebar-card rounded-2xl px-4 py-3.5">
     <div class="flex items-center justify-between">
       <a
         href="#hero"
-        class="font-display text-lg font-extrabold tracking-tight text-[color:var(--color-accent)]"
+        class="inline-flex items-center rounded-lg bg-[color:var(--color-accent)] px-2.5 py-1 font-display text-sm font-extrabold tracking-tight text-[#0C0C0C]"
       >
-        GIATTECH<span class="text-[0.65em] align-super">®</span>
+        GIATTECH<span class="text-[0.6em] align-super">®</span>
       </a>
       <div class="flex items-center gap-1.5">
         {
@@ -101,7 +101,7 @@ const shortTagline =
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                class="inline-flex items-center justify-center w-7 h-7 rounded-md border border-[color:var(--sidebar-border-strong)] text-[color:var(--sidebar-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+                class="sidebar-chip inline-flex items-center justify-center w-7 h-7 rounded-md transition-transform hover:scale-105"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={socialIcons[s.icon]} />
               </a>
@@ -130,19 +130,18 @@ const shortTagline =
     </div>
   </div>
 
-  <!-- Nav — each item is its own individual pill (like reference) -->
-  <nav aria-label="Section navigation" class="flex flex-col gap-1">
+  <!-- Nav — items grouped inside one panel (reference image 1) -->
+  <nav aria-label="Section navigation" class="sidebar-nav-panel rounded-2xl p-2 flex flex-col gap-1.5">
     {
       menu.map((item) => (
         <a
           href={`#${item.id}`}
-          class="sidebar-card sidebar-nav-item group flex items-center gap-2.5 rounded-2xl px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-wide text-[color:var(--sidebar-text-muted)] hover:text-[color:var(--sidebar-text)] transition-colors"
-          x-bind:class={`activeSection === '${item.id}' ? '!bg-[color:var(--color-accent)] !border-transparent !text-[#0C0C0C]' : ''`}
+          class="sidebar-nav-item group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[0.7rem] font-semibold uppercase tracking-wide transition-colors"
+          x-bind:class={`activeSection === '${item.id}' ? 'is-active' : ''`}
         >
           <span
             aria-hidden="true"
-            class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[color:var(--sidebar-border-strong)] transition-colors"
-            x-bind:class={`activeSection === '${item.id}' ? '!border-[#0C0C0C]/25 bg-black/10' : ''`}
+            class="nav-icon inline-flex items-center justify-center w-6 h-6 rounded-md transition-colors"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
