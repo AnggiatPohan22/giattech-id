@@ -1,0 +1,56 @@
+---
+import { sidebarSections } from '../../data/navigation';
+
+const sectionLabels: Record<(typeof sidebarSections)[number], string> = {
+  hero: 'Home',
+  about: 'About',
+  services: 'Services',
+  projects: 'Projects',
+  pricing: 'Pricing',
+  testimonials: 'Testimonials',
+  faq: 'FAQ',
+};
+
+const sectionsJson = JSON.stringify(sidebarSections);
+---
+
+<nav
+  aria-label="Section navigation"
+  x-data={`{
+    activeSection: '${sidebarSections[0]}',
+    sections: ${sectionsJson}
+  }`}
+  x-init="
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) activeSection = entry.target.id;
+      });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  "
+  class="fixed right-6 top-1/2 -translate-y-1/2 z-40 hidden lg:flex flex-col gap-3"
+>
+  {
+    sidebarSections.map((id) => (
+      <a
+        href={`#${id}`}
+        aria-label={`Jump to ${sectionLabels[id]}`}
+        class="group relative flex items-center justify-end gap-3 py-1"
+      >
+        <span
+          class="text-eyebrow opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[color:var(--color-text-muted)]"
+          x-bind:class={`activeSection === '${id}' ? 'opacity-100 text-[color:var(--color-accent)]' : ''`}
+        >
+          {sectionLabels[id]}
+        </span>
+        <span
+          class="block w-2 h-2 rounded-full border border-[color:var(--color-text-subtle)] transition-all duration-200 group-hover:scale-125"
+          x-bind:class={`activeSection === '${id}' ? 'bg-[color:var(--color-accent)] border-[color:var(--color-accent)] scale-125' : ''`}
+        />
+      </a>
+    ))
+  }
+</nav>
