@@ -1,0 +1,126 @@
+---
+import Button from '../ui/Button.astro';
+import { navLinks, primaryCta } from '../../data/navigation';
+---
+
+<header
+  x-data="{ scrolled: false, mobileOpen: false }"
+  x-init="scrolled = window.scrollY > 50;
+          window.addEventListener('scroll', () => scrolled = window.scrollY > 50, { passive: true });
+          window.addEventListener('hashchange', () => mobileOpen = false);
+          $watch('mobileOpen', v => document.body.style.overflow = v ? 'hidden' : '')"
+  x-bind:class="scrolled
+    ? 'bg-[color:var(--color-bg)]/80 backdrop-blur-md border-b border-[color:var(--color-border)]'
+    : 'bg-transparent border-b border-transparent'"
+  class="fixed top-0 inset-x-0 z-50 transition-colors duration-300"
+>
+  <div class="container-page flex items-center justify-between h-[var(--nav-height)]">
+    <a
+      href="#hero"
+      class="font-display text-xl md:text-2xl font-bold tracking-tight text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors"
+      aria-label="Giattech home"
+    >
+      Giattech
+    </a>
+
+    <nav aria-label="Primary" class="hidden md:flex items-center gap-8">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            class="text-sm font-medium text-[color:var(--color-text-muted)] hover:text-[color:var(--color-text)] transition-colors"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="hidden md:block">
+      <Button href={primaryCta.href} variant="primary" size="sm" pill>
+        {primaryCta.label}
+      </Button>
+    </div>
+
+    <button
+      type="button"
+      class="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-md text-[color:var(--color-text)] hover:bg-[color:var(--color-surface)] transition-colors"
+      aria-label="Toggle menu"
+      x-bind:aria-expanded="mobileOpen ? 'true' : 'false'"
+      @click="mobileOpen = !mobileOpen"
+    >
+      <svg
+        x-show="!mobileOpen"
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="4" y1="7" x2="20" y2="7"></line>
+        <line x1="4" y1="12" x2="20" y2="12"></line>
+        <line x1="4" y1="17" x2="20" y2="17"></line>
+      </svg>
+      <svg
+        x-show="mobileOpen"
+        x-cloak
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <div
+    x-show="mobileOpen"
+    x-cloak
+    x-transition:enter="transition ease-out duration-300"
+    x-transition:enter-start="opacity-0"
+    x-transition:enter-end="opacity-100"
+    x-transition:leave="transition ease-in duration-200"
+    x-transition:leave-start="opacity-100"
+    x-transition:leave-end="opacity-0"
+    class="md:hidden fixed inset-0 top-[var(--nav-height)] bg-[color:var(--color-bg)] z-40"
+    id="mobile-menu"
+  >
+    <nav aria-label="Mobile" class="container-page flex flex-col gap-2 py-8">
+      {
+        navLinks.map((link) => (
+          <a
+            href={link.href}
+            @click="mobileOpen = false"
+            class="text-lg font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] py-4 border-b border-[color:var(--color-border)] transition-colors"
+          >
+            {link.label}
+          </a>
+        ))
+      }
+      <div class="pt-6">
+        <Button
+          href={primaryCta.href}
+          variant="primary"
+          size="md"
+          pill
+          class="w-full"
+        >
+          {primaryCta.label}
+        </Button>
+      </div>
+    </nav>
+  </div>
+</header>
