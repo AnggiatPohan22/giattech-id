@@ -44,9 +44,9 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T06** — Create `src/components/ui/SectionHeader.astro` (eyebrow + heading + optional subtitle)
 
 ### Phase 2 — Layout & Navigation
-- [ ] **T07** — Create `Navbar.astro` (fixed, transparent→solid scroll, mobile hamburger)
-- [ ] **T08** — Create sidebar section navigation (desktop only, dot indicators)
-- [ ] **T09** — Create `Footer.astro`
+- [x] **T07** — Create `Navbar.astro` (fixed, transparent→solid scroll, mobile hamburger)
+- [x] **T08** — Create sidebar section navigation (desktop only, dot indicators)
+- [x] **T09** — Create `Footer.astro`
 
 ### Phase 3 — Hero & About
 - [ ] **T10** — Create `Hero.astro` (headline, sub, stats, CTAs, tags)
