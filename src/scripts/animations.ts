@@ -18,13 +18,15 @@ async function boot() {
   // Pins first so later triggers compute positions against final layout.
   initHeroPin(gsap);
   initWorkScroll(gsap);
-
-  initHeroEntrance(gsap);
   initAboutPath(gsap);
   initWordScrub(gsap);
   initScrollAnimations(gsap);
 
+  // Refresh recomputes every trigger; run it BEFORE the hero entrance so
+  // the entrance (set()+to()) owns the hero's initial render and nothing
+  // resets it afterward.
   ScrollTrigger.refresh();
+  initHeroEntrance(gsap);
 }
 
 /* ------------------------------------------------------------------ */
@@ -34,26 +36,24 @@ function initHeroEntrance(gsap: Gsap) {
   const heading = document.querySelector('.hero-heading');
   if (!heading) return;
 
+  // Use set() + to() (not from()) so ScrollTrigger.refresh() — which the
+  // pins trigger — can't re-apply a "from" start state and leave the hero
+  // elements stuck invisible.
+  gsap.set('.hero-giant', { opacity: 0, scale: 1.06 });
+  gsap.set('.hero-portrait', { opacity: 0, y: 60 });
+  gsap.set('.hero-line', { yPercent: 110, opacity: 0 });
+  gsap.set('.hero-cta > *', { opacity: 0, y: 16 });
+  gsap.set('.hero-card', { opacity: 0, scale: 0.9 });
+  gsap.set('.hero-nav, .hero-corner, .hero-stats-mobile', { opacity: 0 });
+
   const tl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power2.out' } });
-  tl.from('.hero-giant', { scale: 1.06, opacity: 0, duration: 1.1 })
-    .from('.hero-portrait', { y: 60, opacity: 0, duration: 0.9 }, '-=0.7')
-    .from(
-      '.hero-line',
-      { yPercent: 110, opacity: 0, stagger: 0.12, duration: 0.9 },
-      '-=0.5'
-    )
-    .from('.hero-cta > *', { y: 16, opacity: 0, stagger: 0.08, duration: 0.5 }, '-=0.4')
-    .from(
-      '.hero-card',
-      { scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.5 },
-      '-=0.3'
-    )
-    .from('.hero-nav', { opacity: 0, duration: 0.5 }, '-=0.3')
-    .from(
-      '.hero-corner, .hero-stats-mobile',
-      { y: 14, opacity: 0, stagger: 0.08, duration: 0.5 },
-      '-=0.3'
-    );
+  tl.to('.hero-giant', { opacity: 1, scale: 1, duration: 1.1 })
+    .to('.hero-portrait', { opacity: 1, y: 0, duration: 0.9 }, '-=0.7')
+    .to('.hero-line', { yPercent: 0, opacity: 1, stagger: 0.12, duration: 0.9 }, '-=0.5')
+    .to('.hero-cta > *', { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 }, '-=0.4')
+    .to('.hero-card', { opacity: 1, scale: 1, stagger: 0.1, duration: 0.5 }, '-=0.3')
+    .to('.hero-nav', { opacity: 1, duration: 0.5 }, '-=0.3')
+    .to('.hero-corner, .hero-stats-mobile', { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 }, '-=0.3');
 }
 
 /* ------------------------------------------------------------------ */
@@ -68,6 +68,11 @@ function initHeroPin(gsap: Gsap) {
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 1024px)', () => {
+    // fromTo with explicit start values + immediateRender:false guarantees
+    // the timeline reverses cleanly — elements always return to full
+    // opacity/position at scroll progress 0 (fixes disappearing on scroll-up).
+    const opts = { ease: 'none', immediateRender: false };
+
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: hero,
@@ -81,11 +86,21 @@ function initHeroPin(gsap: Gsap) {
       },
     });
 
-    tl.to('.hero-giant', { xPercent: -55, scale: 0.35, opacity: 0, ease: 'none' }, 0)
-      .to('.hero-card', { x: () => -window.innerWidth * 0.45, opacity: 0, stagger: 0.04, ease: 'none' }, 0)
-      .to('.hero-nav, .hero-corner', { opacity: 0, ease: 'none' }, 0)
-      .to('.hero-heading, .hero-cta', { xPercent: -40, opacity: 0, ease: 'none' }, 0.08)
-      .to('.hero-portrait', { yPercent: 14, opacity: 0, ease: 'none' }, 0.12);
+    tl.fromTo('.hero-giant',
+      { xPercent: 0, scale: 1, opacity: 1 },
+      { xPercent: -55, scale: 0.35, opacity: 0, ...opts }, 0)
+      .fromTo('.hero-card',
+        { x: 0, opacity: 1 },
+        { x: () => -window.innerWidth * 0.45, opacity: 0, stagger: 0.04, ...opts }, 0)
+      .fromTo('.hero-nav, .hero-corner',
+        { opacity: 1 },
+        { opacity: 0, ...opts }, 0)
+      .fromTo('.hero-heading, .hero-cta',
+        { xPercent: 0, opacity: 1 },
+        { xPercent: -40, opacity: 0, ...opts }, 0.08)
+      .fromTo('.hero-portrait',
+        { yPercent: 0, opacity: 1 },
+        { yPercent: 14, opacity: 0, ...opts }, 0.12);
 
     // Handle loading the page already scrolled past the hero
     if (window.scrollY > window.innerHeight) showSidebar(true);
