@@ -1,3 +1,5 @@
+type Gsap = typeof import('gsap').default;
+
 async function boot() {
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -13,11 +15,22 @@ async function boot() {
   const { ScrollTrigger } = await import('gsap/ScrollTrigger');
   gsap.registerPlugin(ScrollTrigger);
 
-  initHeroTimeline(gsap);
+  // Pins first so later triggers compute positions against final layout.
+  initHeroPin(gsap);
+  initWorkScroll(gsap);
+
+  initHeroEntrance(gsap);
+  initAboutPath(gsap);
+  initWordScrub(gsap);
   initScrollAnimations(gsap);
+
+  ScrollTrigger.refresh();
 }
 
-function initHeroTimeline(gsap: typeof import('gsap').default) {
+/* ------------------------------------------------------------------ */
+/* Hero: entrance timeline on load                                     */
+/* ------------------------------------------------------------------ */
+function initHeroEntrance(gsap: Gsap) {
   const heading = document.querySelector('.hero-heading');
   if (!heading) return;
 
@@ -43,6 +56,141 @@ function initHeroTimeline(gsap: typeof import('gsap').default) {
     );
 }
 
+/* ------------------------------------------------------------------ */
+/* Hero: pinned scrub — elements slide left "into" the sidebar         */
+/* ------------------------------------------------------------------ */
+function initHeroPin(gsap: Gsap) {
+  const hero = document.getElementById('hero');
+  if (!hero) return;
+
+  const showSidebar = (show: boolean) =>
+    window.dispatchEvent(new CustomEvent('giat:sidebar', { detail: { show } }));
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 1024px)', () => {
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: '+=85%',
+        scrub: 0.6,
+        pin: true,
+        anticipatePin: 1,
+        onLeave: () => showSidebar(true),
+        onEnterBack: () => showSidebar(false),
+      },
+    });
+
+    tl.to('.hero-giant', { xPercent: -55, scale: 0.35, opacity: 0, ease: 'none' }, 0)
+      .to('.hero-card', { x: () => -window.innerWidth * 0.45, opacity: 0, stagger: 0.04, ease: 'none' }, 0)
+      .to('.hero-nav, .hero-corner', { opacity: 0, ease: 'none' }, 0)
+      .to('.hero-heading, .hero-cta', { xPercent: -40, opacity: 0, ease: 'none' }, 0.08)
+      .to('.hero-portrait', { yPercent: 14, opacity: 0, ease: 'none' }, 0.12);
+
+    // Handle loading the page already scrolled past the hero
+    if (window.scrollY > window.innerHeight) showSidebar(true);
+
+    return () => showSidebar(false);
+  });
+
+  // No pin below lg — sidebar is hidden there anyway; show it for
+  // tablet users who rotate later by falling back on hero height.
+  mm.add('(max-width: 1023.98px)', () => {
+    showSidebar(false);
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* About: connecting line draws itself as the user scrolls             */
+/* ------------------------------------------------------------------ */
+function initAboutPath(gsap: Gsap) {
+  const svg = document.querySelector<SVGSVGElement>('.about-path');
+  const path = svg?.querySelector<SVGPathElement>('path');
+  if (!svg || !path) return;
+
+  const length = path.getTotalLength();
+  path.style.strokeDasharray = `${length}`;
+  path.style.strokeDashoffset = `${length}`;
+
+  gsap.to(path, {
+    strokeDashoffset: 0,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#about-track',
+      start: 'top 70%',
+      end: 'bottom 65%',
+      scrub: 1,
+    },
+  });
+
+  gsap.from('.about-dot', {
+    opacity: 0,
+    stagger: 0.18,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '#about-track',
+      start: 'top 60%',
+      end: 'bottom 70%',
+      scrub: 1,
+    },
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Selected Work: pinned horizontal card scroll (lg+)                  */
+/* ------------------------------------------------------------------ */
+function initWorkScroll(gsap: Gsap) {
+  const section = document.querySelector<HTMLElement>('.work-section');
+  const track = section?.querySelector<HTMLElement>('.work-track');
+  if (!section || !track) return;
+
+  const mm = gsap.matchMedia();
+  mm.add('(min-width: 1024px)', () => {
+    const distance = () => Math.max(0, track.scrollWidth - track.clientWidth);
+
+    gsap.to(track, {
+      x: () => -distance(),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: () => '+=' + distance(),
+        scrub: 1,
+        pin: true,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+
+    return () => gsap.set(track, { x: 0 });
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Word reveal: dimmed words brighten one by one on scroll             */
+/* ------------------------------------------------------------------ */
+function initWordScrub(gsap: Gsap) {
+  document.querySelectorAll<HTMLElement>('[data-scrub-words]').forEach((el) => {
+    const words = el.querySelectorAll('.scrub-word');
+    if (!words.length) return;
+
+    gsap.to(words, {
+      opacity: 1,
+      ease: 'none',
+      stagger: 0.6,
+      scrollTrigger: {
+        trigger: el,
+        start: 'top 80%',
+        end: 'bottom 45%',
+        scrub: 1,
+      },
+    });
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Counters: rAF + IntersectionObserver (GSAP-free)                    */
+/* ------------------------------------------------------------------ */
 function initCounters(reduced: boolean) {
   const nodes = document.querySelectorAll<HTMLElement>('[data-counter]');
   const duration = 1800;
@@ -79,7 +227,10 @@ function initCounters(reduced: boolean) {
   nodes.forEach((el) => observer.observe(el));
 }
 
-function initScrollAnimations(gsap: typeof import('gsap').default) {
+/* ------------------------------------------------------------------ */
+/* Generic reveals: [data-animate] attributes                          */
+/* ------------------------------------------------------------------ */
+function initScrollAnimations(gsap: Gsap) {
   const start = 'top 85%';
   const defaults = { duration: 0.8, ease: 'power2.out' };
 

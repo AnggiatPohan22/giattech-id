@@ -141,6 +141,32 @@
 }
 
 /* ============================================================
+   SCROLL EFFECTS — word reveal & living media
+   ============================================================ */
+/* Words start dimmed; GSAP scrubs them to full as the user scrolls */
+.scrub-word {
+  opacity: 0.15;
+}
+
+/* Slow drift on work-card media so images feel alive (videos exempt) */
+@keyframes kenburns {
+  from { transform: scale(1) translate(0, 0); }
+  to   { transform: scale(1.12) translate(-1.5%, 1.5%); }
+}
+.work-media img {
+  animation: kenburns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Hide native scrollbar on the work track (mobile swipe still works) */
+.work-track {
+  scrollbar-width: none;
+}
+.work-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
    MOTION — honor user preference
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
@@ -149,5 +175,10 @@
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  /* No GSAP scrub in reduced motion — words must be fully readable */
+  .scrub-word {
+    opacity: 1;
   }
 }

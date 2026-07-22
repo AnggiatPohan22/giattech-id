@@ -12,6 +12,22 @@ export interface Service {
   description: string;
 }
 
+/**
+ * Intro paragraph for the What You Get section, as segments so the
+ * component can weave inline icon chips between words (reference style).
+ */
+export type IntroSegment =
+  | { type: 'text'; value: string }
+  | { type: 'icon'; value: ServiceIcon };
+
+export const servicesIntro: IntroSegment[] = [
+  { type: 'text', value: 'Strategy, precision, and' },
+  { type: 'icon', value: 'code' },
+  { type: 'text', value: 'development combined — turning' },
+  { type: 'icon', value: 'gauge' },
+  { type: 'text', value: 'your vision into a powerful digital experience that performs.' },
+];
+
 export const services: Service[] = [
   {
     icon: 'code',
