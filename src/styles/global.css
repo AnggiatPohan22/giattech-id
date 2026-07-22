@@ -141,6 +141,68 @@
 }
 
 /* ============================================================
+   SECTION THEMES — light and dark, alternating per section
+   Each section sets its own bg + overrides the color tokens so
+   children (headings, cards, borders) adapt automatically.
+   ============================================================ */
+.section-light {
+  --color-bg:            #E5E0D1;
+  --color-surface:       rgba(255, 255, 255, 0.55);
+  --color-surface-hover: rgba(255, 255, 255, 0.75);
+  --color-border:        rgba(20, 18, 15, 0.10);
+  --color-border-light:  rgba(20, 18, 15, 0.20);
+  --color-text:          #14120F;
+  --color-text-muted:    #5A564E;
+  --color-text-subtle:   #8A877E;
+  --color-accent-muted:  rgba(87, 108, 60, 0.14);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.section-dark {
+  --color-bg:            #0B0B0B;
+  --color-surface:       #141414;
+  --color-surface-hover: #1A1A1A;
+  --color-border:        #1F1F1F;
+  --color-border-light:  #2A2A2A;
+  --color-text:          #F5F5F4;
+  --color-text-muted:    #A8A29E;
+  --color-text-subtle:   #78716C;
+  --color-accent-muted:  rgba(163, 177, 138, 0.15);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   SIDEBAR — transparent, adapts to the section behind it
+   ============================================================ */
+.sidebar-card {
+  border: 1px solid var(--sidebar-border);
+  background: var(--sidebar-surface);
+  color: var(--sidebar-text);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+aside[data-theme='light'] {
+  --sidebar-surface: rgba(255, 255, 255, 0.55);
+  --sidebar-surface-strong: rgba(255, 255, 255, 0.85);
+  --sidebar-border: rgba(20, 18, 15, 0.12);
+  --sidebar-border-strong: rgba(20, 18, 15, 0.22);
+  --sidebar-text: #14120F;
+  --sidebar-text-muted: #5A564E;
+  --sidebar-text-subtle: #8A877E;
+}
+aside[data-theme='dark'] {
+  --sidebar-surface: rgba(20, 20, 20, 0.55);
+  --sidebar-surface-strong: rgba(20, 20, 20, 0.75);
+  --sidebar-border: rgba(255, 255, 255, 0.10);
+  --sidebar-border-strong: rgba(255, 255, 255, 0.18);
+  --sidebar-text: #F5F5F4;
+  --sidebar-text-muted: #A8A29E;
+  --sidebar-text-subtle: #78716C;
+}
+
+/* ============================================================
    SCROLL EFFECTS — word reveal & living media
    ============================================================ */
 /* Words start dimmed; GSAP scrubs them to full as the user scrolls */

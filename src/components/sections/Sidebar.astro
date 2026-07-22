@@ -6,7 +6,7 @@ type SectionId = (typeof sidebarSections)[number];
 
 const menu: { id: SectionId; label: string; icon: string }[] = [
   { id: 'hero', label: 'Home', icon: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>' },
-  { id: 'about', label: 'About Us', icon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>' },
+  { id: 'about', label: 'About Me', icon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>' },
   { id: 'projects', label: 'Projects', icon: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/>' },
   { id: 'services', label: 'What You Get', icon: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>' },
   { id: 'pricing', label: 'Services', icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>' },
@@ -14,7 +14,7 @@ const menu: { id: SectionId; label: string; icon: string }[] = [
   { id: 'faq', label: 'FAQ', icon: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.8.3-.9 1-.9 1.7"/><line x1="12" y1="17" x2="12" y2="17.01"/>' },
 ];
 
-const clients = ['Bintan Prestige', 'Prima Logistik', 'Kelola'];
+const clients = ['Bintan', 'Prima', 'Kelola'];
 
 const socialIcons: Record<string, string> = {
   twitter:
@@ -24,12 +24,15 @@ const socialIcons: Record<string, string> = {
 };
 
 const sectionsJson = JSON.stringify(sidebarSections);
+const shortTagline =
+  'Working closely with your team to deliver web builds, IT support and villa OTA management.';
 ---
 
 <aside
   x-data={`{
     visible: false,
     activeSection: 'hero',
+    theme: 'light',
     sections: ${sectionsJson},
     copied: false,
     copyEmail() {
@@ -45,31 +48,46 @@ const sectionsJson = JSON.stringify(sidebarSections);
       onScroll();
       window.addEventListener('scroll', onScroll, { passive: true });
     }
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(e => { if (e.isIntersecting) activeSection = e.target.id; });
-    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
-    sections.forEach(id => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    // Determine active section by scanning DOM order — robust against
+    // pinned sections (which stay at fixed position and confuse IO).
+    const sectionEls = sections
+      .map(id => document.getElementById(id))
+      .filter(Boolean);
+    const pickActive = () => {
+      const probe = window.innerHeight * 0.45;
+      let current = sectionEls[0];
+      for (const el of sectionEls) {
+        const r = el.getBoundingClientRect();
+        if (r.top <= probe) current = el;
+      }
+      if (!current) return;
+      if (activeSection !== current.id) activeSection = current.id;
+      const t = current.getAttribute('data-theme');
+      if (t && theme !== t) theme = t;
+    };
+    pickActive();
+    window.addEventListener('scroll', pickActive, { passive: true });
+    window.addEventListener('resize', pickActive);
   `}
+  x-bind:data-theme="theme"
+  data-theme="light"
   style="opacity:0; transform:translateX(-16px); pointer-events:none"
   x-bind:style="visible
     ? 'opacity:1; transform:translateX(0); pointer-events:auto'
     : 'opacity:0; transform:translateX(-16px); pointer-events:none'"
-  class="hidden lg:flex fixed left-4 top-4 bottom-4 z-40 w-[264px] flex-col gap-3 overflow-y-auto pr-1 transition-[opacity,transform] duration-300 ease-out"
+  class="hidden lg:flex fixed left-3 top-3 bottom-3 z-40 w-[240px] flex-col gap-2 transition-[opacity,transform] duration-300 ease-out"
   aria-label="Site sidebar"
 >
   <!-- Brand card -->
-  <div class="rounded-2xl border border-[color:var(--color-border)]/60 bg-[color:var(--color-surface)]/60 backdrop-blur-xl p-5">
+  <div class="sidebar-card rounded-2xl px-4 py-3">
     <div class="flex items-center justify-between">
       <a
         href="#hero"
-        class="inline-flex items-center rounded-lg bg-[color:var(--color-accent)] px-3 py-1.5 font-display text-sm font-bold text-[#0C0C0C]"
+        class="inline-flex items-center rounded-lg bg-[color:var(--color-accent)] px-2.5 py-1 font-display text-xs font-bold text-[#0C0C0C]"
       >
         GIATTECH®
       </a>
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5">
         {
           socialLinks
             .filter((s) => s.icon in socialIcons)
@@ -79,72 +97,77 @@ const sectionsJson = JSON.stringify(sidebarSections);
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label={s.label}
-                class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+                class="inline-flex items-center justify-center w-7 h-7 rounded-md border border-[color:var(--sidebar-border-strong)] text-[color:var(--sidebar-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
               >
-                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={socialIcons[s.icon]} />
+                <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={socialIcons[s.icon]} />
               </a>
             ))
         }
       </div>
     </div>
-    <p class="mt-4 text-xs leading-relaxed text-[color:var(--color-text-muted)]">
-      {hero.subheadline}
+    <p class="mt-2.5 text-[0.7rem] leading-snug text-[color:var(--sidebar-text-muted)]">
+      {shortTagline}
     </p>
   </div>
 
   <!-- Stats card -->
-  <div class="rounded-2xl border border-[color:var(--color-border)]/60 bg-[color:var(--color-surface)]/60 backdrop-blur-xl p-4">
-    <div class="grid grid-cols-2 divide-x divide-[color:var(--color-border)]">
+  <div class="sidebar-card rounded-2xl px-3 py-2.5">
+    <div class="grid grid-cols-2 divide-x divide-[color:var(--sidebar-border)]">
       {
         hero.stats.map((stat) => (
           <div class="flex flex-col items-center gap-0.5 px-2 text-center">
-            <span class="font-display text-lg font-bold text-[color:var(--color-accent)]">
+            <span class="font-display text-base font-bold text-[color:var(--color-accent)] leading-none">
               {stat.value}{stat.suffix}
             </span>
-            <span class="text-[0.65rem] leading-tight text-[color:var(--color-text-muted)]">{stat.label}</span>
+            <span class="text-[0.6rem] leading-tight text-[color:var(--sidebar-text-muted)]">{stat.label}</span>
           </div>
         ))
       }
     </div>
   </div>
 
-  <!-- Nav menu card -->
+  <!-- Nav menu — uniform pill items -->
   <nav
     aria-label="Section navigation"
-    class="rounded-2xl border border-[color:var(--color-border)]/60 bg-[color:var(--color-surface)]/60 backdrop-blur-xl p-3 flex flex-col gap-1"
+    class="sidebar-card rounded-2xl p-1.5 flex flex-col gap-0.5"
   >
     {
       menu.map((item) => (
         <a
           href={`#${item.id}`}
-          class="flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)] hover:text-[color:var(--color-text)] hover:bg-[color:var(--color-surface-hover)] transition-colors"
+          class="group flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-wide text-[color:var(--sidebar-text-muted)] hover:bg-[color:var(--sidebar-surface-strong)] hover:text-[color:var(--sidebar-text)] transition-colors"
           x-bind:class={`activeSection === '${item.id}' ? 'bg-[color:var(--color-accent)] !text-[#0C0C0C]' : ''`}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="14"
-            height="14"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
+          <span
             aria-hidden="true"
-            set:html={item.icon}
-          />
+            class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[color:var(--sidebar-border)] group-hover:border-[color:var(--sidebar-border-strong)] transition-colors"
+            x-bind:class={`activeSection === '${item.id}' ? '!border-[#0C0C0C]/20 bg-[color:var(--color-accent-dark)]/10' : ''`}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="11"
+              height="11"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              set:html={item.icon}
+            />
+          </span>
           {item.label}
         </a>
       ))
     }
   </nav>
 
-  <!-- Clients card -->
-  <div class="rounded-2xl border border-[color:var(--color-border)]/60 bg-[color:var(--color-surface)]/60 backdrop-blur-xl px-4 py-3">
+  <!-- Clients strip -->
+  <div class="sidebar-card rounded-2xl px-3 py-2">
     <div class="flex items-center justify-between gap-2">
       {
         clients.map((client) => (
-          <span class="font-display text-[0.65rem] font-semibold tracking-wide text-[color:var(--color-text-subtle)] whitespace-nowrap">
+          <span class="font-display text-[0.6rem] font-semibold tracking-wide text-[color:var(--sidebar-text-subtle)] whitespace-nowrap">
             {client}
           </span>
         ))
@@ -156,21 +179,21 @@ const sectionsJson = JSON.stringify(sidebarSections);
   <button
     type="button"
     @click="copyEmail()"
-    class="group flex items-center justify-between rounded-2xl border border-[color:var(--color-border)]/60 bg-[color:var(--color-surface)]/60 backdrop-blur-xl px-4 py-3 text-sm text-[color:var(--color-text-muted)] hover:border-[color:var(--color-border-light)] transition-colors"
+    class="sidebar-card group flex items-center justify-between rounded-2xl px-3 py-2 text-xs text-[color:var(--sidebar-text-muted)] hover:border-[color:var(--sidebar-border-strong)] transition-colors"
     aria-label="Copy email address"
   >
     <span x-text="copied ? 'Copied!' : 'hello@giattech.com'">hello@giattech.com</span>
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="14"
-      height="14"
+      width="12"
+      height="12"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
       stroke-width="2"
       stroke-linecap="round"
       stroke-linejoin="round"
-      class="text-[color:var(--color-text-subtle)] group-hover:text-[color:var(--color-accent)] transition-colors"
+      class="text-[color:var(--sidebar-text-subtle)] group-hover:text-[color:var(--color-accent)] transition-colors"
       aria-hidden="true"
     >
       <rect x="9" y="9" width="11" height="11" rx="2" />
@@ -181,7 +204,7 @@ const sectionsJson = JSON.stringify(sidebarSections);
   <!-- CTA -->
   <a
     href="#cta"
-    class="inline-flex items-center justify-center rounded-2xl bg-[color:var(--color-accent)] px-4 py-3.5 font-semibold text-sm text-[#0C0C0C] hover:bg-[color:var(--color-accent-light)] transition-colors"
+    class="inline-flex items-center justify-center rounded-2xl bg-[color:var(--color-accent)] px-3 py-2.5 font-semibold text-xs text-[#0C0C0C] hover:bg-[color:var(--color-accent-light)] transition-colors"
   >
     Book a Call
   </a>

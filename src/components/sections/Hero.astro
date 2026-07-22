@@ -6,7 +6,8 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 <section
   id="hero"
   data-section="hero"
-  class="relative min-h-[100svh] overflow-hidden flex flex-col"
+  data-theme="light"
+  class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
 >
   <!-- Giant background brand word -->
   <div
@@ -144,7 +145,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   <!-- Headline + CTAs, overlapping the portrait -->
   <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[16svh] md:pb-[13svh]">
     <h1
-      class="hero-heading font-display font-bold leading-[1.0] tracking-[-0.03em] text-[clamp(2.4rem,6.5vw,5rem)] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.5)]"
+      class="hero-heading font-display font-bold leading-[1.0] tracking-[-0.03em] text-[clamp(2.4rem,6.5vw,5rem)] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]"
     >
       {
         hero.headline.map((line) => (
