@@ -16,10 +16,10 @@ export interface AboutContent {
 }
 
 export const about: AboutContent = {
-  eyebrow: 'The Journey',
-  heading: 'How Giattech Got Here',
+  eyebrow: 'Start Small, Grow Big',
+  heading: 'About Giattech (&)<br />The Journey',
   intro:
-    'What started as freelance work between semester breaks turned into a studio that ships Laravel platforms teams actually want to log into.',
+    'Eight years ago we opened a code editor for the first paid project. What happened after that is easier to show than explain.',
   timeline: [
     {
       year: '2017',
