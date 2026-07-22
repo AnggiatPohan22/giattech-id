@@ -22,23 +22,24 @@ function initHeroTimeline(gsap: typeof import('gsap').default) {
   if (!heading) return;
 
   const tl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power2.out' } });
-  tl.from('.hero-eyebrow', { y: 12, opacity: 0, duration: 0.5 })
+  tl.from('.hero-giant', { scale: 1.06, opacity: 0, duration: 1.1 })
+    .from('.hero-portrait', { y: 60, opacity: 0, duration: 0.9 }, '-=0.7')
     .from(
       '.hero-line',
       { yPercent: 110, opacity: 0, stagger: 0.12, duration: 0.9 },
-      '-=0.25'
+      '-=0.5'
     )
-    .from('.hero-sub', { y: 20, opacity: 0, duration: 0.6 }, '-=0.4')
-    .from('.hero-cta > *', { y: 16, opacity: 0, stagger: 0.08, duration: 0.5 }, '-=0.3')
+    .from('.hero-cta > *', { y: 16, opacity: 0, stagger: 0.08, duration: 0.5 }, '-=0.4')
     .from(
-      '.hero-tags > li',
-      { scale: 0.85, opacity: 0, stagger: 0.04, duration: 0.4 },
-      '-=0.25'
+      '.hero-card',
+      { scale: 0.9, opacity: 0, stagger: 0.1, duration: 0.5 },
+      '-=0.3'
     )
+    .from('.hero-nav', { opacity: 0, duration: 0.5 }, '-=0.3')
     .from(
-      '.hero-stats > *',
-      { y: 24, opacity: 0, stagger: 0.12, duration: 0.6 },
-      '-=0.4'
+      '.hero-corner, .hero-stats-mobile',
+      { y: 14, opacity: 0, stagger: 0.08, duration: 0.5 },
+      '-=0.3'
     );
 }
 

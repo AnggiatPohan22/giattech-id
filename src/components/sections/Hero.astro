@@ -1,109 +1,178 @@
 ---
 import Button from '../ui/Button.astro';
-import { hero } from '../../data/hero';
+import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 ---
 
 <section
   id="hero"
   data-section="hero"
-  class="relative min-h-[100svh] flex items-center overflow-hidden pt-[var(--nav-height)]"
+  class="relative min-h-[100svh] overflow-hidden flex flex-col"
 >
+  <!-- Giant background brand word -->
   <div
     aria-hidden="true"
-    class="absolute inset-0 pointer-events-none opacity-60"
-    style="background-image:
-        radial-gradient(circle at 20% 20%, rgba(163,177,138,0.08) 0%, transparent 45%),
-        radial-gradient(circle at 80% 30%, rgba(163,177,138,0.05) 0%, transparent 40%),
-        linear-gradient(180deg, transparent 0%, var(--color-bg) 90%);"
+    class="hero-giant absolute inset-x-0 top-[4svh] flex justify-center pointer-events-none select-none z-0"
+  >
+    <span
+      class="font-display font-extrabold leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-[clamp(7rem,30vw,34rem)]"
+    >
+      {hero.brandWord}
+    </span>
+  </div>
+
+  <!-- Portrait, centered over the brand word -->
+  <div class="absolute inset-x-0 bottom-0 flex justify-center z-10 pointer-events-none">
+    <img
+      src={hero.portrait.src}
+      alt={hero.portrait.alt}
+      width={hero.portrait.width}
+      height={hero.portrait.height}
+      fetchpriority="high"
+      decoding="async"
+      class="hero-portrait h-[58svh] md:h-[72svh] w-auto max-w-none"
+    />
+  </div>
+
+  <!-- Soft fade so the section blends into the page below -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-0 h-[22svh] z-10 pointer-events-none"
+    style="background: linear-gradient(180deg, transparent 0%, var(--color-bg) 92%);"
   >
   </div>
 
-  <div
-    aria-hidden="true"
-    class="absolute inset-0 pointer-events-none opacity-[0.035]"
-    style="background-image:
-        linear-gradient(var(--color-border-light) 1px, transparent 1px),
-        linear-gradient(90deg, var(--color-border-light) 1px, transparent 1px);
-        background-size: 48px 48px;"
+  <!-- In-hero nav: split left / right of the portrait (desktop) -->
+  <nav
+    aria-label="Hero"
+    class="hero-nav hidden lg:flex absolute z-20 inset-x-0 top-[48svh] items-center justify-between px-8 xl:px-14 pointer-events-none"
   >
-  </div>
-
-  <div class="relative container-page grid lg:grid-cols-12 gap-10 items-center py-16 lg:py-24">
-    <div class="lg:col-span-8 flex flex-col gap-8">
-      <span class="hero-eyebrow text-eyebrow">A Digital Studio from Indonesia</span>
-
-      <h1 class="hero-heading text-hero font-display font-bold leading-[1.05]">
-        {hero.headline.map((line, i) => (
-          <span class="block overflow-hidden">
-            <span class="hero-line inline-block">
-              {line}
-              {i === hero.headline.length - 1 && (
-                <span class="text-[color:var(--color-accent)]">.</span>
-              )}
-            </span>
-          </span>
-        ))}
-      </h1>
-
-      <p class="hero-sub text-body text-[color:var(--color-text-muted)] max-w-2xl">
-        {hero.subheadline}
-      </p>
-
-      <div class="hero-cta flex flex-wrap items-center gap-3">
-        {
-          hero.ctas.map((cta) => (
-            <Button href={cta.href} variant={cta.variant} size="md" pill>
-              {cta.label}
-            </Button>
-          ))
-        }
-      </div>
-
-      <ul class="hero-tags flex flex-wrap gap-2 pt-2">
-        {
-          hero.tags.map((tag) => (
-            <li
-              class="inline-flex items-center rounded-full border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] px-3 py-1 text-xs font-medium text-[color:var(--color-text-muted)]"
+    <div class="flex items-center gap-5 pointer-events-auto">
+      {
+        heroNavLeft.map((link, i) => (
+          <>
+            {i > 0 && (
+              <span aria-hidden="true" class="text-[color:var(--color-border-light)]">|</span>
+            )}
+            <a
+              href={link.href}
+              class="text-sm font-semibold tracking-wide uppercase text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors py-2"
             >
-              {tag}
-            </li>
-          ))
-        }
-      </ul>
+              {link.label}
+            </a>
+          </>
+        ))
+      }
     </div>
+    <div class="flex items-center gap-5 pointer-events-auto">
+      {
+        heroNavRight.map((link, i) => (
+          <>
+            {i > 0 && (
+              <span aria-hidden="true" class="text-[color:var(--color-border-light)]">|</span>
+            )}
+            <a
+              href={link.href}
+              class="text-sm font-semibold tracking-wide uppercase text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors py-2"
+            >
+              {link.label}
+            </a>
+          </>
+        ))
+      }
+    </div>
+  </nav>
 
-    <div class="lg:col-span-4">
-      <dl class="hero-stats grid grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-8">
-        {
-          hero.stats.map((stat) => (
-            <div class="flex flex-col gap-1 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6">
-              <dt class="text-xs uppercase tracking-[0.15em] text-[color:var(--color-text-subtle)]">
-                {stat.label}
-              </dt>
-              <dd class="font-display text-4xl lg:text-5xl font-bold text-[color:var(--color-text)]">
-                <span
-                  class="hero-counter"
-                  data-counter
-                  data-target={stat.value}
-                >
-                  {stat.value}
-                </span>
-                {stat.suffix && (
-                  <span class="text-[color:var(--color-accent)]">{stat.suffix}</span>
-                )}
-              </dd>
-            </div>
-          ))
-        }
-      </dl>
-    </div>
+  <!-- Floating stat cards (left) -->
+  <div
+    class="hero-card hidden md:flex absolute z-20 left-[6%] xl:left-[12%] top-[38svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
+  >
+    <span class="font-display text-2xl font-bold text-[color:var(--color-accent)]">
+      <span data-counter data-target={hero.stats[0].value}>{hero.stats[0].value}</span>{hero.stats[0].suffix}
+    </span>
+    <span class="text-xs font-medium text-[color:var(--color-text-muted)]">{hero.stats[0].label}</span>
   </div>
 
   <div
-    aria-hidden="true"
-    class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-[color:var(--color-text-subtle)]"
+    class="hero-card hidden md:flex absolute z-20 left-[9%] xl:left-[15%] top-[62svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
   >
-    <span class="text-[0.65rem] uppercase tracking-[0.2em]">Scroll</span>
-    <span class="block w-px h-8 bg-[color:var(--color-border-light)]"></span>
+    <span class="font-display text-2xl font-bold text-[color:var(--color-accent)]">
+      <span data-counter data-target={hero.stats[1].value}>{hero.stats[1].value}</span>{hero.stats[1].suffix}
+    </span>
+    <span class="text-xs font-medium text-[color:var(--color-text-muted)] text-center max-w-[8rem]">
+      {hero.stats[1].label}
+    </span>
   </div>
+
+  <!-- Floating traits card (right) -->
+  <ul
+    class="hero-card hidden md:flex absolute z-20 right-[6%] xl:right-[12%] top-[42svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
+  >
+    {
+      hero.traits.map((trait) => (
+        <li class="flex items-center gap-3 text-sm font-semibold text-[color:var(--color-text)]">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="text-[color:var(--color-accent)] shrink-0"
+            aria-hidden="true"
+          >
+            <path d="M12 3l1.9 4.4L18 9l-4.1 1.6L12 15l-1.9-4.4L6 9l4.1-1.6L12 3z" />
+          </svg>
+          {trait}
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Headline + CTAs, overlapping the portrait -->
+  <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[16svh] md:pb-[13svh]">
+    <h1 class="hero-heading font-display font-bold leading-[1.02] tracking-[-0.03em] text-[clamp(2.6rem,7vw,5.5rem)]">
+      {
+        hero.headline.map((line) => (
+          <span class="block overflow-hidden">
+            <span class="hero-line inline-block">{line}</span>
+          </span>
+        ))
+      }
+    </h1>
+
+    <div class="hero-cta mt-8 flex flex-wrap items-center justify-center gap-3">
+      {
+        hero.ctas.map((cta) => (
+          <Button href={cta.href} variant={cta.variant} size="md" pill>
+            {cta.label}
+          </Button>
+        ))
+      }
+    </div>
+
+    <!-- Mobile stats (floating cards are hidden below md) -->
+    <dl class="hero-stats-mobile mt-8 flex md:hidden items-center gap-8">
+      {
+        hero.stats.map((stat) => (
+          <div class="flex flex-col items-center gap-0.5">
+            <dd class="font-display text-2xl font-bold text-[color:var(--color-accent)] order-first">
+              {stat.value}{stat.suffix}
+            </dd>
+            <dt class="text-xs text-[color:var(--color-text-muted)]">{stat.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <!-- Corner texts -->
+  <p
+    class="hero-corner hidden md:block absolute z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
+  >
+    {hero.corner[0]}<br />{hero.corner[1]}
+  </p>
+  <p
+    class="hero-corner hidden md:block absolute z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
+  >
+    {hero.subheadline}
+  </p>
 </section>
