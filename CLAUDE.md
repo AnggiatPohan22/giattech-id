@@ -61,12 +61,12 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T17** — Create `Projects.astro` section
 
 ### Phase 5 — Pricing, Testimonials, FAQ, CTA
-- [ ] **T18** — Create `PricingCard.astro` component
-- [ ] **T19** — Create `Pricing.astro` section (3-column cards)
-- [ ] **T20** — Create `TestimonialCard.astro` component
-- [ ] **T21** — Create `Testimonials.astro` section (carousel with Alpine.js)
-- [ ] **T22** — Create `FAQ.astro` section (accordion with Alpine.js)
-- [ ] **T23** — Create `CTA.astro` section
+- [x] **T18** — Create `PricingCard.astro` component
+- [x] **T19** — Create `Pricing.astro` section (3-column cards)
+- [x] **T20** — Create `TestimonialCard.astro` component
+- [x] **T21** — Create `Testimonials.astro` section (carousel with Alpine.js)
+- [x] **T22** — Create `FAQ.astro` section (accordion with Alpine.js)
+- [x] **T23** — Create `CTA.astro` section
 
 ### Phase 6 — Animations & Polish
 - [ ] **T24** — Create `src/scripts/animations.ts` (GSAP ScrollTrigger system)
