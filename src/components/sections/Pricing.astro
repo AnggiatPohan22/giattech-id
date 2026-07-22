@@ -1,0 +1,30 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import PricingCard from '../ui/PricingCard.astro';
+import { pricingPlans } from '../../data/pricing';
+---
+
+<section
+  id="pricing"
+  data-section="pricing"
+  class="relative section-y border-b border-[color:var(--color-border)]"
+>
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Services"
+      heading="Solutions That Deliver."
+      subtitle="Pick the shape that fits — ongoing capacity, a fixed-scope build, or something custom. Every plan starts with a call."
+    />
+
+    <div
+      class="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-3 gap-6"
+      data-animate="stagger"
+    >
+      {pricingPlans.map((plan) => <PricingCard plan={plan} />)}
+    </div>
+
+    <p class="mt-10 text-center text-xs text-[color:var(--color-text-subtle)]">
+      Prices in USD, exclusive of local taxes. Rp / SGD invoicing available on request.
+    </p>
+  </div>
+</section>
