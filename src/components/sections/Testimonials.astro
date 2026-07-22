@@ -22,10 +22,12 @@ const total = testimonials.length;
         current: 0,
         total: ${total},
         autoplayId: null,
+        reduced: window.matchMedia('(prefers-reduced-motion: reduce)').matches,
         next() { this.current = (this.current + 1) % this.total; },
         prev() { this.current = (this.current - 1 + this.total) % this.total; },
         start() {
           this.stop();
+          if (this.reduced) return;
           this.autoplayId = setInterval(() => this.next(), 6000);
         },
         stop() {
@@ -38,6 +40,7 @@ const total = testimonials.length;
       @focusin="stop()"
       @focusout="start()"
       class="relative mt-14 md:mt-16"
+      data-animate="fade-up"
       aria-roledescription="carousel"
       aria-label="Client testimonials"
     >
@@ -72,7 +75,7 @@ const total = testimonials.length;
                 @click={`current = ${i}; start()`}
                 x-bind:aria-selected={`current === ${i} ? 'true' : 'false'`}
                 aria-label={`Show testimonial ${i + 1}`}
-                class="group inline-flex items-center justify-center p-2"
+                class="group inline-flex items-center justify-center min-w-8 min-h-8 p-2"
               >
                 <span
                   class="block h-1.5 rounded-full bg-[color:var(--color-border-light)] transition-all duration-300"
