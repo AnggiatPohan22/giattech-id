@@ -2,6 +2,8 @@
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/sections/Navbar.astro';
 import SidebarNav from '../components/sections/SidebarNav.astro';
+import Hero from '../components/sections/Hero.astro';
+import About from '../components/sections/About.astro';
 import Footer from '../components/sections/Footer.astro';
 import { sidebarSections } from '../data/navigation';
 
@@ -14,6 +16,10 @@ const sectionTitles: Record<(typeof sidebarSections)[number], string> = {
   testimonials: 'Testimonials',
   faq: 'FAQ',
 };
+
+const placeholders = sidebarSections.filter(
+  (id) => id !== 'hero' && id !== 'about'
+);
 ---
 
 <Layout>
@@ -21,14 +27,17 @@ const sectionTitles: Record<(typeof sidebarSections)[number], string> = {
   <SidebarNav />
 
   <main>
+    <Hero />
+    <About />
+
     {
-      sidebarSections.map((id, i) => (
+      placeholders.map((id, i) => (
         <section
           id={id}
           data-section={id}
           class="container-page section-y min-h-[80vh] flex flex-col justify-center border-b border-[color:var(--color-border)]"
         >
-          <span class="text-eyebrow mb-4">Placeholder / Section {i + 1}</span>
+          <span class="text-eyebrow mb-4">Placeholder / Section {i + 3}</span>
           <h2 class="text-h2 font-display font-bold">{sectionTitles[id]}</h2>
           <p class="mt-4 text-body text-[color:var(--color-text-muted)] max-w-2xl">
             This section will be built in a later phase. Content, layout, and
