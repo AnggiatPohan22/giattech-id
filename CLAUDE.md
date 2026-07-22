@@ -37,11 +37,11 @@ Each task = one focused session. Don't combine tasks.
 
 ### Phase 1 — Foundation
 - [x] **T01** — Initialize Astro project with all dependencies
-- [ ] **T02** — Create `src/styles/global.css` with all design tokens (colors, typography, spacing)
-- [ ] **T03** — Create `src/layouts/Layout.astro` (HTML shell, font imports, meta tags, global CSS)
-- [ ] **T04** — Create all data files in `src/data/` (navigation, services, testimonials, faq, pricing)
-- [ ] **T05** — Create `src/components/ui/Button.astro` (primary, outline, ghost variants)
-- [ ] **T06** — Create `src/components/ui/SectionHeader.astro` (eyebrow + heading + optional subtitle)
+- [x] **T02** — Create `src/styles/global.css` with all design tokens (colors, typography, spacing)
+- [x] **T03** — Create `src/layouts/Layout.astro` (HTML shell, font imports, meta tags, global CSS)
+- [x] **T04** — Create all data files in `src/data/` (navigation, services, testimonials, faq, pricing)
+- [x] **T05** — Create `src/components/ui/Button.astro` (primary, outline, ghost variants)
+- [x] **T06** — Create `src/components/ui/SectionHeader.astro` (eyebrow + heading + optional subtitle)
 
 ### Phase 2 — Layout & Navigation
 - [ ] **T07** — Create `Navbar.astro` (fixed, transparent→solid scroll, mobile hamburger)
