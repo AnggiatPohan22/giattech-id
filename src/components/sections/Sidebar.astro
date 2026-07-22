@@ -82,14 +82,14 @@ const shortTagline =
   class="site-sidebar hidden lg:flex fixed left-3 top-3 bottom-3 z-40 w-[240px] flex-col gap-2"
   aria-label="Site sidebar"
 >
-  <!-- Brand card -->
-  <div class="sidebar-card rounded-2xl px-4 py-3">
+  <!-- Brand card — GIATTECH as bold accent text, socials on the right -->
+  <div class="sidebar-card rounded-2xl px-4 py-3.5">
     <div class="flex items-center justify-between">
       <a
         href="#hero"
-        class="inline-flex items-center rounded-lg bg-[color:var(--color-accent)] px-2.5 py-1 font-display text-xs font-bold text-[#0C0C0C]"
+        class="font-display text-lg font-extrabold tracking-tight text-[color:var(--color-accent)]"
       >
-        GIATTECH®
+        GIATTECH<span class="text-[0.65em] align-super">®</span>
       </a>
       <div class="flex items-center gap-1.5">
         {
@@ -109,21 +109,21 @@ const shortTagline =
         }
       </div>
     </div>
-    <p class="mt-2.5 text-[0.7rem] leading-snug text-[color:var(--sidebar-text-muted)]">
+    <p class="mt-3 text-[0.72rem] leading-snug text-[color:var(--sidebar-text-muted)]">
       {shortTagline}
     </p>
   </div>
 
-  <!-- Stats card -->
-  <div class="sidebar-card rounded-2xl px-3 py-2.5">
+  <!-- Stats card — bigger numbers to match reference -->
+  <div class="sidebar-card rounded-2xl px-3 py-3">
     <div class="grid grid-cols-2 divide-x divide-[color:var(--sidebar-border)]">
       {
         hero.stats.map((stat) => (
-          <div class="flex flex-col items-center gap-0.5 px-2 text-center">
-            <span class="font-display text-base font-bold text-[color:var(--color-accent)] leading-none">
+          <div class="flex flex-col items-center gap-1 px-2 text-center">
+            <span class="font-display text-xl font-extrabold text-[color:var(--color-accent)] leading-none">
               {stat.value}{stat.suffix}
             </span>
-            <span class="text-[0.6rem] leading-tight text-[color:var(--sidebar-text-muted)]">{stat.label}</span>
+            <span class="text-[0.62rem] font-semibold leading-tight text-[color:var(--sidebar-text)]">{stat.label}</span>
           </div>
         ))
       }
