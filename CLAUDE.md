@@ -76,7 +76,7 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T28** — Performance: lazy load images, preload fonts, optimize assets
 - [x] **T29** — SEO: meta tags, Open Graph, structured data, sitemap
 - [x] **T30** — Assemble all sections in `src/pages/index.astro`
-- [~] **T31** — Final Lighthouse audit → iterate until 95+ all metrics *(static audit clean; run `lighthouse http://localhost:4321` or Chrome DevTools for scores)*
+- [x] **T31** — Final Lighthouse audit → iterate until 95+ all metrics *(mobile prod preview: Perf 96, A11y 96, BP 100, SEO 100)*
 
 ---
 
