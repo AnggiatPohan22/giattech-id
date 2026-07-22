@@ -69,14 +69,14 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T23** — Create `CTA.astro` section
 
 ### Phase 6 — Animations & Polish
-- [ ] **T24** — Create `src/scripts/animations.ts` (GSAP ScrollTrigger system)
-- [ ] **T25** — Wire data-animate attributes to all sections
-- [ ] **T26** — Add prefers-reduced-motion support
-- [ ] **T27** — Responsive testing: fix all breakpoints (375, 768, 1024, 1440)
-- [ ] **T28** — Performance: lazy load images, preload fonts, optimize assets
-- [ ] **T29** — SEO: meta tags, Open Graph, structured data, sitemap
-- [ ] **T30** — Assemble all sections in `src/pages/index.astro`
-- [ ] **T31** — Final Lighthouse audit → iterate until 95+ all metrics
+- [x] **T24** — Create `src/scripts/animations.ts` (GSAP ScrollTrigger system)
+- [x] **T25** — Wire data-animate attributes to all sections
+- [x] **T26** — Add prefers-reduced-motion support
+- [x] **T27** — Responsive testing: fix all breakpoints (375, 768, 1024, 1440)
+- [x] **T28** — Performance: lazy load images, preload fonts, optimize assets
+- [x] **T29** — SEO: meta tags, Open Graph, structured data, sitemap
+- [x] **T30** — Assemble all sections in `src/pages/index.astro`
+- [~] **T31** — Final Lighthouse audit → iterate until 95+ all metrics *(static audit clean; run `lighthouse http://localhost:4321` or Chrome DevTools for scores)*
 
 ---
 
