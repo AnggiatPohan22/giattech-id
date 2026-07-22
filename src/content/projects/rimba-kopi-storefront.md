@@ -10,6 +10,7 @@ tags:
   - GSAP
 role: Design + Build
 client: Rimba Kopi
+thumbnail: /images/projects/rimba-kopi.svg
 accent: clay
 ---
 

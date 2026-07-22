@@ -10,6 +10,7 @@ tags:
   - Integrations
 role: API Lead
 client: Aksara Group
+thumbnail: /images/projects/aksara-gateway.svg
 accent: sage
 ---
 

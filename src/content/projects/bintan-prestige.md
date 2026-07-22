@@ -11,6 +11,7 @@ tags:
 role: Full-Stack Lead
 client: Bintan Prestige
 url: https://bintanprestige.com
+thumbnail: /images/projects/bintan-prestige.svg
 accent: ocean
 featured: true
 ---

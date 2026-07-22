@@ -10,6 +10,7 @@ tags:
   - Realtime
 role: Backend + Frontend
 client: Prima Logistik
+thumbnail: /images/projects/prima-logistik.svg
 accent: sage
 featured: true
 ---

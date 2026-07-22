@@ -11,6 +11,7 @@ tags:
 role: Solo Build
 client: Kelola Studio
 url: https://kelolastudio.example
+thumbnail: /images/projects/kelola-studio.svg
 accent: stone
 ---
 
