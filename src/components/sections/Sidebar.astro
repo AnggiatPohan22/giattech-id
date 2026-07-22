@@ -130,22 +130,19 @@ const shortTagline =
     </div>
   </div>
 
-  <!-- Nav menu — uniform pill items -->
-  <nav
-    aria-label="Section navigation"
-    class="sidebar-card rounded-2xl p-1.5 flex flex-col gap-0.5"
-  >
+  <!-- Nav — each item is its own individual pill (like reference) -->
+  <nav aria-label="Section navigation" class="flex flex-col gap-1">
     {
       menu.map((item) => (
         <a
           href={`#${item.id}`}
-          class="group flex items-center gap-2.5 rounded-xl px-2.5 py-1.5 text-[0.7rem] font-semibold uppercase tracking-wide text-[color:var(--sidebar-text-muted)] hover:bg-[color:var(--sidebar-surface-strong)] hover:text-[color:var(--sidebar-text)] transition-colors"
-          x-bind:class={`activeSection === '${item.id}' ? 'bg-[color:var(--color-accent)] !text-[#0C0C0C]' : ''`}
+          class="sidebar-card sidebar-nav-item group flex items-center gap-2.5 rounded-2xl px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-wide text-[color:var(--sidebar-text-muted)] hover:text-[color:var(--sidebar-text)] transition-colors"
+          x-bind:class={`activeSection === '${item.id}' ? '!bg-[color:var(--color-accent)] !border-transparent !text-[#0C0C0C]' : ''`}
         >
           <span
             aria-hidden="true"
-            class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[color:var(--sidebar-border)] group-hover:border-[color:var(--sidebar-border-strong)] transition-colors"
-            x-bind:class={`activeSection === '${item.id}' ? '!border-[#0C0C0C]/20 bg-[color:var(--color-accent-dark)]/10' : ''`}
+            class="inline-flex items-center justify-center w-6 h-6 rounded-md border border-[color:var(--sidebar-border-strong)] transition-colors"
+            x-bind:class={`activeSection === '${item.id}' ? '!border-[#0C0C0C]/25 bg-black/10' : ''`}
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -205,10 +202,10 @@ const shortTagline =
     </svg>
   </button>
 
-  <!-- CTA -->
+  <!-- CTA — larger, matches the prominent yellow button in the reference -->
   <a
     href="#cta"
-    class="inline-flex items-center justify-center rounded-2xl bg-[color:var(--color-accent)] px-3 py-2.5 font-semibold text-xs text-[#0C0C0C] hover:bg-[color:var(--color-accent-light)] transition-colors"
+    class="sidebar-cta inline-flex items-center justify-center rounded-2xl bg-[color:var(--color-accent)] px-4 py-3.5 font-display font-bold text-sm text-[#0C0C0C] hover:bg-[color:var(--color-accent-light)] transition-colors"
   >
     Book a Call
   </a>

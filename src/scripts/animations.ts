@@ -88,44 +88,52 @@ function initHeroPin(gsap: Gsap) {
       },
     });
 
-    // GIAT giant word → shrinks toward top-left where sidebar's GIATTECH
-    // badge lives (transform-origin left-top so the shrink converges there).
+    // All hero elements end at opacity 0 by the time the scrub is done —
+    // any residual visibility past the end reads as a stuck ghost.
+    // Direction of travel converges on the sidebar counterpart to sell
+    // the "morphed into the sidebar" reading.
+
+    // GIAT giant word → shrinks toward the sidebar's GIATTECH badge.
     tl.fromTo('.hero-giant',
       { xPercent: 0, yPercent: 0, scale: 1, opacity: 1, transformOrigin: 'left top' },
-      { xPercent: -120, yPercent: -35, scale: 0.06, opacity: 0.9, ...opts }, 0);
+      { xPercent: -120, yPercent: -35, scale: 0.06, opacity: 0, ...opts }, 0);
 
-    // Portrait fades and sinks (no counterpart in sidebar — exits cleanly).
+    // Portrait sinks and fades (no sidebar counterpart).
     tl.fromTo('.hero-portrait',
       { yPercent: 0, opacity: 1 },
       { yPercent: 25, opacity: 0, ...opts }, 0);
 
-    // Left-side floating stat cards (80+ / 3+ Years) travel toward
-    // sidebar's stats-card slot at the top-left.
-    tl.fromTo('.hero-card',
+    // 80+ Projects & 3+ Years cards travel far up-left onto the sidebar's
+    // stats-card slot then fade — they don't get stranded mid-viewport.
+    tl.fromTo('.hero-stat-1, .hero-stat-2',
       { x: 0, y: 0, scale: 1, opacity: 1 },
-      { x: () => -vw() * 0.18, y: -140, scale: 0.55, opacity: 0.75, stagger: 0.04, ...opts }, 0);
+      { x: () => -vw() * 0.14, y: -260, scale: 0.4, opacity: 0, stagger: 0.05, ...opts }, 0);
 
-    // Nav links converge toward the left column (they'll become the menu
-    // card in the sidebar). Left group nudges inward, right group crosses
-    // over from the right side.
+    // Traits card (right side): no sidebar counterpart — fade in place
+    // with a small drift so it doesn't fly across the viewport.
+    tl.fromTo('.hero-traits',
+      { x: 0, y: 0, scale: 1, opacity: 1 },
+      { x: 40, y: -60, scale: 0.85, opacity: 0, ...opts }, 0);
+
+    // Nav-left nudges toward the sidebar column, nav-right flies across.
     tl.fromTo('.hero-nav-left',
       { x: 0, y: 0, scale: 1, opacity: 1 },
       { x: -60, y: -40, scale: 0.85, opacity: 0, ...opts }, 0);
     tl.fromTo('.hero-nav-right',
       { x: 0, y: 0, scale: 1, opacity: 1 },
-      { x: () => -vw() * 0.55, y: -40, scale: 0.85, opacity: 0, ...opts }, 0);
+      { x: () => -vw() * 0.6, y: -40, scale: 0.85, opacity: 0, ...opts }, 0);
 
-    // Headline exits to the right (out of frame — sidebar has no headline).
+    // Headline exits to the right.
     tl.fromTo('.hero-heading',
       { xPercent: 0, opacity: 1 },
       { xPercent: 25, opacity: 0, ...opts }, 0.05);
 
-    // CTAs collapse toward the sidebar's Book-a-Call button (bottom-left).
+    // CTAs collapse toward the sidebar Book-a-Call button (bottom-left).
     tl.fromTo('.hero-cta',
       { x: 0, y: 0, scale: 1, opacity: 1 },
-      { x: () => -vw() * 0.4, y: 220, scale: 0.65, opacity: 0.6, ...opts }, 0.05);
+      { x: () => -vw() * 0.4, y: 220, scale: 0.65, opacity: 0, ...opts }, 0.05);
 
-    // Corner texts drift toward the sidebar's brand-card tagline area.
+    // Corner texts fold toward the sidebar tagline area.
     tl.fromTo('.hero-corner-left',
       { x: 0, y: 0, opacity: 1 },
       { x: -60, y: -120, scale: 0.85, opacity: 0, ...opts }, 0);
@@ -133,21 +141,39 @@ function initHeroPin(gsap: Gsap) {
       { x: 0, y: 0, opacity: 1 },
       { x: () => -vw() * 0.45, y: -120, scale: 0.85, opacity: 0, ...opts }, 0);
 
-    // Sidebar cross-fades in during the second half of the scrub, so it
-    // appears "arriving" as hero pieces land at its silhouette.
+    // Sidebar: container reveals early, then each card cascades in as if
+    // it's "receiving" the hero element traveling toward it. Ordering
+    // roughly mirrors the visual flow of hero pieces converging left.
     if (sidebar) {
-      tl.fromTo(sidebar,
-        { autoAlpha: 0, xPercent: -8 },
-        { autoAlpha: 1, xPercent: 0, ...opts }, 0.5);
+      const cards = sidebar.querySelectorAll<HTMLElement>(
+        '.sidebar-card, .sidebar-cta'
+      );
+      gsap.set(sidebar, { autoAlpha: 0 });
+      gsap.set(cards, { opacity: 0, x: -14, scale: 0.94 });
+
+      tl.to(sidebar, { autoAlpha: 1, ...opts, duration: 0.08 }, 0.22);
+
+      cards.forEach((card, i) => {
+        tl.to(card,
+          { opacity: 1, x: 0, scale: 1, ...opts, duration: 0.12 },
+          0.3 + i * 0.05
+        );
+      });
     }
 
     // Loading directly at a deep scroll position: reveal sidebar immediately.
     if (window.scrollY > window.innerHeight && sidebar) {
-      gsap.set(sidebar, { autoAlpha: 1, xPercent: 0 });
+      gsap.set(sidebar, { autoAlpha: 1 });
+      const cards = sidebar.querySelectorAll<HTMLElement>('.sidebar-card, .sidebar-cta');
+      gsap.set(cards, { opacity: 1, x: 0, scale: 1 });
     }
 
     return () => {
-      if (sidebar) gsap.set(sidebar, { clearProps: 'opacity,visibility,transform' });
+      if (sidebar) {
+        gsap.set(sidebar, { clearProps: 'opacity,visibility,transform' });
+        const cards = sidebar.querySelectorAll<HTMLElement>('.sidebar-card, .sidebar-cta');
+        gsap.set(cards, { clearProps: 'opacity,transform' });
+      }
     };
   });
 }

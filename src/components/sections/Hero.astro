@@ -87,7 +87,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating stat card: logo + 80+ Projects (left, upper) -->
   <div
-    class="hero-card hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[47svh] items-center gap-4 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-5 py-4"
+    class="hero-card hero-stat-1 hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[47svh] items-center gap-4 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-5 py-4"
   >
     {hero.stats[0].logo && (
       <img
@@ -108,7 +108,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating stat card: 3+ Years of experience (left, lower) -->
   <div
-    class="hero-card hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[67svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
+    class="hero-card hero-stat-2 hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[67svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
   >
     <span class="font-display text-3xl font-bold text-[color:var(--color-accent)]">
       <span data-counter data-target={hero.stats[1].value}>{hero.stats[1].value}</span>{hero.stats[1].suffix}
@@ -120,7 +120,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating traits card (right) -->
   <ul
-    class="hero-card hidden md:flex absolute lg:fixed z-20 right-[14%] xl:right-[18%] top-[47svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
+    class="hero-card hero-traits hidden md:flex absolute lg:fixed z-20 right-[14%] xl:right-[18%] top-[47svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
   >
     {
       hero.traits.map((trait) => (
