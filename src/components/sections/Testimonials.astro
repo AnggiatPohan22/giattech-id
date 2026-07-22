@@ -1,0 +1,111 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import TestimonialCard from '../ui/TestimonialCard.astro';
+import { testimonials } from '../../data/testimonials';
+
+const total = testimonials.length;
+---
+
+<section
+  id="testimonials"
+  data-section="testimonials"
+  class="relative section-y border-b border-[color:var(--color-border)]"
+>
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Testimonials"
+      heading="From People We've Worked With."
+    />
+
+    <div
+      x-data={`{
+        current: 0,
+        total: ${total},
+        autoplayId: null,
+        next() { this.current = (this.current + 1) % this.total; },
+        prev() { this.current = (this.current - 1 + this.total) % this.total; },
+        start() {
+          this.stop();
+          this.autoplayId = setInterval(() => this.next(), 6000);
+        },
+        stop() {
+          if (this.autoplayId) { clearInterval(this.autoplayId); this.autoplayId = null; }
+        }
+      }`}
+      x-init="start()"
+      @mouseenter="stop()"
+      @mouseleave="start()"
+      @focusin="stop()"
+      @focusout="start()"
+      class="relative mt-14 md:mt-16"
+      aria-roledescription="carousel"
+      aria-label="Client testimonials"
+    >
+      <div class="relative">
+        {
+          testimonials.map((t, i) => (
+            <div
+              x-show={`current === ${i}`}
+              x-cloak={i !== 0 ? true : undefined}
+              x-transition:enter="transition-opacity duration-500"
+              x-transition:enter-start="opacity-0"
+              x-transition:enter-end="opacity-100"
+              x-transition:leave="hidden"
+              class={i === 0 ? 'block' : 'hidden'}
+              role="group"
+              aria-roledescription="slide"
+              aria-label={`${i + 1} of ${total}`}
+            >
+              <TestimonialCard data={t} />
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="mt-8 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-2" role="tablist" aria-label="Choose testimonial">
+          {
+            testimonials.map((_, i) => (
+              <button
+                type="button"
+                role="tab"
+                @click={`current = ${i}; start()`}
+                x-bind:aria-selected={`current === ${i} ? 'true' : 'false'`}
+                aria-label={`Show testimonial ${i + 1}`}
+                class="group inline-flex items-center justify-center p-2"
+              >
+                <span
+                  class="block h-1.5 rounded-full bg-[color:var(--color-border-light)] transition-all duration-300"
+                  x-bind:class={`current === ${i} ? 'w-8 bg-[color:var(--color-accent)]' : 'w-4 group-hover:bg-[color:var(--color-text-muted)]'`}
+                />
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button
+            type="button"
+            @click="prev(); start()"
+            aria-label="Previous testimonial"
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="15 18 9 12 15 6"/>
+            </svg>
+          </button>
+          <button
+            type="button"
+            @click="next(); start()"
+            aria-label="Next testimonial"
+            class="inline-flex items-center justify-center w-10 h-10 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <polyline points="9 18 15 12 9 6"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
