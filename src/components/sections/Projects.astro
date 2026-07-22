@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content';
+import SectionHeader from '../ui/SectionHeader.astro';
+import ProjectCard from '../ui/ProjectCard.astro';
+
+const projectEntries = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section
+  id="projects"
+  data-section="projects"
+  class="relative section-y border-b border-[color:var(--color-border)]"
+>
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="Selected Work"
+      heading="Built to Perform."
+      subtitle="A short slice of what's shipped this year. Each one solves a real business problem — booking, dispatch, subscription, integration."
+    />
+
+    <div
+      class="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-6"
+      data-animate="stagger"
+    >
+      {
+        projectEntries.map((entry, i) => (
+          <ProjectCard
+            index={i + 1}
+            title={entry.data.title}
+            summary={entry.data.summary}
+            tags={entry.data.tags}
+            year={entry.data.year}
+            role={entry.data.role}
+            url={entry.data.url}
+            thumbnail={entry.data.thumbnail}
+            accent={entry.data.accent}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>

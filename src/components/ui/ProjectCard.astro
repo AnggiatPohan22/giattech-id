@@ -1,0 +1,155 @@
+---
+type Accent = 'sage' | 'stone' | 'clay' | 'ocean';
+
+interface Props {
+  index: number;
+  title: string;
+  summary: string;
+  tags: string[];
+  year: number;
+  role?: string;
+  url?: string;
+  thumbnail?: string;
+  accent?: Accent;
+}
+
+const {
+  index,
+  title,
+  summary,
+  tags,
+  year,
+  role,
+  url,
+  thumbnail,
+  accent = 'sage',
+} = Astro.props;
+
+const paddedIndex = index.toString().padStart(2, '0');
+
+const accentGradients: Record<Accent, string> = {
+  sage:
+    'radial-gradient(120% 80% at 20% 20%, rgba(163,177,138,0.35) 0%, rgba(163,177,138,0.05) 55%, transparent 80%)',
+  stone:
+    'radial-gradient(120% 80% at 20% 20%, rgba(168,162,158,0.35) 0%, rgba(168,162,158,0.05) 55%, transparent 80%)',
+  clay:
+    'radial-gradient(120% 80% at 20% 20%, rgba(211,145,110,0.35) 0%, rgba(211,145,110,0.05) 55%, transparent 80%)',
+  ocean:
+    'radial-gradient(120% 80% at 20% 20%, rgba(107,161,182,0.35) 0%, rgba(107,161,182,0.05) 55%, transparent 80%)',
+};
+
+const isExternal = url && !url.startsWith('#') && !url.startsWith('/');
+---
+
+<article
+  class="group flex flex-col overflow-hidden rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] transition-all duration-300 hover:border-[color:var(--color-border-light)]"
+>
+  <div class="relative aspect-[16/10] overflow-hidden">
+    {
+      thumbnail ? (
+        <img
+          src={thumbnail}
+          alt={title}
+          width="800"
+          height="500"
+          loading="lazy"
+          decoding="async"
+          class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+        />
+      ) : (
+        <div
+          class="w-full h-full transition-transform duration-500 group-hover:scale-[1.03]"
+          style={`background-color: var(--color-bg); background-image: ${accentGradients[accent]};`}
+          aria-hidden="true"
+        >
+          <div class="w-full h-full grid place-items-center">
+            <span class="font-display text-6xl md:text-7xl font-bold text-[color:var(--color-text)]/10 select-none">
+              {paddedIndex}
+            </span>
+          </div>
+        </div>
+      )
+    }
+
+    <span
+      class="absolute top-4 left-4 inline-flex items-center rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur px-3 py-1 text-xs font-mono text-[color:var(--color-accent)]"
+    >
+      {paddedIndex}
+    </span>
+
+    <span
+      class="absolute top-4 right-4 inline-flex items-center rounded-full bg-[color:var(--color-bg)]/80 backdrop-blur px-3 py-1 text-xs text-[color:var(--color-text-muted)]"
+    >
+      {year}
+    </span>
+  </div>
+
+  <div class="flex flex-col gap-4 p-6 md:p-7">
+    <div class="flex flex-wrap gap-2">
+      {
+        tags.map((tag) => (
+          <span class="inline-flex items-center rounded-full bg-[color:var(--color-accent-muted)] px-2.5 py-1 text-[0.7rem] text-[color:var(--color-accent)]">
+            {tag}
+          </span>
+        ))
+      }
+    </div>
+
+    <div class="flex items-start justify-between gap-4">
+      <h3 class="text-h3 font-display font-semibold text-[color:var(--color-text)]">
+        {
+          url ? (
+            <a
+              href={url}
+              target={isExternal ? '_blank' : undefined}
+              rel={isExternal ? 'noopener noreferrer' : undefined}
+              class="hover:text-[color:var(--color-accent)] transition-colors"
+            >
+              {title}
+            </a>
+          ) : (
+            title
+          )
+        }
+      </h3>
+
+      {
+        url && (
+          <a
+            href={url}
+            target={isExternal ? '_blank' : undefined}
+            rel={isExternal ? 'noopener noreferrer' : undefined}
+            aria-label={`Open ${title}`}
+            class="shrink-0 inline-flex items-center justify-center w-9 h-9 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              aria-hidden="true"
+            >
+              <line x1="7" y1="17" x2="17" y2="7" />
+              <polyline points="7 7 17 7 17 17" />
+            </svg>
+          </a>
+        )
+      }
+    </div>
+
+    <p class="text-[color:var(--color-text-muted)] leading-relaxed">{summary}</p>
+
+    {
+      role && (
+        <p class="text-xs text-[color:var(--color-text-subtle)]">
+          Role · <span class="text-[color:var(--color-text-muted)]">{role}</span>
+        </p>
+      )
+    }
+  </div>
+</article>

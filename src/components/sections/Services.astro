@@ -1,0 +1,34 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import ServiceCard from '../ui/ServiceCard.astro';
+import { services } from '../../data/services';
+---
+
+<section
+  id="services"
+  data-section="services"
+  class="relative section-y border-b border-[color:var(--color-border)]"
+>
+  <div class="container-page">
+    <SectionHeader
+      eyebrow="What You Get"
+      heading="Six Ways We Ship,<br />Every Engagement."
+      subtitle="Every project we take on draws from the same toolkit — the mix shifts, the standard doesn't."
+    />
+
+    <div
+      class="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
+      data-animate="stagger"
+    >
+      {
+        services.map((service) => (
+          <ServiceCard
+            icon={service.icon}
+            title={service.title}
+            description={service.description}
+          />
+        ))
+      }
+    </div>
+  </div>
+</section>
