@@ -23,6 +23,7 @@ import { about } from '../../data/about';
           <li
             class="relative"
             x-data="{ expanded: false }"
+            data-animate="fade-up"
           >
             <span
               aria-hidden="true"
@@ -73,7 +74,7 @@ import { about } from '../../data/about';
                 <button
                   type="button"
                   @click="expanded = !expanded"
-                  class="inline-flex items-center gap-1 text-sm font-medium text-[color:var(--color-accent)] hover:text-[color:var(--color-accent-light)] transition-colors"
+                  class="inline-flex items-center gap-1 py-2 -my-1 text-sm font-medium text-[color:var(--color-accent)] hover:text-[color:var(--color-accent-light)] transition-colors"
                   x-bind:aria-expanded="expanded ? 'true' : 'false'"
                 >
                   <span x-text="expanded ? 'Show less' : 'Read more'">Read more</span>
