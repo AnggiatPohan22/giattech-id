@@ -48,7 +48,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
     aria-label="Hero"
     class="hero-nav hidden lg:flex absolute z-20 inset-x-0 top-[46svh] items-center justify-between px-8 xl:px-14 pointer-events-none"
   >
-    <div class="flex items-center gap-5 pointer-events-auto">
+    <div class="hero-nav-left flex items-center gap-5 pointer-events-auto">
       {
         heroNavLeft.map((link, i) => (
           <>
@@ -65,7 +65,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
         ))
       }
     </div>
-    <div class="flex items-center gap-5 pointer-events-auto">
+    <div class="hero-nav-right flex items-center gap-5 pointer-events-auto">
       {
         heroNavRight.map((link, i) => (
           <>
@@ -182,12 +182,12 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Corner texts -->
   <p
-    class="hero-corner hidden md:block absolute z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
+    class="hero-corner hero-corner-left hidden md:block absolute z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
   >
     {hero.corner[0]}<br />{hero.corner[1]}
   </p>
   <p
-    class="hero-corner hidden md:block absolute z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
+    class="hero-corner hero-corner-right hidden md:block absolute z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
   >
     {hero.subheadline}
   </p>

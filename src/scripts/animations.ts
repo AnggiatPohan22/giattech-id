@@ -44,16 +44,20 @@ function initHeroEntrance(gsap: Gsap) {
   gsap.set('.hero-line', { yPercent: 110, opacity: 0 });
   gsap.set('.hero-cta > *', { opacity: 0, y: 16 });
   gsap.set('.hero-card', { opacity: 0, scale: 0.9 });
-  gsap.set('.hero-nav, .hero-corner, .hero-stats-mobile', { opacity: 0 });
+  gsap.set('.hero-nav-left', { opacity: 0, x: -30 });
+  gsap.set('.hero-nav-right', { opacity: 0, x: 30 });
+  gsap.set('.hero-corner-left', { opacity: 0, x: -20 });
+  gsap.set('.hero-corner-right', { opacity: 0, x: 20 });
+  gsap.set('.hero-stats-mobile', { opacity: 0, y: 14 });
 
   const tl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power2.out' } });
   tl.to('.hero-giant', { opacity: 1, scale: 1, duration: 1.1 })
     .to('.hero-portrait', { opacity: 1, y: 0, duration: 0.9 }, '-=0.7')
     .to('.hero-line', { yPercent: 0, opacity: 1, stagger: 0.12, duration: 0.9 }, '-=0.5')
+    .to('.hero-nav-left, .hero-nav-right', { opacity: 1, x: 0, duration: 0.6 }, '-=0.6')
     .to('.hero-cta > *', { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 }, '-=0.4')
     .to('.hero-card', { opacity: 1, scale: 1, stagger: 0.1, duration: 0.5 }, '-=0.3')
-    .to('.hero-nav', { opacity: 1, duration: 0.5 }, '-=0.3')
-    .to('.hero-corner, .hero-stats-mobile', { opacity: 1, y: 0, stagger: 0.08, duration: 0.5 }, '-=0.3');
+    .to('.hero-corner-left, .hero-corner-right, .hero-stats-mobile', { opacity: 1, x: 0, y: 0, stagger: 0.08, duration: 0.5 }, '-=0.3');
 }
 
 /* ------------------------------------------------------------------ */
@@ -92,9 +96,18 @@ function initHeroPin(gsap: Gsap) {
       .fromTo('.hero-card',
         { x: 0, opacity: 1 },
         { x: () => -window.innerWidth * 0.45, opacity: 0, stagger: 0.04, ...opts }, 0)
-      .fromTo('.hero-nav, .hero-corner',
-        { opacity: 1 },
-        { opacity: 0, ...opts }, 0)
+      .fromTo('.hero-nav-left',
+        { x: 0, opacity: 1 },
+        { x: -90, opacity: 0, ...opts }, 0)
+      .fromTo('.hero-nav-right',
+        { x: 0, opacity: 1 },
+        { x: 90, opacity: 0, ...opts }, 0)
+      .fromTo('.hero-corner-left',
+        { x: 0, opacity: 1 },
+        { x: -50, opacity: 0, ...opts }, 0)
+      .fromTo('.hero-corner-right',
+        { x: 0, opacity: 1 },
+        { x: 60, opacity: 0, ...opts }, 0)
       .fromTo('.hero-heading, .hero-cta',
         { xPercent: 0, opacity: 1 },
         { xPercent: -40, opacity: 0, ...opts }, 0.08)
