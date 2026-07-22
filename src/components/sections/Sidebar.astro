@@ -30,7 +30,6 @@ const shortTagline =
 
 <aside
   x-data={`{
-    visible: false,
     activeSection: 'hero',
     theme: 'light',
     sections: ${sectionsJson},
@@ -42,11 +41,19 @@ const shortTagline =
     }
   }`}
   x-init={`
-    window.addEventListener('giat:sidebar', (e) => visible = e.detail.show);
+    // Visibility is driven by GSAP's hero-pin scrub (see animations.ts).
+    // Reduced-motion users skip GSAP entirely — reveal the sidebar with
+    // a plain scroll threshold instead so it still appears.
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const onScroll = () => visible = window.scrollY > window.innerHeight * 0.6;
-      onScroll();
-      window.addEventListener('scroll', onScroll, { passive: true });
+      const reveal = () => {
+        if (window.scrollY > window.innerHeight * 0.6) {
+          $el.style.opacity = '1';
+          $el.style.visibility = 'visible';
+          $el.style.transform = 'translateX(0)';
+        }
+      };
+      reveal();
+      window.addEventListener('scroll', reveal, { passive: true });
     }
     // Determine active section by scanning DOM order — robust against
     // pinned sections (which stay at fixed position and confuse IO).
@@ -71,11 +78,8 @@ const shortTagline =
   `}
   x-bind:data-theme="theme"
   data-theme="light"
-  style="opacity:0; transform:translateX(-16px); pointer-events:none"
-  x-bind:style="visible
-    ? 'opacity:1; transform:translateX(0); pointer-events:auto'
-    : 'opacity:0; transform:translateX(-16px); pointer-events:none'"
-  class="hidden lg:flex fixed left-3 top-3 bottom-3 z-40 w-[240px] flex-col gap-2 transition-[opacity,transform] duration-300 ease-out"
+  style="opacity:0; visibility:hidden; transform:translateX(-16px)"
+  class="site-sidebar hidden lg:flex fixed left-3 top-3 bottom-3 z-40 w-[240px] flex-col gap-2"
   aria-label="Site sidebar"
 >
   <!-- Brand card -->
