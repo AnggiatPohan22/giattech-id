@@ -1,0 +1,185 @@
+---
+import { sidebarSections, socialLinks } from '../../data/navigation';
+import { hero } from '../../data/hero';
+
+type SectionId = (typeof sidebarSections)[number];
+
+const menu: { id: SectionId; label: string; icon: string }[] = [
+  { id: 'hero', label: 'Home', icon: '<path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/>' },
+  { id: 'about', label: 'About Us', icon: '<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>' },
+  { id: 'services', label: 'What You Get', icon: '<path d="M12 3l9 5-9 5-9-5 9-5z"/><path d="M3 13l9 5 9-5"/>' },
+  { id: 'projects', label: 'Projects', icon: '<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/>' },
+  { id: 'pricing', label: 'Services', icon: '<path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/>' },
+  { id: 'testimonials', label: 'Clients', icon: '<circle cx="9" cy="8" r="3.5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5"/><path d="M16 15c2.9.2 5.5 2 5.5 5"/>' },
+  { id: 'faq', label: 'FAQ', icon: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.4 2.3c-.8.3-.9 1-.9 1.7"/><line x1="12" y1="17" x2="12" y2="17.01"/>' },
+];
+
+const clients = ['Bintan Prestige', 'Prima Logistik', 'Kelola'];
+
+const socialIcons: Record<string, string> = {
+  twitter:
+    '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117L17.083 19.77z"/>',
+  linkedin:
+    '<path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.15 1.45-2.15 2.95v5.66H9.35V9h3.4v1.56h.05a3.73 3.73 0 0 1 3.36-1.85c3.6 0 4.27 2.37 4.27 5.45v6.29zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/>',
+};
+
+const sectionsJson = JSON.stringify(sidebarSections);
+---
+
+<aside
+  x-data={`{
+    visible: false,
+    activeSection: 'hero',
+    sections: ${sectionsJson},
+    copied: false,
+    copyEmail() {
+      navigator.clipboard?.writeText('hello@giattech.com');
+      this.copied = true;
+      setTimeout(() => this.copied = false, 1500);
+    }
+  }`}
+  x-init={`
+    const onScroll = () => visible = window.scrollY > window.innerHeight * 0.6;
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) activeSection = e.target.id; });
+    }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+    sections.forEach(id => {
+      const el = document.getElementById(id);
+      if (el) observer.observe(el);
+    });
+  `}
+  style="opacity:0; transform:translateX(-16px); pointer-events:none"
+  x-bind:style="visible
+    ? 'opacity:1; transform:translateX(0); pointer-events:auto'
+    : 'opacity:0; transform:translateX(-16px); pointer-events:none'"
+  class="hidden lg:flex fixed left-4 top-4 bottom-4 z-40 w-[264px] flex-col gap-3 overflow-y-auto pr-1 transition-[opacity,transform] duration-300 ease-out"
+  aria-label="Site sidebar"
+>
+  <!-- Brand card -->
+  <div class="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-5">
+    <div class="flex items-center justify-between">
+      <a
+        href="#hero"
+        class="inline-flex items-center rounded-lg bg-[color:var(--color-accent)] px-3 py-1.5 font-display text-sm font-bold text-[#0C0C0C]"
+      >
+        GIATTECH®
+      </a>
+      <div class="flex items-center gap-2">
+        {
+          socialLinks
+            .filter((s) => s.icon in socialIcons)
+            .map((s) => (
+              <a
+                href={s.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={s.label}
+                class="inline-flex items-center justify-center w-8 h-8 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-text-muted)] hover:text-[color:var(--color-accent)] hover:border-[color:var(--color-accent)] transition-colors"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" set:html={socialIcons[s.icon]} />
+              </a>
+            ))
+        }
+      </div>
+    </div>
+    <p class="mt-4 text-xs leading-relaxed text-[color:var(--color-text-muted)]">
+      {hero.subheadline}
+    </p>
+  </div>
+
+  <!-- Stats card -->
+  <div class="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-4">
+    <div class="grid grid-cols-2 divide-x divide-[color:var(--color-border)]">
+      {
+        hero.stats.map((stat) => (
+          <div class="flex flex-col items-center gap-0.5 px-2 text-center">
+            <span class="font-display text-lg font-bold text-[color:var(--color-accent)]">
+              {stat.value}{stat.suffix}
+            </span>
+            <span class="text-[0.65rem] leading-tight text-[color:var(--color-text-muted)]">{stat.label}</span>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Nav menu card -->
+  <nav
+    aria-label="Section navigation"
+    class="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-3 flex flex-col gap-1"
+  >
+    {
+      menu.map((item) => (
+        <a
+          href={`#${item.id}`}
+          class="flex items-center gap-3 rounded-lg px-3 py-2 text-xs font-semibold uppercase tracking-wide text-[color:var(--color-text-muted)] hover:text-[color:var(--color-text)] hover:bg-[color:var(--color-surface-hover)] transition-colors"
+          x-bind:class={`activeSection === '${item.id}' ? 'bg-[color:var(--color-accent)] !text-[#0C0C0C]' : ''`}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            set:html={item.icon}
+          />
+          {item.label}
+        </a>
+      ))
+    }
+  </nav>
+
+  <!-- Clients card -->
+  <div class="rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3">
+    <div class="flex items-center justify-between gap-2">
+      {
+        clients.map((client) => (
+          <span class="font-display text-[0.65rem] font-semibold tracking-wide text-[color:var(--color-text-subtle)] whitespace-nowrap">
+            {client}
+          </span>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Email card -->
+  <button
+    type="button"
+    @click="copyEmail()"
+    class="group flex items-center justify-between rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] px-4 py-3 text-sm text-[color:var(--color-text-muted)] hover:border-[color:var(--color-border-light)] transition-colors"
+    aria-label="Copy email address"
+  >
+    <span x-text="copied ? 'Copied!' : 'hello@giattech.com'">hello@giattech.com</span>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="text-[color:var(--color-text-subtle)] group-hover:text-[color:var(--color-accent)] transition-colors"
+      aria-hidden="true"
+    >
+      <rect x="9" y="9" width="11" height="11" rx="2" />
+      <path d="M5 15V5a2 2 0 0 1 2-2h10" />
+    </svg>
+  </button>
+
+  <!-- CTA -->
+  <a
+    href="#cta"
+    class="inline-flex items-center justify-center rounded-2xl bg-[color:var(--color-accent)] px-4 py-3.5 font-semibold text-sm text-[#0C0C0C] hover:bg-[color:var(--color-accent-light)] transition-colors"
+  >
+    Book a Call
+  </a>
+</aside>

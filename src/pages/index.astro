@@ -1,7 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import Navbar from '../components/sections/Navbar.astro';
-import SidebarNav from '../components/sections/SidebarNav.astro';
+import Sidebar from '../components/sections/Sidebar.astro';
 import Hero from '../components/sections/Hero.astro';
 import About from '../components/sections/About.astro';
 import Services from '../components/sections/Services.astro';
@@ -15,18 +15,24 @@ import Footer from '../components/sections/Footer.astro';
 
 <Layout>
   <Navbar />
-  <SidebarNav />
+  <Sidebar />
 
   <main>
     <Hero />
-    <About />
-    <Services />
-    <Projects />
-    <Pricing />
-    <Testimonials />
-    <FAQ />
-    <CTA />
+
+    <!-- Post-hero content clears the fixed sidebar on desktop -->
+    <div class="lg:pl-[296px]">
+      <About />
+      <Services />
+      <Projects />
+      <Pricing />
+      <Testimonials />
+      <FAQ />
+      <CTA />
+    </div>
   </main>
 
-  <Footer />
+  <div class="lg:pl-[296px]">
+    <Footer />
+  </div>
 </Layout>
