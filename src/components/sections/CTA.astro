@@ -1,0 +1,59 @@
+---
+import Button from '../ui/Button.astro';
+---
+
+<section
+  id="cta"
+  data-section="cta"
+  class="relative section-y"
+>
+  <div class="container-page">
+    <div
+      class="relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-10 md:p-16 lg:p-20"
+      data-animate="fade-up"
+    >
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 opacity-80"
+        style="background-image:
+            radial-gradient(circle at 15% 20%, rgba(163,177,138,0.20) 0%, transparent 45%),
+            radial-gradient(circle at 85% 75%, rgba(163,177,138,0.10) 0%, transparent 45%);"
+      >
+      </div>
+
+      <div class="relative flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
+        <span
+          aria-hidden="true"
+          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display text-2xl font-bold"
+        >
+          Gt
+        </span>
+
+        <div class="flex flex-col gap-5">
+          <span class="text-eyebrow">Let's Build</span>
+          <h2 class="text-h2 font-display font-bold leading-tight">
+            Have Something in Mind?
+          </h2>
+          <p class="text-body text-[color:var(--color-text-muted)] max-w-lg mx-auto">
+            Tell us about the platform, the migration, the marketing site — or the
+            problem you keep patching around. We'll come back with an honest read
+            on how to solve it.
+          </p>
+        </div>
+
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <Button href="mailto:hello@giattech.com" variant="primary" size="lg" pill>
+            Let's Talk
+          </Button>
+          <Button href="#projects" variant="ghost" size="lg" pill>
+            See Our Work
+          </Button>
+        </div>
+
+        <p class="text-xs text-[color:var(--color-text-subtle)]">
+          Reply within 1 business day · Free discovery call · No pressure
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

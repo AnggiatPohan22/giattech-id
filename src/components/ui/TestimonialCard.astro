@@ -1,0 +1,71 @@
+---
+import type { Testimonial } from '../../data/testimonials';
+
+interface Props {
+  data: Testimonial;
+}
+
+const { data } = Astro.props;
+
+const initials = data.name
+  .split(' ')
+  .map((part) => part.charAt(0))
+  .join('')
+  .slice(0, 2)
+  .toUpperCase();
+---
+
+<figure
+  class="flex flex-col gap-8 h-full rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-8 md:p-10 lg:p-12"
+>
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="32"
+    height="32"
+    viewBox="0 0 24 24"
+    fill="currentColor"
+    class="text-[color:var(--color-accent)]/50"
+    aria-hidden="true"
+  >
+    <path d="M7.17 6C4.87 6 3 7.87 3 10.17V16h6v-6H5.83c0-1.29 1.05-2.33 2.34-2.33V6zm10 0c-2.3 0-4.17 1.87-4.17 4.17V16h6v-6h-3.17c0-1.29 1.04-2.33 2.34-2.33V6z" />
+  </svg>
+
+  <blockquote class="flex flex-col gap-5">
+    <p class="font-display text-2xl md:text-3xl font-semibold leading-snug text-[color:var(--color-text)]">
+      {data.heading}
+    </p>
+    <p class="text-[color:var(--color-text-muted)] leading-relaxed">
+      {data.quote}
+    </p>
+  </blockquote>
+
+  <figcaption class="flex items-center gap-4 mt-auto pt-2">
+    <span
+      class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display font-semibold"
+      aria-hidden="true"
+    >
+      {initials}
+    </span>
+    <div class="flex flex-col">
+      <span class="font-medium text-[color:var(--color-text)]">{data.name}</span>
+      <span class="text-sm text-[color:var(--color-text-muted)]">
+        {data.role}
+        {' · '}
+        {
+          data.companyUrl ? (
+            <a
+              href={data.companyUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              class="text-[color:var(--color-accent)] hover:text-[color:var(--color-accent-light)] transition-colors"
+            >
+              {data.company}
+            </a>
+          ) : (
+            <span>{data.company}</span>
+          )
+        }
+      </span>
+    </div>
+  </figcaption>
+</figure>
