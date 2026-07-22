@@ -1,0 +1,73 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title = 'Giattech — Web Application Studio',
+  description = 'Digital agency building high-performance web applications with Laravel, modern frontend, and AI-assisted development.',
+  canonical = 'https://giattech.com/',
+  ogImage = '/images/og-image.jpg',
+} = Astro.props;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: 'Giattech',
+  description,
+  url: canonical,
+  areaServed: 'Indonesia',
+  serviceType: [
+    'Web Application Development',
+    'CMS & Admin Dashboard',
+    'API Development & Integration',
+    'Performance & SEO Optimization',
+  ],
+};
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0C0C0C" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content="Giattech" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured data -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+  </body>
+</html>
