@@ -49,9 +49,9 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T09** — Create `Footer.astro`
 
 ### Phase 3 — Hero & About
-- [ ] **T10** — Create `Hero.astro` (headline, sub, stats, CTAs, tags)
-- [ ] **T11** — Create `About.astro` with timeline format (year cards, expandable details)
-- [ ] **T12** — Add GSAP entrance animation to Hero
+- [x] **T10** — Create `Hero.astro` (headline, sub, stats, CTAs, tags)
+- [x] **T11** — Create `About.astro` with timeline format (year cards, expandable details)
+- [x] **T12** — Add GSAP entrance animation to Hero
 
 ### Phase 4 — Service & Project Sections
 - [ ] **T13** — Create `ServiceCard.astro` component

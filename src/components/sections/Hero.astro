@@ -1,0 +1,109 @@
+---
+import Button from '../ui/Button.astro';
+import { hero } from '../../data/hero';
+---
+
+<section
+  id="hero"
+  data-section="hero"
+  class="relative min-h-[100svh] flex items-center overflow-hidden pt-[var(--nav-height)]"
+>
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 pointer-events-none opacity-60"
+    style="background-image:
+        radial-gradient(circle at 20% 20%, rgba(163,177,138,0.08) 0%, transparent 45%),
+        radial-gradient(circle at 80% 30%, rgba(163,177,138,0.05) 0%, transparent 40%),
+        linear-gradient(180deg, transparent 0%, var(--color-bg) 90%);"
+  >
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="absolute inset-0 pointer-events-none opacity-[0.035]"
+    style="background-image:
+        linear-gradient(var(--color-border-light) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-border-light) 1px, transparent 1px);
+        background-size: 48px 48px;"
+  >
+  </div>
+
+  <div class="relative container-page grid lg:grid-cols-12 gap-10 items-center py-16 lg:py-24">
+    <div class="lg:col-span-8 flex flex-col gap-8">
+      <span class="hero-eyebrow text-eyebrow">A Digital Studio from Indonesia</span>
+
+      <h1 class="hero-heading text-hero font-display font-bold leading-[1.05]">
+        {hero.headline.map((line, i) => (
+          <span class="block overflow-hidden">
+            <span class="hero-line inline-block">
+              {line}
+              {i === hero.headline.length - 1 && (
+                <span class="text-[color:var(--color-accent)]">.</span>
+              )}
+            </span>
+          </span>
+        ))}
+      </h1>
+
+      <p class="hero-sub text-body text-[color:var(--color-text-muted)] max-w-2xl">
+        {hero.subheadline}
+      </p>
+
+      <div class="hero-cta flex flex-wrap items-center gap-3">
+        {
+          hero.ctas.map((cta) => (
+            <Button href={cta.href} variant={cta.variant} size="md" pill>
+              {cta.label}
+            </Button>
+          ))
+        }
+      </div>
+
+      <ul class="hero-tags flex flex-wrap gap-2 pt-2">
+        {
+          hero.tags.map((tag) => (
+            <li
+              class="inline-flex items-center rounded-full border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] px-3 py-1 text-xs font-medium text-[color:var(--color-text-muted)]"
+            >
+              {tag}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div class="lg:col-span-4">
+      <dl class="hero-stats grid grid-cols-2 lg:grid-cols-1 gap-6 lg:gap-8">
+        {
+          hero.stats.map((stat) => (
+            <div class="flex flex-col gap-1 rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface)] p-6">
+              <dt class="text-xs uppercase tracking-[0.15em] text-[color:var(--color-text-subtle)]">
+                {stat.label}
+              </dt>
+              <dd class="font-display text-4xl lg:text-5xl font-bold text-[color:var(--color-text)]">
+                <span
+                  class="hero-counter"
+                  data-counter
+                  data-target={stat.value}
+                >
+                  {stat.value}
+                </span>
+                {stat.suffix && (
+                  <span class="text-[color:var(--color-accent)]">{stat.suffix}</span>
+                )}
+              </dd>
+            </div>
+          ))
+        }
+      </dl>
+    </div>
+  </div>
+
+  <div
+    aria-hidden="true"
+    class="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-[color:var(--color-text-subtle)]"
+  >
+    <span class="text-[0.65rem] uppercase tracking-[0.2em]">Scroll</span>
+    <span class="block w-px h-8 bg-[color:var(--color-border-light)]"></span>
+  </div>
+</section>
