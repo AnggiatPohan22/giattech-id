@@ -54,11 +54,11 @@ Each task = one focused session. Don't combine tasks.
 - [x] **T12** — Add GSAP entrance animation to Hero
 
 ### Phase 4 — Service & Project Sections
-- [ ] **T13** — Create `ServiceCard.astro` component
-- [ ] **T14** — Create `Services.astro` section
-- [ ] **T15** — Set up Astro content collection for projects (`src/content/projects/`)
-- [ ] **T16** — Create `ProjectCard.astro` component
-- [ ] **T17** — Create `Projects.astro` section
+- [x] **T13** — Create `ServiceCard.astro` component
+- [x] **T14** — Create `Services.astro` section
+- [x] **T15** — Set up Astro content collection for projects (`src/content/projects/`)
+- [x] **T16** — Create `ProjectCard.astro` component
+- [x] **T17** — Create `Projects.astro` section
 
 ### Phase 5 — Pricing, Testimonials, FAQ, CTA
 - [ ] **T18** — Create `PricingCard.astro` component
