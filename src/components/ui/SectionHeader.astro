@@ -1,0 +1,48 @@
+---
+type Align = 'left' | 'center';
+
+interface Props {
+  eyebrow?: string;
+  heading: string;
+  subtitle?: string;
+  align?: Align;
+  headingId?: string;
+  class?: string;
+}
+
+const {
+  eyebrow,
+  heading,
+  subtitle,
+  align = 'left',
+  headingId,
+  class: className = '',
+} = Astro.props;
+
+const wrapperAlign =
+  align === 'center' ? 'text-center mx-auto items-center' : 'text-left items-start';
+
+const wrapperClasses = [
+  'flex flex-col gap-4 max-w-3xl',
+  wrapperAlign,
+  className,
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+<header class={wrapperClasses}>
+  {eyebrow && <span class="text-eyebrow">{eyebrow}</span>}
+  <h2
+    id={headingId}
+    class="text-h2 font-display font-bold text-[color:var(--color-text)]"
+    set:html={heading}
+  />
+  {
+    subtitle && (
+      <p class="text-body text-[color:var(--color-text-muted)] max-w-2xl">
+        {subtitle}
+      </p>
+    )
+  }
+</header>
