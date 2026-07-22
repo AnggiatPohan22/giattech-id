@@ -1,22 +1,27 @@
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
+async function boot() {
+  const prefersReducedMotion = window.matchMedia(
+    '(prefers-reduced-motion: reduce)'
+  ).matches;
 
-gsap.registerPlugin(ScrollTrigger);
+  // Counters use plain rAF + IntersectionObserver so they always run,
+  // even with reduced-motion (they just snap instantly there).
+  initCounters(prefersReducedMotion);
 
-const prefersReducedMotion = window.matchMedia(
-  '(prefers-reduced-motion: reduce)'
-).matches;
+  if (prefersReducedMotion) return;
 
-/**
- * Hero: single hand-authored entrance timeline.
- * All later section animations live inside initScrollAnimations below.
- */
-function initHeroTimeline() {
+  const { default: gsap } = await import('gsap');
+  const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+  gsap.registerPlugin(ScrollTrigger);
+
+  initHeroTimeline(gsap);
+  initScrollAnimations(gsap);
+}
+
+function initHeroTimeline(gsap: typeof import('gsap').default) {
   const heading = document.querySelector('.hero-heading');
   if (!heading) return;
 
   const tl = gsap.timeline({ delay: 0.15, defaults: { ease: 'power2.out' } });
-
   tl.from('.hero-eyebrow', { y: 12, opacity: 0, duration: 0.5 })
     .from(
       '.hero-line',
@@ -37,40 +42,43 @@ function initHeroTimeline() {
     );
 }
 
-/**
- * Counter tween: any element with [data-counter][data-target="N"] tweens
- * from 0 to N when scrolled into view.
- */
-function initCounters() {
+function initCounters(reduced: boolean) {
   const nodes = document.querySelectorAll<HTMLElement>('[data-counter]');
-  nodes.forEach((el) => {
-    const target = Number(el.dataset.target ?? el.textContent ?? '0');
-    if (!Number.isFinite(target) || target <= 0) return;
+  const duration = 1800;
 
-    const obj = { value: 0 };
+  const tween = (el: HTMLElement, target: number) => {
+    if (reduced) {
+      el.textContent = target.toString();
+      return;
+    }
+    const startTime = performance.now();
     el.textContent = '0';
+    const step = (now: number) => {
+      const p = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - p, 2);
+      el.textContent = Math.round(target * eased).toString();
+      if (p < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  };
 
-    gsap.to(obj, {
-      value: target,
-      duration: 1.8,
-      ease: 'power2.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 90%',
-        once: true,
-      },
-      onUpdate: () => {
-        el.textContent = Math.round(obj.value).toString();
-      },
-    });
-  });
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+        const target = Number(el.dataset.target ?? el.textContent ?? '0');
+        if (Number.isFinite(target) && target > 0) tween(el, target);
+        observer.unobserve(el);
+      }
+    },
+    { threshold: 0.4 }
+  );
+
+  nodes.forEach((el) => observer.observe(el));
 }
 
-/**
- * Scroll-triggered reveal system: elements with [data-animate="..."] fade in
- * as they enter the viewport. Section components opt in via the attribute.
- */
-function initScrollAnimations() {
+function initScrollAnimations(gsap: typeof import('gsap').default) {
   const start = 'top 85%';
   const defaults = { duration: 0.8, ease: 'power2.out' };
 
@@ -113,15 +121,10 @@ function initScrollAnimations() {
   });
 }
 
-function boot() {
-  if (prefersReducedMotion) return;
-  initHeroTimeline();
-  initCounters();
-  initScrollAnimations();
+if (document.readyState === 'complete') {
+  void boot();
+} else {
+  window.addEventListener('load', () => void boot(), { once: true });
 }
 
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', boot);
-} else {
-  boot();
-}
+export {};
