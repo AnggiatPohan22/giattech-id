@@ -70,10 +70,12 @@ function initHeroPin(gsap: Gsap) {
 
   const mm = gsap.matchMedia();
   mm.add('(min-width: 1024px)', () => {
-    // fromTo + immediateRender:false → clean reverse on scroll-up.
-    // Direction of every hero element is chosen to LAND at its sidebar
-    // counterpart position, so cross-fading with the sidebar feels like
-    // the same element continuing its journey.
+    // No pin: the page scrolls naturally. Hero morph elements are
+    // position: fixed (via lg:fixed in the markup) so they stay in view
+    // while the user scrolls past hero. GSAP scrubs their transforms
+    // over the scroll range from the top of hero to just past its
+    // bottom — that's the moment About's title arrives at reading
+    // position, and the sidebar is meant to be fully assembled.
     const opts = { ease: 'none', immediateRender: false };
     const vw = () => window.innerWidth;
 
@@ -81,11 +83,8 @@ function initHeroPin(gsap: Gsap) {
       scrollTrigger: {
         trigger: hero,
         start: 'top top',
-        end: '+=110%',
+        end: 'bottom top+=120', // ends ~120px into About (where the section header sits)
         scrub: 0.6,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
       },
     });
 

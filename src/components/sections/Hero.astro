@@ -12,7 +12,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   <!-- Giant background brand word -->
   <div
     aria-hidden="true"
-    class="hero-giant absolute inset-x-0 top-[6svh] flex justify-center pointer-events-none select-none z-0"
+    class="hero-giant absolute lg:fixed inset-x-0 top-[6svh] flex justify-center pointer-events-none select-none z-0"
   >
     <span
       class="font-display font-extrabold leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-[clamp(7rem,32vw,38rem)]"
@@ -47,7 +47,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   <!-- In-hero nav: split left / right of the portrait (desktop) -->
   <nav
     aria-label="Hero"
-    class="hero-nav hidden lg:flex absolute z-20 inset-x-0 top-[46svh] items-center justify-between px-8 xl:px-14 pointer-events-none"
+    class="hero-nav hidden lg:flex lg:fixed z-20 inset-x-0 top-[46svh] items-center justify-between px-8 xl:px-14 pointer-events-none"
   >
     <div class="hero-nav-left flex items-center gap-5 pointer-events-auto">
       {
@@ -87,7 +87,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating stat card: logo + 80+ Projects (left, upper) -->
   <div
-    class="hero-card hidden md:flex absolute z-20 left-[15%] xl:left-[19%] top-[47svh] items-center gap-4 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-5 py-4"
+    class="hero-card hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[47svh] items-center gap-4 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-5 py-4"
   >
     {hero.stats[0].logo && (
       <img
@@ -108,7 +108,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating stat card: 3+ Years of experience (left, lower) -->
   <div
-    class="hero-card hidden md:flex absolute z-20 left-[15%] xl:left-[19%] top-[67svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
+    class="hero-card hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[67svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
   >
     <span class="font-display text-3xl font-bold text-[color:var(--color-accent)]">
       <span data-counter data-target={hero.stats[1].value}>{hero.stats[1].value}</span>{hero.stats[1].suffix}
@@ -120,7 +120,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Floating traits card (right) -->
   <ul
-    class="hero-card hidden md:flex absolute z-20 right-[14%] xl:right-[18%] top-[47svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
+    class="hero-card hidden md:flex absolute lg:fixed z-20 right-[14%] xl:right-[18%] top-[47svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
   >
     {
       hero.traits.map((trait) => (
@@ -183,12 +183,12 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
 
   <!-- Corner texts -->
   <p
-    class="hero-corner hero-corner-left hidden md:block absolute z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
+    class="hero-corner hero-corner-left hidden md:block absolute lg:fixed z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
   >
     {hero.corner[0]}<br />{hero.corner[1]}
   </p>
   <p
-    class="hero-corner hero-corner-right hidden md:block absolute z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
+    class="hero-corner hero-corner-right hidden md:block absolute lg:fixed z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
   >
     {hero.subheadline}
   </p>
