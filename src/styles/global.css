@@ -188,19 +188,16 @@ aside[data-theme='light'] {
   --sidebar-surface-strong: rgba(255, 255, 255, 0.85);
   --sidebar-border: rgba(20, 18, 15, 0.12);
   --sidebar-border-strong: rgba(20, 18, 15, 0.22);
-  --sidebar-text: #14120F;
-  --sidebar-text-muted: #5A564E;
+  --sidebar-text: #1A1A1A;
+  --sidebar-text-muted: #525252;
   --sidebar-text-subtle: #8A877E;
+  --sidebar-icon: #525252;
+  /* darker sage so stats/accents keep contrast on the light card */
+  --sidebar-accent: #6B7F58;
+  --sidebar-hover-bg: rgba(0, 0, 0, 0.05);
   /* Dark chips for socials, sitting on the light brand card */
   --sidebar-chip-bg: rgba(22, 20, 16, 0.90);
   --sidebar-chip-icon: #F5F5F4;
-  /* Nav is a dark grouped panel on light backgrounds (reference look) */
-  --nav-panel: rgba(22, 20, 16, 0.88);
-  --nav-panel-border: rgba(255, 255, 255, 0.08);
-  --nav-pill: rgba(255, 255, 255, 0.06);
-  --nav-pill-hover: rgba(255, 255, 255, 0.13);
-  --nav-pill-text: rgba(245, 245, 244, 0.92);
-  --nav-icon-border: rgba(255, 255, 255, 0.20);
 }
 aside[data-theme='dark'] {
   --sidebar-surface: rgba(20, 20, 20, 0.55);
@@ -210,47 +207,68 @@ aside[data-theme='dark'] {
   --sidebar-text: #F5F5F4;
   --sidebar-text-muted: #A8A29E;
   --sidebar-text-subtle: #78716C;
+  --sidebar-icon: #A8A29E;
+  --sidebar-accent: #A3B18A;
+  --sidebar-hover-bg: rgba(255, 255, 255, 0.06);
   /* Light chips for socials, sitting on the dark brand card */
   --sidebar-chip-bg: rgba(255, 255, 255, 0.12);
   --sidebar-chip-icon: #F5F5F4;
-  /* Over dark sections the nav panel takes a sage tint (the "other
-     colour"): a lighter, accent-washed panel that stays visible */
-  --nav-panel: rgba(163, 177, 138, 0.14);
-  --nav-panel-border: rgba(163, 177, 138, 0.24);
-  --nav-pill: rgba(255, 255, 255, 0.05);
-  --nav-pill-hover: rgba(255, 255, 255, 0.12);
-  --nav-pill-text: rgba(245, 245, 244, 0.92);
-  --nav-icon-border: rgba(255, 255, 255, 0.16);
 }
 
-/* Grouped nav panel (reference image 1) */
-.sidebar-nav-panel {
-  background: var(--nav-panel);
-  border: 1px solid var(--nav-panel-border);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+/* Smoothly fade colours (not transform/opacity — those are GSAP's) when
+   the sidebar flips light<->dark as sections scroll behind it. */
+.site-sidebar * {
+  transition-property: color, background-color, border-color, fill, stroke;
+  transition-duration: 0.45s;
+  transition-timing-function: ease;
 }
+
+/* Clean, text-based nav — no per-item card. Inactive = plain muted text;
+   active = compact accent pill hugging the label. */
 .sidebar-nav-item {
-  background: var(--nav-pill);
-  color: var(--nav-pill-text);
-}
-.sidebar-nav-item:hover {
-  background: var(--nav-pill-hover);
+  color: var(--sidebar-text-muted);
+  background: transparent;
 }
 .sidebar-nav-item .nav-icon {
-  border: 1px solid var(--nav-icon-border);
+  color: var(--sidebar-icon);
+  opacity: 0.8;
+}
+.sidebar-nav-item:hover {
+  color: var(--sidebar-text);
+  background: var(--sidebar-hover-bg);
 }
 .sidebar-nav-item.is-active {
   background: var(--color-accent);
   color: #0C0C0C;
 }
 .sidebar-nav-item.is-active .nav-icon {
-  border-color: rgba(0, 0, 0, 0.22);
-  background: rgba(0, 0, 0, 0.08);
+  color: #0C0C0C;
+  opacity: 1;
 }
 .sidebar-chip {
   background: var(--sidebar-chip-bg);
   color: var(--sidebar-chip-icon);
+}
+
+/* ============================================================
+   SIDEBAR LAYOUT — memberi jarak dari sisi viewport
+   ============================================================ */
+.sidebar-wrapper {
+  width: 100%;
+  padding-inline: 0.95rem; /* 12px kiri dan kanan */
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  .sidebar-wrapper {
+    padding-inline: 1rem; /* 16px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar-wrapper {
+    padding-inline: 0;
+  }
 }
 
 /* ============================================================

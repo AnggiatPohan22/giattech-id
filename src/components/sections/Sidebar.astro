@@ -114,39 +114,39 @@ const shortTagline =
     </p>
   </div>
 
-  <!-- Stats card — bigger numbers to match reference -->
-  <div class="sidebar-card rounded-2xl px-3 py-3">
+  <!-- Stats card — big accent numbers -->
+  <div class="sidebar-card rounded-2xl px-4 py-3.5">
     <div class="grid grid-cols-2 divide-x divide-[color:var(--sidebar-border)]">
       {
         hero.stats.map((stat) => (
           <div class="flex flex-col items-center gap-1 px-2 text-center">
-            <span class="font-display text-xl font-extrabold text-[color:var(--color-accent)] leading-none">
+            <span class="font-display text-2xl font-extrabold text-[color:var(--sidebar-accent)] leading-none">
               {stat.value}{stat.suffix}
             </span>
-            <span class="text-[0.62rem] font-semibold leading-tight text-[color:var(--sidebar-text)]">{stat.label}</span>
+            <span class="text-[0.62rem] font-semibold uppercase tracking-wide leading-tight text-[color:var(--sidebar-text-muted)]">{stat.label}</span>
           </div>
         ))
       }
     </div>
   </div>
 
-  <!-- Nav — items grouped inside one panel (reference image 1) -->
-  <nav aria-label="Section navigation" class="sidebar-nav-panel rounded-2xl p-2 flex flex-col gap-1.5">
+  <!-- Nav — clean text, no per-item card; active = compact accent pill -->
+  <nav aria-label="Section navigation" class="sidebar-nav flex flex-col items-start gap-0.5">
     {
       menu.map((item) => (
         <a
           href={`#${item.id}`}
-          class="sidebar-nav-item group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[0.7rem] font-semibold uppercase tracking-wide transition-colors"
+          class="sidebar-nav-item w-fit flex items-center gap-3 rounded-lg pl-2 pr-4 py-2.5 text-[0.72rem] font-semibold uppercase tracking-wide"
           x-bind:class={`activeSection === '${item.id}' ? 'is-active' : ''`}
         >
           <span
             aria-hidden="true"
-            class="nav-icon inline-flex items-center justify-center w-6 h-6 rounded-md transition-colors"
+            class="nav-icon inline-flex items-center justify-center w-4 h-4 shrink-0"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
-              width="11"
-              height="11"
+              width="15"
+              height="15"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
