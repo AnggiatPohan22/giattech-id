@@ -174,80 +174,222 @@
 }
 
 /* ============================================================
-   SIDEBAR — transparent, adapts to the section behind it
+   SIDEBAR — Floating card blocks + dual-tone adaptive system
    ============================================================ */
-.sidebar-card {
-  border: 1px solid var(--sidebar-border);
-  background: var(--sidebar-surface);
-  color: var(--sidebar-text);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+/* ---------- TOKENS: LIGHT MODE ---------- */
+.sidebar[data-mode='light'] {
+  --sb-card-bg:        rgba(255, 255, 255, 0.72);
+  --sb-card-border:    rgba(0, 0, 0, 0.06);
+  --sb-text:           #1C1C1A;
+  --sb-text-muted:     #57534E;
+  --sb-icon:           #57534E;
+  --sb-divider:        rgba(0, 0, 0, 0.12);
+  --sb-nav-bg:         rgba(255, 255, 255, 0.85);
+  --sb-nav-text:       #1C1C1A;
+  --sb-nav-hover-bg:   #FFFFFF;
+  --sb-accent:         #A3B18A;
+  --sb-accent-text:    #1A1F14;
+  --sb-icon-btn-bg:    #1C1C1A;
+  --sb-icon-btn-text:  #F5F5F4;
+  --sb-input-bg:       rgba(0, 0, 0, 0.045);
+  --sb-input-hover-bg: rgba(0, 0, 0, 0.07);
 }
-aside[data-theme='light'] {
-  --sidebar-surface: rgba(255, 255, 255, 0.55);
-  --sidebar-surface-strong: rgba(255, 255, 255, 0.85);
-  --sidebar-border: rgba(20, 18, 15, 0.12);
-  --sidebar-border-strong: rgba(20, 18, 15, 0.22);
-  --sidebar-text: #1A1A1A;
-  --sidebar-text-muted: #525252;
-  --sidebar-text-subtle: #8A877E;
-  --sidebar-icon: #525252;
-  /* darker sage so stats/accents keep contrast on the light card */
-  --sidebar-accent: #6B7F58;
-  --sidebar-hover-bg: rgba(0, 0, 0, 0.05);
-  /* Dark chips for socials, sitting on the light brand card */
-  --sidebar-chip-bg: rgba(22, 20, 16, 0.90);
-  --sidebar-chip-icon: #F5F5F4;
-}
-aside[data-theme='dark'] {
-  --sidebar-surface: rgba(20, 20, 20, 0.55);
-  --sidebar-surface-strong: rgba(20, 20, 20, 0.75);
-  --sidebar-border: rgba(255, 255, 255, 0.10);
-  --sidebar-border-strong: rgba(255, 255, 255, 0.18);
-  --sidebar-text: #F5F5F4;
-  --sidebar-text-muted: #A8A29E;
-  --sidebar-text-subtle: #78716C;
-  --sidebar-icon: #A8A29E;
-  --sidebar-accent: #A3B18A;
-  --sidebar-hover-bg: rgba(255, 255, 255, 0.06);
-  /* Light chips for socials, sitting on the dark brand card */
-  --sidebar-chip-bg: rgba(255, 255, 255, 0.12);
-  --sidebar-chip-icon: #F5F5F4;
+/* ---------- TOKENS: DARK MODE ---------- */
+.sidebar[data-mode='dark'] {
+  --sb-card-bg:        rgba(20, 20, 20, 0.82);
+  --sb-card-border:    rgba(255, 255, 255, 0.09);
+  --sb-text:           #F5F5F4;
+  --sb-text-muted:     #A8A29E;
+  --sb-icon:           #A8A29E;
+  --sb-divider:        rgba(255, 255, 255, 0.14);
+  --sb-nav-bg:         rgba(255, 255, 255, 0.08);
+  --sb-nav-text:       #E7E5E4;
+  --sb-nav-hover-bg:   rgba(255, 255, 255, 0.14);
+  --sb-accent:         #A3B18A;
+  --sb-accent-text:    #14180F;
+  --sb-icon-btn-bg:    rgba(255, 255, 255, 0.10);
+  --sb-icon-btn-text:  #F5F5F4;
+  --sb-input-bg:       rgba(255, 255, 255, 0.06);
+  --sb-input-hover-bg: rgba(255, 255, 255, 0.10);
 }
 
-/* Smoothly fade colours (not transform/opacity — those are GSAP's) when
-   the sidebar flips light<->dark as sections scroll behind it. */
-.site-sidebar * {
-  transition-property: color, background-color, border-color, fill, stroke;
-  transition-duration: 0.45s;
-  transition-timing-function: ease;
+.sidebar { scrollbar-width: none; }
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* ---------- CARD BLOCK ---------- */
+.sb-card {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-card-border);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background-color 0.55s ease, border-color 0.55s ease;
 }
 
-/* Clean, text-based nav — no per-item card. Inactive = plain muted text;
-   active = compact accent pill hugging the label. */
-.sidebar-nav-item {
-  color: var(--sidebar-text-muted);
-  background: transparent;
+/* ---------- LOGO BADGE ---------- */
+.sb-logo-badge {
+  display: inline-block;
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  transition: color 0.55s ease;
 }
-.sidebar-nav-item .nav-icon {
-  color: var(--sidebar-icon);
-  opacity: 0.8;
+
+/* ---------- SOCIAL ICON BUTTONS ---------- */
+.sb-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--sb-icon-btn-bg);
+  color: var(--sb-icon-btn-text);
+  transition: background-color 0.55s ease, color 0.55s ease,
+              opacity 0.2s ease, transform 0.2s ease;
 }
-.sidebar-nav-item:hover {
-  color: var(--sidebar-text);
-  background: var(--sidebar-hover-bg);
+.sb-icon-btn:hover { opacity: 0.78; transform: scale(1.05); }
+.sb-icon-btn svg { width: 15px; height: 15px; }
+
+/* ---------- TAGLINE ---------- */
+.sb-tagline {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--sb-text-muted);
+  transition: color 0.55s ease;
 }
-.sidebar-nav-item.is-active {
-  background: var(--color-accent);
-  color: #0C0C0C;
+
+/* ---------- STATS ---------- */
+.sb-stat-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 30px;
+  line-height: 1;
+  color: var(--sb-accent);
 }
-.sidebar-nav-item.is-active .nav-icon {
-  color: #0C0C0C;
-  opacity: 1;
+.sb-stat-label {
+  margin-top: 8px;
+  font-weight: 700;
+  font-size: 11px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--sb-text);
+  transition: color 0.55s ease;
 }
-.sidebar-chip {
-  background: var(--sidebar-chip-bg);
-  color: var(--sidebar-chip-icon);
+.sb-divider {
+  width: 1px;
+  height: 40px;
+  background: var(--sb-divider);
+  transition: background-color 0.55s ease;
+}
+
+/* ---------- NAV ITEMS — PILL, WIDTH FIT CONTENT ---------- */
+.sb-nav-item {
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--sb-nav-bg);
+  color: var(--sb-nav-text);
+  transition: background-color 0.35s ease, color 0.35s ease,
+              transform 0.25s ease;
+}
+.sb-nav-item:hover {
+  background: var(--sb-nav-hover-bg);
+  transform: translateX(3px);
+}
+.sb-nav-item.sb-nav-active {
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+}
+.sb-nav-item.sb-nav-active:hover {
+  transform: translateX(3px);
+  filter: brightness(1.04);
+}
+.sb-nav-icon { display: flex; align-items: center; flex-shrink: 0; }
+.sb-nav-icon svg { width: 15px; height: 15px; }
+
+/* ---------- CLIENT MARQUEE ---------- */
+.sb-marquee {
+  overflow: hidden;
+  padding: 4px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+.sb-marquee-track {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  animation: sb-marquee 22s linear infinite;
+}
+.sb-marquee:hover .sb-marquee-track { animation-play-state: paused; }
+.sb-marquee-item {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: var(--sb-text-muted);
+  opacity: 0.55;
+  transition: color 0.55s ease;
+}
+@keyframes sb-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ---------- EMAIL PILL ---------- */
+.sb-email-pill {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  background: var(--sb-input-bg);
+  border: 1px solid var(--sb-card-border);
+  color: var(--sb-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.35s ease, color 0.55s ease,
+              border-color 0.55s ease;
+}
+.sb-email-pill:hover { background: var(--sb-input-hover-bg); }
+.sb-email-pill svg { color: var(--sb-icon); }
+
+/* ---------- CTA BUTTON ---------- */
+.sb-cta {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  transition: filter 0.25s ease, transform 0.25s ease,
+              color 0.55s ease;
+}
+.sb-cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.sb-cta:active { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-marquee-track { animation: none; }
 }
 
 /* ============================================================

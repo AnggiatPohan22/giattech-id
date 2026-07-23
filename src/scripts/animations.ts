@@ -145,9 +145,7 @@ function initHeroPin(gsap: Gsap) {
     // it's "receiving" the hero element traveling toward it. Ordering
     // roughly mirrors the visual flow of hero pieces converging left.
     if (sidebar) {
-      const cards = sidebar.querySelectorAll<HTMLElement>(
-        '.sidebar-card, .sidebar-nav, .sidebar-cta'
-      );
+      const cards = Array.from(sidebar.children) as HTMLElement[];
       gsap.set(sidebar, { autoAlpha: 0 });
       gsap.set(cards, { opacity: 0, x: -14, scale: 0.94 });
 
@@ -164,14 +162,14 @@ function initHeroPin(gsap: Gsap) {
     // Loading directly at a deep scroll position: reveal sidebar immediately.
     if (window.scrollY > window.innerHeight && sidebar) {
       gsap.set(sidebar, { autoAlpha: 1 });
-      const cards = sidebar.querySelectorAll<HTMLElement>('.sidebar-card, .sidebar-nav, .sidebar-cta');
+      const cards = Array.from(sidebar.children) as HTMLElement[];
       gsap.set(cards, { opacity: 1, x: 0, scale: 1 });
     }
 
     return () => {
       if (sidebar) {
         gsap.set(sidebar, { clearProps: 'opacity,visibility,transform' });
-        const cards = sidebar.querySelectorAll<HTMLElement>('.sidebar-card, .sidebar-nav, .sidebar-cta');
+        const cards = Array.from(sidebar.children) as HTMLElement[];
         gsap.set(cards, { clearProps: 'opacity,transform' });
       }
     };
