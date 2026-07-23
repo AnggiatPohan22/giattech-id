@@ -59,11 +59,11 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
   x-bind:data-mode="mode"
   data-mode="light"
   style="opacity:0; visibility:hidden; transform:translateX(-16px)"
-  class="site-sidebar sidebar hidden lg:flex fixed left-6 top-6 bottom-6 w-[300px] z-40 flex-col gap-3 overflow-y-auto"
+  class="site-sidebar sidebar hidden lg:flex fixed left-10 top-5 bottom-5 w-[292px] z-40 flex-col gap-2 overflow-y-auto"
   aria-label="Site sidebar"
 >
   <!-- BLOK 1 — Brand -->
-  <div class="sb-card p-5">
+  <div class="sb-card p-4">
     <div class="flex items-start justify-between gap-3">
       <a href="#hero" class="sb-logo-badge">
         GIATTECH<sup class="text-[9px] ml-0.5">®</sup>
@@ -84,22 +84,23 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
         }
       </div>
     </div>
-    <p class="sb-tagline mt-4">
+    <p class="sb-tagline mt-3">
       Working closely with your team to deliver web builds, IT support and villa OTA management.
     </p>
   </div>
 
-  <!-- BLOK 2 — Stats -->
-  <div class="sb-card px-4 py-5">
+  <!-- BLOK 2 — Stats (with Giattech logo above 80+) -->
+  <div class="sb-card px-4 py-3">
     <div class="flex items-center justify-around">
       <div class="text-center">
+        <img src="/images/logo-white.png" alt="Giattech" class="sb-stat-logo" width="22" height="22" />
         <div class="sb-stat-number">
           <span data-counter data-target={sidebarStats[0].value}>{sidebarStats[0].value}</span>{sidebarStats[0].suffix}
         </div>
         <div class="sb-stat-label" set:html={sidebarStats[0].label} />
       </div>
       <div class="sb-divider"></div>
-      <div class="text-center">
+      <div class="text-center pt-[26px]">
         <div class="sb-stat-number">
           <span data-counter data-target={sidebarStats[1].value}>{sidebarStats[1].value}</span>{sidebarStats[1].suffix}
         </div>
@@ -109,7 +110,7 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
   </div>
 
   <!-- BLOK 3 — Navigation (pills hug their content) -->
-  <nav class="sb-card p-3 flex flex-col items-start gap-1.5" aria-label="Section navigation">
+  <nav class="sb-card p-2 flex flex-col items-start gap-1" aria-label="Section navigation">
     {
       sidebarNav.map((item) => (
         <a
@@ -134,7 +135,7 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
   </div>
 
   <!-- BLOK 5 — Contact -->
-  <div class="mt-auto">
+  <div class="mt-auto flex flex-col gap-2">
     <button type="button" @click="copyEmail()" class="sb-email-pill" aria-label="Copy email address">
       <span x-text="copied ? 'Copied!' : 'hello@giattech.com'">hello@giattech.com</span>
       <span class="inline-flex shrink-0">
@@ -148,6 +149,6 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
       </span>
     </button>
 
-    <a href="#cta" class="sb-cta mt-2.5">Book a Call</a>
+    <a href="#cta" class="sb-cta">Book a Call</a>
   </div>
 </aside>
