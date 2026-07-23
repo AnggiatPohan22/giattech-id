@@ -1,3 +1,4 @@
+@import "./theme.css";
 @import "tailwindcss";
 
 /* ============================================================
@@ -18,9 +19,9 @@
   --color-text-muted: #A8A29E;
   --color-text-subtle: #78716C;
 
-  --color-accent: #B4F527;
-  --color-accent-light: #C6F754;
-  --color-accent-dark: #94C819;
+  --color-accent: var(--brand);
+  --color-accent-light: var(--brand-light);
+  --color-accent-dark: var(--brand-dark);
 }
 
 /* ============================================================
@@ -44,8 +45,8 @@
   --text-small:   0.875rem;
   --text-eyebrow: 0.75rem;
 
-  /* Sage tint (rgba doesn't map cleanly to @theme) */
-  --color-accent-muted: rgba(180, 245, 39, 0.18);
+  /* Muted tint derives from the brand rgb so it swaps too */
+  --color-accent-muted: rgba(var(--brand-rgb), 0.18);
 
   /* Layout */
   --nav-height: 80px;
@@ -154,7 +155,7 @@
   --color-text:          #14120F;
   --color-text-muted:    #5A564E;
   --color-text-subtle:   #8A877E;
-  --color-accent-muted:  rgba(180, 245, 39, 0.14);
+  --color-accent-muted:  rgba(var(--brand-rgb), 0.14);
   background-color: var(--color-bg);
   color: var(--color-text);
 }
@@ -168,7 +169,7 @@
   --color-text:          #F5F5F4;
   --color-text-muted:    #A8A29E;
   --color-text-subtle:   #78716C;
-  --color-accent-muted:  rgba(180, 245, 39, 0.18);
+  --color-accent-muted:  rgba(var(--brand-rgb), 0.18);
   background-color: var(--color-bg);
   color: var(--color-text);
 }
@@ -187,8 +188,8 @@
   --sb-nav-bg:         rgba(255, 255, 255, 0.85);
   --sb-nav-text:       #1C1C1A;
   --sb-nav-hover-bg:   #FFFFFF;
-  --sb-accent:         #B4F527;
-  --sb-accent-text:    #1A1F14;
+  --sb-accent:         var(--brand);
+  --sb-accent-text:    var(--brand-on);
   --sb-icon-btn-bg:    #1C1C1A;
   --sb-icon-btn-text:  #F5F5F4;
   --sb-input-bg:       rgba(0, 0, 0, 0.045);
@@ -205,8 +206,8 @@
   --sb-nav-bg:         rgba(255, 255, 255, 0.08);
   --sb-nav-text:       #E7E5E4;
   --sb-nav-hover-bg:   rgba(255, 255, 255, 0.14);
-  --sb-accent:         #B4F527;
-  --sb-accent-text:    #14180F;
+  --sb-accent:         var(--brand);
+  --sb-accent-text:    var(--brand-on);
   --sb-icon-btn-bg:    rgba(255, 255, 255, 0.10);
   --sb-icon-btn-text:  #F5F5F4;
   --sb-input-bg:       rgba(255, 255, 255, 0.06);
