@@ -23,13 +23,14 @@ const chipIcons: Record<ServiceIcon, string> = {
   data-theme="light"
   class="section-light relative border-b border-[color:var(--color-border)] lg:pl-[356px]"
 >
-  <!-- Full-viewport intro: giant heading + pill + word-reveal paragraph -->
-  <div class="min-h-[100svh] flex flex-col items-center justify-center text-center gap-8 container-page py-24">
+  <!-- Compact intro: giant heading + pill + word-reveal paragraph
+       (was min-h-100svh — now sized to content) -->
+  <div class="flex flex-col items-center text-center gap-6 container-page pt-20 pb-10 md:pt-24 md:pb-12">
     <h2
-      class="font-display font-extrabold leading-[0.98] tracking-[-0.03em] text-[clamp(3.2rem,11vw,8.5rem)]"
+      class="font-display font-extrabold leading-[0.98] tracking-[-0.03em] text-[clamp(2.8rem,8vw,6rem)]"
       data-animate="fade-up"
     >
-      What<br />You Get?
+      What You Get?
     </h2>
 
     <span class="inline-flex items-center rounded-full border border-[color:var(--color-border-light)] px-4 py-1.5 text-eyebrow">
@@ -69,7 +70,7 @@ const chipIcons: Record<ServiceIcon, string> = {
   </div>
 
   <!-- Capability cards -->
-  <div class="container-page pb-24 lg:pb-32">
+  <div class="container-page pb-16 lg:pb-24">
     <div
       class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6"
       data-animate="stagger"

@@ -143,7 +143,11 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   </ul>
 
   <!-- Headline + CTAs, overlapping the portrait -->
-  <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[16svh] md:pb-[13svh]">
+  <!-- Atur tinggi headline & tombol dari bawah viewport dengan `pb-[Nsvh]`.
+       Kecilkan angka N (mis. 5svh) supaya konten TURUN mendekati bawah,
+       besarkan (mis. 20svh) supaya NAIK menjauh dari bawah.
+       Format: pb-[Nsvh] (mobile)  md:pb-[Nsvh] (tablet+) -->
+  <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[3svh] md:pb-[2svh]">
     <h1
       class="hero-heading font-display font-bold leading-[1.0] tracking-[-0.03em] text-[clamp(2.4rem,6.5vw,5rem)] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]"
     >

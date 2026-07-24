@@ -29,11 +29,11 @@
 
 :root {
   /* ▼▼▼ PALETTE AKTIF — ubah di sini ▼▼▼ */
-  --brand:       #B4F527;
-  --brand-light: #C6F754;
-  --brand-dark:  #94C819;
-  --brand-rgb:   180, 245, 39;
-  --brand-on:    #14180F;   /* teks/ikon di atas accent (hitam-hijau tua) */
+  --brand:       #3B82F6;
+  --brand-light: #60A5FA;
+  --brand-dark:  #2563EB;
+  --brand-rgb:   59, 130, 246;
+  --brand-on:    #F5F9FF;   /* teks/ikon di atas accent (putih) */
   /* ▲▲▲ */
 }
 

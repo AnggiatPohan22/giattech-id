@@ -27,35 +27,7 @@ const clientsLoop = [...sidebarClients, ...sidebarClients];
       setTimeout(() => this.copied = false, 2000);
     }
   }`}
-  x-init={`
-    // Sidebar visibility is GSAP-owned (hero morph reveals it). Reduced-motion
-    // users get a plain scroll-threshold reveal instead.
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-      const reveal = () => {
-        if (window.scrollY > window.innerHeight * 0.6) {
-          $el.style.opacity = '1';
-          $el.style.visibility = 'visible';
-          $el.style.transform = 'none';
-        }
-      };
-      reveal();
-      window.addEventListener('scroll', reveal, { passive: true });
-    }
-    // Adaptive tone + active nav: scan DOM order (robust vs pinned sections).
-    const els = sections.map(id => document.getElementById(id)).filter(Boolean);
-    const pick = () => {
-      const probe = window.innerHeight * 0.45;
-      let cur = els[0];
-      for (const el of els) { if (el.getBoundingClientRect().top <= probe) cur = el; }
-      if (!cur) return;
-      if (active !== cur.id) active = cur.id;
-      const t = cur.getAttribute('data-theme');
-      if (t && mode !== t) mode = t;
-    };
-    pick();
-    window.addEventListener('scroll', pick, { passive: true });
-    window.addEventListener('resize', pick);
-  `}
+  x-init="$el.dataset.ready = '1'"
   x-bind:data-mode="mode"
   data-mode="light"
   style="opacity:0; visibility:hidden; transform:translateX(-16px)"
