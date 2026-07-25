@@ -36,8 +36,11 @@ function boot(): void {
     return;
   }
 
+  // Any themed region counts as a "background zone" — sections and the
+  // footer (which isn't a <section> but still has data-theme="dark")
+  // and any future themed wrappers.
   const sections = Array.from(
-    document.querySelectorAll<HTMLElement>('section[data-theme]')
+    document.querySelectorAll<HTMLElement>('[data-theme]')
   );
   if (!sections.length) return;
 
@@ -87,13 +90,16 @@ function boot(): void {
       if (t && scope.mode !== t) scope.mode = t;
     }
 
-    // Per-box tone: probe each observed element at its own midpoint
-    // (viewport-relative — the sidebar is position:fixed, so boxes stay
-    // put while sections scroll past behind them).
+    // Per-box tone: probe each observed element at 25% from its bottom
+    // edge (75% down from the top). This makes the box flip tone as
+    // soon as ~1/4 of it has entered a new background while scrolling
+    // down — an earlier, more responsive switch than the midpoint
+    // (which required 50%). The sidebar is position:fixed, so boxes
+    // stay put while sections scroll past behind them.
     for (const box of boxes) {
       const r = box.getBoundingClientRect();
-      const mid = r.top + r.height / 2;
-      const behind = sectionAt(mid);
+      const probe = r.top + r.height * 0.75;
+      const behind = sectionAt(probe);
       if (!behind) continue;
       const tone = behind.getAttribute('data-theme') as 'light' | 'dark' | null;
       if (!tone) continue;
