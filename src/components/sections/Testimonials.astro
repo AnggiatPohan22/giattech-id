@@ -10,7 +10,7 @@ const total = testimonials.length;
   id="testimonials"
   data-section="testimonials"
   data-theme="light"
-  class="section-light relative section-y border-b border-[color:var(--color-border)] lg:pl-[356px]"
+  class="section-light relative pt-16 pb-14 md:pt-20 md:pb-16 border-b border-[color:var(--color-border)] overflow-hidden lg:pl-[356px]"
 >
   <div class="container-page">
     <SectionHeader
@@ -40,7 +40,7 @@ const total = testimonials.length;
       @mouseleave="start()"
       @focusin="stop()"
       @focusout="start()"
-      class="relative mt-14 md:mt-16"
+      class="relative mt-10 md:mt-12"
       data-animate="fade-up"
       aria-roledescription="carousel"
       aria-label="Client testimonials"
@@ -51,11 +51,7 @@ const total = testimonials.length;
             <div
               x-show={`current === ${i}`}
               x-cloak={i !== 0 ? true : undefined}
-              x-transition:enter="transition-opacity duration-500"
-              x-transition:enter-start="opacity-0"
-              x-transition:enter-end="opacity-100"
-              x-transition:leave="hidden"
-              class={i === 0 ? 'block' : 'hidden'}
+              x-bind:aria-hidden={`current === ${i} ? 'false' : 'true'`}
               role="group"
               aria-roledescription="slide"
               aria-label={`${i + 1} of ${total}`}
@@ -88,6 +84,13 @@ const total = testimonials.length;
         </div>
 
         <div class="flex items-center gap-2">
+          <span
+            class="hidden sm:inline text-sm text-[color:var(--color-text-muted)] tabular-nums mr-2"
+            aria-live="polite"
+          >
+            <span x-text="String(current + 1).padStart(2, '0')"></span>
+            <span class="opacity-50"> / {String(total).padStart(2, '0')}</span>
+          </span>
           <button
             type="button"
             @click="prev(); start()"

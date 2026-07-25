@@ -22,7 +22,7 @@ const iconPaths: Record<ServiceIcon, string> = {
   id="pricing"
   data-section="pricing"
   data-theme="dark"
-  class="section-dark relative section-y border-b border-[color:var(--color-border)] lg:pl-[356px]"
+  class="section-dark relative pt-14 pb-12 md:pt-16 md:pb-14 border-b border-[color:var(--color-border)] overflow-hidden lg:pl-[356px]"
 >
   <div class="container-page">
     <SectionHeader
@@ -30,16 +30,26 @@ const iconPaths: Record<ServiceIcon, string> = {
       heading="What We Offer."
       subtitle="Four core services — pick one, mix them, or pass an entire project. Everything ships with clear scope, honest timelines, and post-launch support."
     />
+  </div>
 
+  <!-- Cards: horizontal snap-scroll on small screens, 4-col grid on lg+
+       so every card is fully visible (no highlight-clip against the edge).
+       Vertical padding on the track leaves room for the lift + glow. -->
+  <div
+    class="offer-track-wrap mt-10 md:mt-12"
+    data-offer-track
+  >
     <div
-      class="mt-14 md:mt-16 grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-6"
-      data-animate="stagger"
+      class="offer-track flex lg:grid lg:grid-cols-2 2xl:grid-cols-4 gap-4 md:gap-5 items-stretch px-5 md:px-8 lg:px-8 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none py-6 lg:py-8"
     >
       {
-        offerings.map((offer) => (
-          <article class="group flex flex-col gap-5 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)] p-6 md:p-8 transition-colors duration-300 hover:border-[color:var(--color-accent)]/40 hover:bg-[color:var(--color-surface-hover)]">
+        offerings.map((offer, i) => (
+          <article
+            class="offer-card group shrink-0 snap-center lg:shrink flex flex-col gap-5 w-[82vw] sm:w-[52vw] md:w-[42vw] lg:w-auto rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)] p-6"
+            data-offer-index={i}
+          >
             <div class="flex items-start gap-4">
-              <span class="inline-flex shrink-0 items-center justify-center w-12 h-12 rounded-xl bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] transition-transform duration-300 group-hover:scale-105">
+              <span class="offer-icon inline-flex shrink-0 items-center justify-center w-12 h-12 rounded-xl bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)]">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="22"
@@ -65,7 +75,7 @@ const iconPaths: Record<ServiceIcon, string> = {
               {offer.tagline}
             </p>
 
-            <ul class="flex flex-col gap-2 mt-auto">
+            <ul class="flex flex-col gap-2 mt-auto pt-2">
               {offer.bullets.map((b) => (
                 <li class="flex items-start gap-2.5 text-sm text-[color:var(--color-text-muted)]">
                   <svg
@@ -91,14 +101,131 @@ const iconPaths: Record<ServiceIcon, string> = {
         ))
       }
     </div>
+  </div>
 
-    <div class="mt-12 md:mt-14 flex flex-wrap items-center justify-center gap-3 text-center">
-      <p class="text-sm text-[color:var(--color-text-muted)]">
-        Bundle two or more? Talk to us about a discounted retainer.
-      </p>
-      <Button href="#cta" variant="primary" size="md" pill>
-        Book a Call
-      </Button>
-    </div>
+  <div class="container-page mt-12 md:mt-14 flex flex-wrap items-center justify-center gap-3 text-center">
+    <p class="text-sm text-[color:var(--color-text-muted)]">
+      Bundle two or more? Talk to us about a discounted retainer.
+    </p>
+    <Button href="#cta" variant="primary" size="md" pill>
+      Book a Call
+    </Button>
   </div>
 </section>
+
+<style>
+  /* Hide native scrollbar on the offer track (swipe/scroll still works) */
+  .offer-track { scrollbar-width: none; }
+  .offer-track::-webkit-scrollbar { display: none; }
+
+  /* Base card resting state — use `translate`/`scale` (individual CSS
+     properties) instead of the `transform` shorthand so Tailwind's
+     transform reset doesn't wipe out our highlight lift. */
+  .offer-card {
+    transition:
+      translate 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      scale 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+      border-color 0.35s ease,
+      background-color 0.35s ease,
+      box-shadow 0.45s ease,
+      opacity 0.35s ease;
+    will-change: translate, scale;
+  }
+
+  /* Non-highlighted cards fade back a touch so the active one pops */
+  .offer-track[data-has-active] .offer-card:not(.is-active) {
+    opacity: 0.55;
+  }
+
+  /* Highlighted card — hover OR scroll-centered */
+  .offer-card.is-active,
+  .offer-card:hover {
+    translate: 0 -6px;
+    scale: 1.02;
+    border-color: color-mix(in oklab, var(--color-accent) 55%, transparent);
+    background-color: var(--color-surface-hover);
+    box-shadow:
+      0 20px 40px -20px color-mix(in oklab, var(--color-accent) 40%, transparent),
+      0 0 0 1px color-mix(in oklab, var(--color-accent) 25%, transparent) inset;
+    opacity: 1;
+  }
+
+  .offer-card.is-active .offer-icon,
+  .offer-card:hover .offer-icon {
+    scale: 1.08;
+    rotate: -3deg;
+    transition:
+      scale 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      rotate 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* Reduced motion is honored globally by the .01ms transition-duration
+     reset in global.css — no local override needed. */
+</style>
+
+<script>
+  // Highlight the card centered in the viewport as the user scrolls.
+  // Works for horizontal (swipe/track) and vertical (page) scroll.
+  const wraps = document.querySelectorAll<HTMLElement>('[data-offer-track]');
+  wraps.forEach((wrap) => {
+    const track = wrap.querySelector<HTMLElement>('.offer-track');
+    if (!track) return;
+    const cards = Array.from(track.querySelectorAll<HTMLElement>('.offer-card'));
+    if (!cards.length) return;
+
+    const setActive = (target: HTMLElement | null) => {
+      cards.forEach((c) => c.classList.toggle('is-active', c === target));
+      if (target) {
+        track.setAttribute('data-has-active', '');
+      } else {
+        track.removeAttribute('data-has-active');
+      }
+    };
+
+    // Pick the card closest to the viewport center (horizontal + vertical).
+    const pickCentered = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      let best: HTMLElement | null = null;
+      let bestDist = Infinity;
+      for (const card of cards) {
+        const r = card.getBoundingClientRect();
+        if (r.right < 0 || r.left > vw || r.bottom < 0 || r.top > vh) continue;
+        const cx = r.left + r.width / 2;
+        const cy = r.top + r.height / 2;
+        const dx = cx - vw / 2;
+        const dy = cy - vh / 2;
+        const d = Math.hypot(dx, dy);
+        if (d < bestDist) {
+          bestDist = d;
+          best = card;
+        }
+      }
+      // Only auto-highlight when the section is roughly in view
+      const sectionRect = wrap.getBoundingClientRect();
+      const inView = sectionRect.top < vh * 0.75 && sectionRect.bottom > vh * 0.15;
+      setActive(inView ? best : null);
+    };
+
+    let raf = 0;
+    const schedule = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => {
+        raf = 0;
+        pickCentered();
+      });
+    };
+
+    track.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    // Hover on any card temporarily takes over — clear track auto-active so
+    // the CSS :hover state alone drives the highlight, then restore on leave.
+    cards.forEach((card) => {
+      card.addEventListener('pointerenter', () => setActive(card));
+      card.addEventListener('pointerleave', () => schedule());
+    });
+
+    schedule();
+  });
+</script>

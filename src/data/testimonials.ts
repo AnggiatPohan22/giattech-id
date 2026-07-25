@@ -5,7 +5,10 @@ export interface Testimonial {
   role: string;
   company: string;
   companyUrl?: string;
-  avatar: string;
+  /** Personal avatar (headshot). Optional — falls back to initials. */
+  avatar?: string;
+  /** Client company logo or hero image displayed inside the card. */
+  companyImage?: string;
 }
 
 export const testimonials: Testimonial[] = [
@@ -18,6 +21,7 @@ export const testimonials: Testimonial[] = [
     company: 'Bintan Prestige',
     companyUrl: 'https://bintanprestige.com',
     avatar: '/images/testimonial-rina.avif',
+    companyImage: '/images/testimonials/company-bintan-prestige.jpg',
   },
   {
     heading: 'They think in outcomes, not tickets.',
@@ -27,6 +31,7 @@ export const testimonials: Testimonial[] = [
     role: 'Co-founder',
     company: 'Prima Logistik',
     avatar: '/images/testimonial-damar.avif',
+    companyImage: '/images/testimonials/company-prima-logistik.jpg',
   },
   {
     heading: 'Serious engineering, without the ego.',
@@ -36,6 +41,7 @@ export const testimonials: Testimonial[] = [
     role: 'Product Manager',
     company: 'Kelola Studio',
     avatar: '/images/testimonial-sarah.avif',
+    companyImage: '/images/testimonials/company-kelola-studio.jpg',
   },
   {
     heading: 'The site finally matches our brand.',
@@ -45,5 +51,24 @@ export const testimonials: Testimonial[] = [
     role: 'Marketing Lead',
     company: 'Rimba Kopi',
     avatar: '/images/testimonial-yudha.avif',
+    companyImage: '/images/testimonials/company-rimba-kopi.jpg',
+  },
+  {
+    heading: 'Booking flow that finally converts.',
+    quote:
+      'They untangled our old channel-manager mess and built a direct-booking site that has doubled our repeat guests. Support responses are same-day, every time.',
+    name: 'Made Sudiarta',
+    role: 'General Manager',
+    company: 'Villa Anantara Bali',
+    companyImage: '/images/testimonials/company-villa-anantara.jpg',
+  },
+  {
+    heading: 'A rare mix of speed and taste.',
+    quote:
+      'Most agencies pick one — either they ship fast or the design looks good. Giattech gave us both, and the handover docs meant our in-house team could keep building.',
+    name: 'Alifia Rahman',
+    role: 'Head of Growth',
+    company: 'Nusantara Retail Co.',
+    companyImage: '/images/testimonials/company-nusantara-retail.jpg',
   },
 ];
