@@ -177,8 +177,14 @@
 /* ============================================================
    SIDEBAR — Floating card blocks + dual-tone adaptive system
    ============================================================ */
-/* ---------- TOKENS: LIGHT MODE ---------- */
-.sidebar[data-mode='light'] {
+/* ---------- TOKENS: LIGHT MODE ----------
+   Applies at the sidebar wrapper (fallback for legacy consumers) AND at
+   any element with data-sb-mode="light" — the per-block observer sets
+   this attribute on each box independently as it crosses light/dark
+   sections, so each box picks its own tone. Nested elements inherit the
+   token from their nearest ancestor with the attribute. */
+.sidebar[data-mode='light'],
+[data-sb-mode='light'] {
   --sb-card-bg:        rgba(255, 255, 255, 0.72);
   --sb-card-border:    rgba(0, 0, 0, 0.06);
   --sb-text:           #1C1C1A;
@@ -196,7 +202,8 @@
   --sb-input-hover-bg: rgba(0, 0, 0, 0.07);
 }
 /* ---------- TOKENS: DARK MODE ---------- */
-.sidebar[data-mode='dark'] {
+.sidebar[data-mode='dark'],
+[data-sb-mode='dark'] {
   --sb-card-bg:        rgba(20, 20, 20, 0.82);
   --sb-card-border:    rgba(255, 255, 255, 0.09);
   --sb-text:           #F5F5F4;
@@ -296,8 +303,11 @@
   object-fit: contain;
   display: block;
 }
-/* Logo image is white — invert it on light-mode cards so it stays visible */
-.sidebar[data-mode='light'] .sb-stat-logo {
+/* Logo image is white — invert it on light-mode cards so it stays visible.
+   Matches whether the light mode is set on the sidebar wrapper or on the
+   nearest [data-sb-mode='light'] ancestor (per-block observer). */
+.sidebar[data-mode='light'] .sb-stat-logo,
+[data-sb-mode='light'] .sb-stat-logo {
   filter: invert(1) brightness(0.2);
 }
 
