@@ -36,6 +36,17 @@ function initHeroEntrance(gsap: Gsap) {
   const heading = document.querySelector('.hero-heading');
   if (!heading) return;
 
+  // If the user reloaded while already scrolled past the hero (browsers
+  // preserve scroll position on reload), the hero pin scrub owns these
+  // elements and has driven them to their end-state (opacity 0, off
+  // viewport). Running the entrance here would set them back to opacity 0
+  // then animate them to opacity 1 — with scrub:0.6 smoothing, the scrub
+  // can't always catch up in time, so hero-traits / hero-corner-right /
+  // stat cards end up stuck visible over the About/Projects sections.
+  // Skip the entrance entirely in that case — the initHeroPin deep-scroll
+  // fast-path handles final positioning.
+  if (window.scrollY > window.innerHeight * 0.5) return;
+
   // Use set() + to() (not from()) so ScrollTrigger.refresh() — which the
   // pins trigger — can't re-apply a "from" start state and leave the hero
   // elements stuck invisible.
@@ -159,11 +170,42 @@ function initHeroPin(gsap: Gsap) {
       });
     }
 
-    // Loading directly at a deep scroll position: reveal sidebar immediately.
-    if (window.scrollY > window.innerHeight && sidebar) {
-      gsap.set(sidebar, { autoAlpha: 1 });
-      const cards = Array.from(sidebar.children) as HTMLElement[];
-      gsap.set(cards, { opacity: 1, x: 0, scale: 1 });
+    // Loading directly at a deep scroll position: force the hero morph
+    // elements to their END state immediately AND reveal the sidebar.
+    // Without this, the scrub (immediateRender:false + scrub:0.6) lags on
+    // first paint and hero-fixed elements (traits card, corner texts,
+    // stat cards) appear stuck visible over the section behind them
+    // until the next scroll event nudges the scrub to catch up.
+    if (window.scrollY > window.innerHeight * 0.5) {
+      gsap.set('.hero-giant', {
+        xPercent: -120, yPercent: -35, scale: 0.06, opacity: 0,
+        transformOrigin: 'left top',
+      });
+      gsap.set('.hero-portrait', { yPercent: 25, opacity: 0 });
+      gsap.set('.hero-stat-1, .hero-stat-2', {
+        x: () => -vw() * 0.14, y: -260, scale: 0.4, opacity: 0,
+      });
+      gsap.set('.hero-traits', { x: 40, y: -60, scale: 0.85, opacity: 0 });
+      gsap.set('.hero-nav-left', { x: -60, y: -40, scale: 0.85, opacity: 0 });
+      gsap.set('.hero-nav-right', {
+        x: () => -vw() * 0.6, y: -40, scale: 0.85, opacity: 0,
+      });
+      gsap.set('.hero-heading', { xPercent: 25, opacity: 0 });
+      gsap.set('.hero-cta', {
+        x: () => -vw() * 0.4, y: 220, scale: 0.65, opacity: 0,
+      });
+      gsap.set('.hero-corner-left', {
+        x: -60, y: -120, scale: 0.85, opacity: 0,
+      });
+      gsap.set('.hero-corner-right', {
+        x: () => -vw() * 0.45, y: -120, scale: 0.85, opacity: 0,
+      });
+
+      if (sidebar) {
+        gsap.set(sidebar, { autoAlpha: 1 });
+        const cards = Array.from(sidebar.children) as HTMLElement[];
+        gsap.set(cards, { opacity: 1, x: 0, scale: 1 });
+      }
     }
 
     return () => {
