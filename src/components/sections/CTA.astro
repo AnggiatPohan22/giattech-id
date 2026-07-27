@@ -1,5 +1,8 @@
 ---
 import Button from '../ui/Button.astro';
+import { ctaContent } from '../../data/cta';
+
+const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote, frames } = ctaContent;
 ---
 
 <section
@@ -10,51 +13,230 @@ import Button from '../ui/Button.astro';
 >
   <div class="container-page">
     <div
-      class="relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-10 md:p-16 lg:p-20"
+      class="cta-card relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-10 md:p-16 lg:p-20"
       data-animate="fade-up"
     >
+      <!-- Soft brand-tinted glow behind everything -->
       <div
         aria-hidden="true"
         class="pointer-events-none absolute inset-0 opacity-80"
         style="background-image:
-            radial-gradient(circle at 15% 20%, rgba(163,177,138,0.20) 0%, transparent 45%),
-            radial-gradient(circle at 85% 75%, rgba(163,177,138,0.10) 0%, transparent 45%);"
+            radial-gradient(circle at 15% 20%, rgba(var(--brand-rgb),0.20) 0%, transparent 45%),
+            radial-gradient(circle at 85% 75%, rgba(var(--brand-rgb),0.10) 0%, transparent 45%);"
       >
       </div>
 
-      <div class="relative flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
+      <!-- Behind-the-scenes frame gallery — each frame cycles 2–3 images
+           with its own transition type; positioned & tilted individually
+           via data (src/data/cta.ts). Sits BEHIND the CTA content (z-0). -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 z-0"
+      >
+        {
+          frames.map((frame) => {
+            const posStyle = [
+              frame.position.top    !== undefined && `top: ${frame.position.top}`,
+              frame.position.right  !== undefined && `right: ${frame.position.right}`,
+              frame.position.bottom !== undefined && `bottom: ${frame.position.bottom}`,
+              frame.position.left   !== undefined && `left: ${frame.position.left}`,
+              `width: ${frame.width}`,
+              `height: ${frame.height}`,
+              `rotate: ${frame.rotation ?? 0}deg`,
+              frame.opacity !== undefined && `opacity: ${frame.opacity}`,
+              `--frame-dur: ${frame.duration ?? 700}ms`,
+            ].filter(Boolean).join('; ');
+
+            return (
+              <div
+                class="cta-frame"
+                data-cta-frame
+                data-transition={frame.transition}
+                data-interval={frame.interval ?? 4000}
+                data-start-delay={frame.startDelay ?? 0}
+                style={posStyle}
+              >
+                {frame.images.map((src, i) => (
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class={i === 0 ? 'is-active' : ''}
+                  />
+                ))}
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <!-- CTA content (on top of frames) -->
+      <div class="relative z-10 flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
         <span
-          aria-hidden="true"
-          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display text-2xl font-bold"
+          aria-hidden={logo ? 'true' : undefined}
+          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display text-2xl font-bold overflow-hidden"
         >
-          Gt
+          {
+            logo ? (
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                width="64"
+                height="64"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              'Gt'
+            )
+          }
         </span>
 
         <div class="flex flex-col gap-5">
-          <span class="text-eyebrow">Let's Build</span>
+          <span class="text-eyebrow">{eyebrow}</span>
           <h2 class="text-h2 font-display font-bold leading-tight">
-            Have Something in Mind?
+            {heading}
           </h2>
           <p class="text-body text-[color:var(--color-text-muted)] max-w-lg mx-auto">
-            Tell us about the platform, the migration, the marketing site — or the
-            problem you keep patching around. We'll come back with an honest read
-            on how to solve it.
+            {description}
           </p>
         </div>
 
         <div class="flex flex-wrap items-center justify-center gap-3">
-          <Button href="mailto:hello@giattech.com" variant="primary" size="lg" pill>
-            Let's Talk
+          <Button href={primaryCta.href} variant="primary" size="lg" pill>
+            {primaryCta.label}
           </Button>
-          <Button href="#projects" variant="ghost" size="lg" pill>
-            See Our Work
+          <Button href={secondaryCta.href} variant="ghost" size="lg" pill>
+            {secondaryCta.label}
           </Button>
         </div>
 
         <p class="text-xs text-[color:var(--color-text-subtle)]">
-          Reply within 1 business day · Free discovery call · No pressure
+          {footnote}
         </p>
       </div>
     </div>
   </div>
 </section>
+
+<style>
+  /* ─── Frame container ───────────────────────────────────────── */
+  .cta-frame {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 6px;
+    border: 2px solid rgba(20, 18, 15, 0.35);
+    background: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 6px 24px -8px rgba(0, 0, 0, 0.15);
+    isolation: isolate;
+  }
+
+  /* All images stacked; only .is-active is fully visible.
+     Base state = hidden with a transition-specific starting transform,
+     so when an image loses .is-active it settles back to hidden with
+     an exit animation and the incoming .is-active plays its enter
+     animation. */
+  .cta-frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition:
+      opacity var(--frame-dur, 700ms) ease,
+      transform var(--frame-dur, 700ms) ease,
+      filter    var(--frame-dur, 700ms) ease,
+      clip-path var(--frame-dur, 700ms) ease;
+    backface-visibility: hidden;
+    will-change: opacity, transform, filter;
+  }
+
+  .cta-frame img.is-active {
+    opacity: 1;
+    z-index: 2;
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* ─── Transition variants ─────────────────────────────────────
+     Non-active images sit at their "hidden" state. When .is-active
+     is added, they animate to the neutral state above. When removed,
+     they animate back to the hidden state below (the visual "exit"). */
+
+  .cta-frame[data-transition='fade'] img {
+    /* pure opacity — no transform */
+  }
+
+  .cta-frame[data-transition='slide-left']  img { transform: translateX(-30%); }
+  .cta-frame[data-transition='slide-right'] img { transform: translateX(30%); }
+  .cta-frame[data-transition='slide-up']    img { transform: translateY(30%); }
+  .cta-frame[data-transition='slide-down']  img { transform: translateY(-30%); }
+
+  .cta-frame[data-transition='zoom-in'] img {
+    transform: scale(0.75);
+  }
+
+  .cta-frame[data-transition='flip'] {
+    perspective: 800px;
+  }
+  .cta-frame[data-transition='flip'] img {
+    transform: rotateY(90deg);
+    transform-origin: center;
+  }
+
+  .cta-frame[data-transition='blur'] img {
+    filter: blur(14px);
+    transform: scale(1.05);
+  }
+
+  .cta-frame[data-transition='swipe'] img {
+    clip-path: inset(0 100% 0 0);
+  }
+  .cta-frame[data-transition='swipe'] img.is-active {
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* Honor reduced motion — snap between images, no fancy transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .cta-frame img {
+      transition: opacity 1ms linear;
+      transform: none !important;
+      filter: none !important;
+      clip-path: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Cycle images inside each frame per its own interval + start delay.
+  // Each frame is independent, so they cross-fade / slide / flip out of
+  // sync — that's what creates the layered, alive visual effect.
+  const frames = document.querySelectorAll<HTMLElement>('[data-cta-frame]');
+  frames.forEach((frame) => {
+    const imgs = Array.from(frame.querySelectorAll<HTMLImageElement>('img'));
+    if (imgs.length < 2) return;
+
+    const interval = Number(frame.dataset.interval) || 4000;
+    const delay = Number(frame.dataset.startDelay) || 0;
+    let idx = 0;
+
+    const step = () => {
+      const cur = imgs[idx];
+      idx = (idx + 1) % imgs.length;
+      const next = imgs[idx];
+      cur.classList.remove('is-active');
+      next.classList.add('is-active');
+    };
+
+    // Stagger each frame's first flip via startDelay so all frames
+    // don't fire on the exact same beat.
+    setTimeout(() => {
+      step();
+      setInterval(step, interval);
+    }, delay + interval);
+  });
+</script>
