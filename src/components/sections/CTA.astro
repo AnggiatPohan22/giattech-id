@@ -13,7 +13,7 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
 >
   <div class="container-page">
     <div
-      class="cta-card relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-10 md:p-16 lg:p-20"
+      class="cta-card relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-6 sm:p-8 md:p-16 lg:p-20"
     >
       <!-- Soft brand-tinted glow behind everything -->
       <div
@@ -27,10 +27,13 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
 
       <!-- Behind-the-scenes frame gallery — each frame cycles 2–3 images
            with its own transition type; positioned & tilted individually
-           via data (src/data/cta.ts). Sits BEHIND the CTA content (z-0). -->
+           via data (src/data/cta.ts). Sits BEHIND the CTA content (z-0).
+           Hidden below md (768px): on mobile the card is too narrow for
+           the frames to sit anywhere without colliding with the heading /
+           description / buttons, so we drop them for a clean read. -->
       <div
         aria-hidden="true"
-        class="pointer-events-none absolute inset-0 z-0"
+        class="pointer-events-none absolute inset-0 z-0 hidden md:block"
       >
         {
           frames.map((frame) => {
