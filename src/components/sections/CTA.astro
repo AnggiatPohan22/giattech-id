@@ -14,7 +14,6 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
   <div class="container-page">
     <div
       class="cta-card relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-10 md:p-16 lg:p-20"
-      data-animate="fade-up"
     >
       <!-- Soft brand-tinted glow behind everything -->
       <div
@@ -71,10 +70,13 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
         }
       </div>
 
-      <!-- CTA content (on top of frames) -->
+      <!-- CTA content (on top of frames) — each item marked data-cta-in
+           gets a fade+slide in/out animation via initCtaScroll. Items
+           are ordered top-to-bottom so the wave stagger reads naturally. -->
       <div class="relative z-10 flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
         <span
           aria-hidden={logo ? 'true' : undefined}
+          data-cta-in
           class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display text-2xl font-bold overflow-hidden"
         >
           {
@@ -95,16 +97,16 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
         </span>
 
         <div class="flex flex-col gap-5">
-          <span class="text-eyebrow">{eyebrow}</span>
-          <h2 class="text-h2 font-display font-bold leading-tight">
+          <span data-cta-in class="text-eyebrow">{eyebrow}</span>
+          <h2 data-cta-in class="text-h2 font-display font-bold leading-tight">
             {heading}
           </h2>
-          <p class="text-body text-[color:var(--color-text-muted)] max-w-lg mx-auto">
+          <p data-cta-in class="text-body text-[color:var(--color-text-muted)] max-w-lg mx-auto">
             {description}
           </p>
         </div>
 
-        <div class="flex flex-wrap items-center justify-center gap-3">
+        <div data-cta-in class="flex flex-wrap items-center justify-center gap-3">
           <Button href={primaryCta.href} variant="primary" size="lg" pill>
             {primaryCta.label}
           </Button>
@@ -113,7 +115,7 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
           </Button>
         </div>
 
-        <p class="text-xs text-[color:var(--color-text-subtle)]">
+        <p data-cta-in class="text-xs text-[color:var(--color-text-subtle)]">
           {footnote}
         </p>
       </div>

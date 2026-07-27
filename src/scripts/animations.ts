@@ -20,6 +20,7 @@ async function boot() {
   initWorkScroll(gsap);
   initAboutPath(gsap);
   initWordScrub(gsap);
+  initCtaScroll(gsap);
   initScrollAnimations(gsap);
 
   // Refresh recomputes every trigger; run it BEFORE the hero entrance so
@@ -281,6 +282,77 @@ function initWorkScroll(gsap: Gsap) {
     });
 
     return () => gsap.set(track, { x: 0 });
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* CTA: seamless IN / OUT on section enter / leave                     */
+/* ------------------------------------------------------------------ */
+/*
+ * Every marked content item and every decorative frame gets a tween
+ * bound to the CTA section's ScrollTrigger. `toggleActions: 'play
+ * reverse play reverse'` means:
+ *   - onEnter        (scroll down INTO section)  → play IN
+ *   - onLeave        (scroll down PAST section)  → reverse (OUT)
+ *   - onEnterBack    (scroll up back INTO)       → play IN
+ *   - onLeaveBack    (scroll up above section)   → reverse (OUT)
+ * so the section fades in AND out symmetrically both directions —
+ * no dead one-shot animations.
+ *
+ * Content: fade + slide-up with per-item stagger, power3 ease.
+ * Frames:  scale up + fade with a back-ease "settle", per-frame
+ *          stagger. Each frame's resting opacity (0.55 for the soft
+ *          center overlay, 1 for the rest) is preserved so we don't
+ *          override the intentional translucency.
+ */
+function initCtaScroll(gsap: Gsap) {
+  const section = document.getElementById('cta');
+  if (!section) return;
+
+  const contentItems = section.querySelectorAll<HTMLElement>('[data-cta-in]');
+  contentItems.forEach((el, i) => {
+    gsap.fromTo(
+      el,
+      { opacity: 0, y: 50 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.75,
+        ease: 'power3.out',
+        delay: i * 0.08,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 78%',
+          end: 'bottom 22%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
+  });
+
+  const frames = section.querySelectorAll<HTMLElement>('.cta-frame');
+  frames.forEach((frame, i) => {
+    // Some frames set opacity < 1 as a soft overlay; respect that as
+    // the tween's target so we don't accidentally normalise everything
+    // to opacity 1.
+    const restingOpacity = Number.parseFloat(frame.style.opacity) || 1;
+    gsap.fromTo(
+      frame,
+      { opacity: 0, scale: 0.55 },
+      {
+        opacity: restingOpacity,
+        scale: 1,
+        duration: 0.9,
+        ease: 'back.out(1.4)',
+        delay: 0.12 + i * 0.07,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 85%',
+          end: 'bottom 15%',
+          toggleActions: 'play reverse play reverse',
+        },
+      }
+    );
   });
 }
 
