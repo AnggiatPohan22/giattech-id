@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice">
+  <rect width="480" height="320" fill="#f8fafc"/>
+
+  <!-- Sidebar -->
+  <rect width="88" height="320" fill="#0f172a"/>
+  <rect x="14" y="18" width="60" height="10" rx="2" fill="#3b82f6"/>
+  <g fill="#334155">
+    <rect x="14" y="52" width="60" height="6" rx="2"/>
+    <rect x="14" y="70" width="46" height="6" rx="2"/>
+    <rect x="14" y="88" width="52" height="6" rx="2"/>
+    <rect x="14" y="106" width="40" height="6" rx="2"/>
+    <rect x="14" y="124" width="50" height="6" rx="2"/>
+  </g>
+  <rect x="8" y="82" width="72" height="16" rx="4" fill="#1e293b"/>
+  <rect x="14" y="88" width="46" height="6" rx="2" fill="#e2e8f0"/>
+
+  <!-- Top bar -->
+  <rect x="88" y="0" width="392" height="40" fill="#ffffff"/>
+  <rect x="104" y="12" width="120" height="16" rx="8" fill="#f1f5f9"/>
+  <circle cx="440" cy="20" r="12" fill="#3b82f6"/>
+  <text x="440" y="24" font-family="ui-sans-serif" font-size="10" font-weight="700" fill="#ffffff" text-anchor="middle">GT</text>
+
+  <!-- KPI cards -->
+  <g>
+    <rect x="104" y="56" width="112" height="64" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="116" y="76" font-family="ui-sans-serif" font-size="8" fill="#64748b">REVENUE</text>
+    <text x="116" y="98" font-family="ui-sans-serif" font-size="18" font-weight="800" fill="#0f172a">$48.2K</text>
+    <text x="116" y="112" font-family="ui-sans-serif" font-size="8" fill="#16a34a">▲ 12.4%</text>
+  </g>
+  <g>
+    <rect x="228" y="56" width="112" height="64" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="240" y="76" font-family="ui-sans-serif" font-size="8" fill="#64748b">BOOKINGS</text>
+    <text x="240" y="98" font-family="ui-sans-serif" font-size="18" font-weight="800" fill="#0f172a">327</text>
+    <text x="240" y="112" font-family="ui-sans-serif" font-size="8" fill="#16a34a">▲ 8.1%</text>
+  </g>
+  <g>
+    <rect x="352" y="56" width="112" height="64" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+    <text x="364" y="76" font-family="ui-sans-serif" font-size="8" fill="#64748b">OCCUPANCY</text>
+    <text x="364" y="98" font-family="ui-sans-serif" font-size="18" font-weight="800" fill="#0f172a">87%</text>
+    <text x="364" y="112" font-family="ui-sans-serif" font-size="8" fill="#dc2626">▼ 2.1%</text>
+  </g>
+
+  <!-- Chart -->
+  <rect x="104" y="136" width="360" height="164" rx="10" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="116" y="156" font-family="ui-sans-serif" font-size="9" font-weight="600" fill="#0f172a">Monthly Revenue</text>
+
+  <!-- Bars -->
+  <g fill="#3b82f6">
+    <rect x="120" y="230" width="20" height="50" rx="2"/>
+    <rect x="152" y="210" width="20" height="70" rx="2"/>
+    <rect x="184" y="220" width="20" height="60" rx="2"/>
+    <rect x="216" y="188" width="20" height="92" rx="2"/>
+    <rect x="248" y="200" width="20" height="80" rx="2"/>
+    <rect x="280" y="170" width="20" height="110" rx="2"/>
+    <rect x="312" y="180" width="20" height="100" rx="2"/>
+    <rect x="344" y="158" width="20" height="122" rx="2"/>
+    <rect x="376" y="148" width="20" height="132" rx="2"/>
+    <rect x="408" y="176" width="20" height="104" rx="2"/>
+  </g>
+  <g fill="#60a5fa" opacity="0.5">
+    <rect x="120" y="245" width="20" height="35" rx="2"/>
+    <rect x="152" y="235" width="20" height="45" rx="2"/>
+    <rect x="184" y="240" width="20" height="40" rx="2"/>
+    <rect x="216" y="220" width="20" height="60" rx="2"/>
+    <rect x="248" y="230" width="20" height="50" rx="2"/>
+    <rect x="280" y="210" width="20" height="70" rx="2"/>
+    <rect x="312" y="215" width="20" height="65" rx="2"/>
+    <rect x="344" y="195" width="20" height="85" rx="2"/>
+    <rect x="376" y="185" width="20" height="95" rx="2"/>
+    <rect x="408" y="205" width="20" height="75" rx="2"/>
+  </g>
+</svg>

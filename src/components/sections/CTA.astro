@@ -122,14 +122,15 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
 </section>
 
 <style>
-  /* ─── Frame container ───────────────────────────────────────── */
+  /* ─── Frame container ─────────────────────────────────────────
+     No border and no background — the SVG image is the whole thing.
+     Rounded corners give the "printed photo" feel, and a very soft
+     shadow keeps images seated on the surface without a visible frame. */
   .cta-frame {
     position: absolute;
     overflow: hidden;
-    border-radius: 6px;
-    border: 2px solid rgba(20, 18, 15, 0.35);
-    background: rgba(255, 255, 255, 0.4);
-    box-shadow: 0 6px 24px -8px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    box-shadow: 0 10px 30px -14px rgba(20, 18, 15, 0.35);
     isolation: isolate;
   }
 

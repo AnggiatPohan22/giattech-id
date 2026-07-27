@@ -94,100 +94,100 @@ export const ctaContent: CtaContent = {
   footnote: 'Reply within 1 business day · Free discovery call · No pressure',
 
   frames: [
-    // Top-left horizontal card
+    // Top-left — showcases full-stack development (code → dashboard → live site)
     {
       images: [
-        '/images/cta/bts-1a.jpg',
-        '/images/cta/bts-1b.jpg',
-        '/images/cta/bts-1c.jpg',
+        '/images/cta/bts-code.svg',
+        '/images/cta/bts-dashboard.svg',
+        '/images/cta/bts-website.svg',
       ],
       transition: 'fade',
       interval: 4200,
       duration: 700,
       startDelay: 0,
       position: { top: '8%', left: '4%' },
-      width: '190px',
-      height: '120px',
+      width: '210px',
+      height: '140px',
       rotation: -8,
     },
-    // Top-right bigger card
+    // Top-right — devops & mobile
     {
-      images: ['/images/cta/bts-2a.jpg', '/images/cta/bts-2b.jpg'],
+      images: ['/images/cta/bts-terminal.svg', '/images/cta/bts-mobile.svg'],
       transition: 'slide-right',
       interval: 5000,
       duration: 800,
       startDelay: 700,
       position: { top: '3%', right: '5%' },
-      width: '230px',
-      height: '145px',
+      width: '240px',
+      height: '160px',
       rotation: 14,
     },
-    // Middle-right medium card
+    // Middle-right — OTA / design / performance trilogy
     {
       images: [
-        '/images/cta/bts-3a.jpg',
-        '/images/cta/bts-3b.jpg',
-        '/images/cta/bts-3c.jpg',
+        '/images/cta/bts-booking.svg',
+        '/images/cta/bts-wireframe.svg',
+        '/images/cta/bts-lighthouse.svg',
       ],
       transition: 'zoom-in',
       interval: 4600,
       duration: 750,
       startDelay: 1400,
-      position: { top: '38%', right: '2%' },
-      width: '175px',
-      height: '135px',
+      position: { top: '40%', right: '2%' },
+      width: '195px',
+      height: '145px',
       rotation: -6,
     },
-    // Middle-left tall-ish
+    // Middle-left — mobile <-> dashboard blur crossfade
     {
-      images: ['/images/cta/bts-4a.jpg', '/images/cta/bts-4b.jpg'],
+      images: ['/images/cta/bts-mobile.svg', '/images/cta/bts-dashboard.svg'],
       transition: 'blur',
       interval: 5400,
       duration: 900,
       startDelay: 2100,
       position: { top: '32%', left: '1%' },
-      width: '150px',
-      height: '175px',
+      width: '165px',
+      height: '190px',
       rotation: 5,
     },
-    // Bottom-left tilted
+    // Bottom-left tilted — perf story (score → code → deploy)
     {
       images: [
-        '/images/cta/bts-5a.jpg',
-        '/images/cta/bts-5b.jpg',
-        '/images/cta/bts-5c.jpg',
+        '/images/cta/bts-lighthouse.svg',
+        '/images/cta/bts-code.svg',
+        '/images/cta/bts-terminal.svg',
       ],
       transition: 'flip',
       interval: 4800,
       duration: 800,
       startDelay: 2800,
       position: { bottom: '4%', left: '6%' },
-      width: '210px',
-      height: '135px',
+      width: '225px',
+      height: '150px',
       rotation: -12,
     },
-    // Bottom-right small
+    // Bottom-right — villa OTA end-to-end
     {
-      images: ['/images/cta/bts-6a.jpg', '/images/cta/bts-6b.jpg'],
+      images: ['/images/cta/bts-website.svg', '/images/cta/bts-booking.svg'],
       transition: 'slide-up',
       interval: 4400,
       duration: 700,
       startDelay: 3500,
       position: { bottom: '6%', right: '8%' },
-      width: '180px',
-      height: '120px',
+      width: '200px',
+      height: '135px',
       rotation: 8,
     },
-    // Middle overlap (peeking behind CTA content)
+    // Center peek — soft overlay behind the CTA content
     {
-      images: ['/images/cta/bts-7a.jpg', '/images/cta/bts-7b.jpg'],
+      images: ['/images/cta/bts-wireframe.svg', '/images/cta/bts-dashboard.svg'],
       transition: 'swipe',
       interval: 5200,
       duration: 850,
       startDelay: 4200,
       position: { top: '52%', left: '52%' },
-      width: '160px',
-      height: '110px',
+      width: '170px',
+      height: '120px',
       rotation: -4,
       opacity: 0.55,
     },
