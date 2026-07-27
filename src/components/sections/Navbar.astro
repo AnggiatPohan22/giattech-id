@@ -4,15 +4,37 @@ import { navLinks, primaryCta } from '../../data/navigation';
 ---
 
 <header
-  x-data="{ scrolled: false, mobileOpen: false }"
-  x-init="scrolled = window.scrollY > 50;
-          window.addEventListener('scroll', () => scrolled = window.scrollY > 50, { passive: true });
+  x-data="{
+    scrolled: false,
+    mobileOpen: false,
+    theme: 'light',
+    updateTheme() {
+      const probe = 40;
+      const sections = document.querySelectorAll('[data-theme]');
+      let match = null;
+      for (const el of sections) {
+        const r = el.getBoundingClientRect();
+        if (r.top <= probe && r.bottom > probe) { match = el; break; }
+      }
+      if (!match) {
+        for (const el of sections) {
+          if (el.getBoundingClientRect().top <= probe) match = el;
+        }
+      }
+      const t = match && match.getAttribute('data-theme');
+      if (t && this.theme !== t) this.theme = t;
+    }
+  }"
+  x-init="updateTheme();
+          scrolled = window.scrollY > 50;
+          const onScroll = () => { scrolled = window.scrollY > 50; updateTheme(); };
+          window.addEventListener('scroll', onScroll, { passive: true });
+          window.addEventListener('resize', onScroll);
           window.addEventListener('hashchange', () => mobileOpen = false);
           $watch('mobileOpen', v => document.body.style.overflow = v ? 'hidden' : '')"
-  x-bind:class="scrolled
-    ? 'bg-[color:var(--color-bg)]/80 backdrop-blur-md border-b border-[color:var(--color-border)]'
-    : 'bg-transparent border-b border-transparent'"
-  class="lg:hidden fixed top-0 inset-x-0 z-50 transition-colors duration-300"
+  x-bind:data-nav-theme="theme"
+  x-bind:class="scrolled || mobileOpen ? 'nav-solid' : 'nav-glass'"
+  class="nav-shell lg:hidden fixed top-0 inset-x-0 z-50 transition-colors duration-300"
 >
   <div class="container-page flex items-center justify-between h-16 md:h-[var(--nav-height)]">
     <a

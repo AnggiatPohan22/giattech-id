@@ -9,18 +9,18 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   data-theme="light"
   class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
 >
-  <!-- Giant background brand word. On mobile it becomes an oversized
-       hero anchor (~55vw) instead of a small header decoration —
-       reads as a statement piece rather than a stray word behind the
-       navbar. Overflow:hidden on the section keeps the sides clean. -->
+  <!-- Giant background brand word. On mobile the word is split at its
+       midpoint into two stacked lines ("GI" / "AT") so it reads as a
+       hero anchor rather than one wide word bleeding off both edges.
+       md+ hides the <br> so it renders as a single line "GIAT" again. -->
   <div
     aria-hidden="true"
-    class="hero-giant absolute lg:fixed inset-x-0 top-[10svh] md:top-[6svh] flex justify-center pointer-events-none select-none z-0"
+    class="hero-giant absolute lg:fixed inset-x-0 top-[20svh] md:top-[6svh] flex justify-center pointer-events-none select-none z-0"
   >
     <span
-      class="font-display font-extrabold leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-[clamp(9rem,55vw,38rem)]"
+      class="font-display font-extrabold leading-[0.82] md:leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-center text-[clamp(5rem,42vw,9rem)] md:text-[clamp(9rem,55vw,38rem)]"
     >
-      {hero.brandWord}
+      {hero.brandWord.slice(0, Math.ceil(hero.brandWord.length / 2))}<br class="md:hidden" />{hero.brandWord.slice(Math.ceil(hero.brandWord.length / 2))}
     </span>
   </div>
 

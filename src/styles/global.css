@@ -175,6 +175,52 @@
 }
 
 /* ============================================================
+   NAVBAR — Adaptive glass bar (mobile / tablet only, lg:hidden)
+   Re-declares the section theme tokens scoped to itself, so
+   text/border/bg inside the header always read against the
+   section currently behind it. A tiny JS controller updates
+   [data-nav-theme] on scroll.
+   ============================================================ */
+.nav-shell[data-nav-theme='light'] {
+  --color-bg:            #E5E0D1;
+  --color-surface:       rgba(255, 255, 255, 0.55);
+  --color-border:        rgba(20, 18, 15, 0.10);
+  --color-border-light:  rgba(20, 18, 15, 0.20);
+  --color-text:          #14120F;
+  --color-text-muted:    #5A564E;
+}
+.nav-shell[data-nav-theme='dark'] {
+  --color-bg:            #0B0B0B;
+  --color-surface:       #141414;
+  --color-border:        #1F1F1F;
+  --color-border-light:  #2A2A2A;
+  --color-text:          #F5F5F4;
+  --color-text-muted:    #A8A29E;
+}
+/* Glass state: always a subtle translucent bar with backdrop-blur so
+   text stays legible even when the section behind is roughly the same
+   tone. Never fully transparent — that's what caused the "menu text
+   not visible" issue at the top of the page. */
+.nav-shell {
+  background: color-mix(in oklab, var(--color-bg) 45%, transparent);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.nav-shell.nav-solid {
+  background: color-mix(in oklab, var(--color-bg) 90%, transparent);
+  border-bottom-color: var(--color-border);
+}
+/* Fallback for browsers without color-mix — uses the section-light /
+   section-dark colours at the same opacity. */
+@supports not (background: color-mix(in oklab, red, blue)) {
+  .nav-shell[data-nav-theme='light']            { background: rgba(229, 224, 209, 0.45); }
+  .nav-shell[data-nav-theme='light'].nav-solid  { background: rgba(229, 224, 209, 0.90); }
+  .nav-shell[data-nav-theme='dark']             { background: rgba(11,  11,  11,  0.45); }
+  .nav-shell[data-nav-theme='dark'].nav-solid   { background: rgba(11,  11,  11,  0.90); }
+}
+
+/* ============================================================
    SIDEBAR — Floating card blocks + dual-tone adaptive system
    ============================================================ */
 /* ---------- TOKENS: LIGHT MODE ----------
