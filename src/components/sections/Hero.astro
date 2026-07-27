@@ -9,13 +9,16 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   data-theme="light"
   class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
 >
-  <!-- Giant background brand word -->
+  <!-- Giant background brand word. On mobile it becomes an oversized
+       hero anchor (~55vw) instead of a small header decoration —
+       reads as a statement piece rather than a stray word behind the
+       navbar. Overflow:hidden on the section keeps the sides clean. -->
   <div
     aria-hidden="true"
-    class="hero-giant absolute lg:fixed inset-x-0 top-[6svh] flex justify-center pointer-events-none select-none z-0"
+    class="hero-giant absolute lg:fixed inset-x-0 top-[10svh] md:top-[6svh] flex justify-center pointer-events-none select-none z-0"
   >
     <span
-      class="font-display font-extrabold leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-[clamp(7rem,32vw,38rem)]"
+      class="font-display font-extrabold leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-[clamp(9rem,55vw,38rem)]"
     >
       {hero.brandWord}
     </span>
