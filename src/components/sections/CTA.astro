@@ -164,41 +164,41 @@ const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote,
   }
 
   /* ─── Transition variants ─────────────────────────────────────
-     Non-active images sit at their "hidden" state. When .is-active
-     is added, they animate to the neutral state above. When removed,
-     they animate back to the hidden state below (the visual "exit"). */
+     The from-state is applied ONLY to non-active images via
+     :not(.is-active) — that way it can't override the neutral
+     .is-active state via cascade order (both selectors otherwise
+     tie on specificity, and the transition rule wins by ordering,
+     which was making blur frames stay blurry, flip frames go
+     invisible, and slide/zoom frames stay off-center). */
 
-  .cta-frame[data-transition='fade'] img {
-    /* pure opacity — no transform */
+  .cta-frame[data-transition='fade'] img:not(.is-active) {
+    /* pure opacity — no transform needed */
   }
 
-  .cta-frame[data-transition='slide-left']  img { transform: translateX(-30%); }
-  .cta-frame[data-transition='slide-right'] img { transform: translateX(30%); }
-  .cta-frame[data-transition='slide-up']    img { transform: translateY(30%); }
-  .cta-frame[data-transition='slide-down']  img { transform: translateY(-30%); }
+  .cta-frame[data-transition='slide-left']  img:not(.is-active) { transform: translateX(-30%); }
+  .cta-frame[data-transition='slide-right'] img:not(.is-active) { transform: translateX(30%); }
+  .cta-frame[data-transition='slide-up']    img:not(.is-active) { transform: translateY(30%); }
+  .cta-frame[data-transition='slide-down']  img:not(.is-active) { transform: translateY(-30%); }
 
-  .cta-frame[data-transition='zoom-in'] img {
+  .cta-frame[data-transition='zoom-in'] img:not(.is-active) {
     transform: scale(0.75);
   }
 
   .cta-frame[data-transition='flip'] {
     perspective: 800px;
   }
-  .cta-frame[data-transition='flip'] img {
+  .cta-frame[data-transition='flip'] img:not(.is-active) {
     transform: rotateY(90deg);
     transform-origin: center;
   }
 
-  .cta-frame[data-transition='blur'] img {
+  .cta-frame[data-transition='blur'] img:not(.is-active) {
     filter: blur(14px);
     transform: scale(1.05);
   }
 
-  .cta-frame[data-transition='swipe'] img {
+  .cta-frame[data-transition='swipe'] img:not(.is-active) {
     clip-path: inset(0 100% 0 0);
-  }
-  .cta-frame[data-transition='swipe'] img.is-active {
-    clip-path: inset(0 0 0 0);
   }
 
   /* Honor reduced motion — snap between images, no fancy transitions */
