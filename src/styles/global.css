@@ -63,6 +63,15 @@
     -webkit-text-size-adjust: 100%;
   }
 
+  /* CTA anchor lands with the section's own top padding as breathing
+     room — no strip of the previous (dark FAQ) section peeking behind
+     the mobile navbar. scroll-margin-top negates the html-level
+     scroll-padding-top so #cta lines up at viewport Y = 0, then the
+     section-y padding-top provides the visual gap above the card. */
+  #cta {
+    scroll-margin-top: calc(var(--nav-height) * -1);
+  }
+
   body {
     font-family: var(--font-body);
     background-color: var(--color-bg);
