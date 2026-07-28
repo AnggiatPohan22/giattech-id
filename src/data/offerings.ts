@@ -15,7 +15,7 @@ export const offerings: Offering[] = [
     tagline:
       'Custom marketing sites, dashboards, and Laravel applications engineered around your workflow — not a template.',
     bullets: [
-      'Astro / Laravel / TypeScript stack',
+      'Astro / Laravel / Node or React / Vue',
       'CMS + admin panels',
       '95+ Lighthouse scores',
     ],
@@ -26,20 +26,20 @@ export const offerings: Offering[] = [
     tagline:
       'Monthly retainers or on-call fixes for teams that need a reliable technical partner without hiring in-house.',
     bullets: [
-      'Hosting, backups & monitoring',
-      'Bug fixes + small features',
-      'Priority Slack / email response',
+      'Maintenance CCTV or website',
+      'Fix bug network, server, or code issues',
+      'Survey, audit, and recommend improvements',
     ],
   },
   {
     icon: 'sparkle',
     title: 'IT Freelance',
     tagline:
-      'Short-term project bursts — integrations, migrations, audits, or filling a temporary gap in your dev team.',
+      'Short-term freelance work for Backup your IT at villa or hotel, or for your web or mobile app — from code audits to full-stack development.',
     bullets: [
       'Fixed-scope or hourly',
-      'API + payment integrations',
-      'Codebase audits & rescue work',
+      'Manageable, well-documented code',
+      'Freelance contract with NDA and IP assignment',
     ],
   },
   {

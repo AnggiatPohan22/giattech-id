@@ -1,7 +1,7 @@
 ---
 title: Setup Network Segara Seaside Resort
 summary: A real-time control tower for a mid-sized fleet — trip status, driver availability, and cost-per-route on a single screen.
-year: 2026
+year: 2025
 order: 2
 tags:
   - Mikrotik
@@ -10,7 +10,7 @@ tags:
   - Instalation
 role: Network Management
 client: Segara Seaside Resort Ceningan
-thumbnail: /images/projects/prima-logistik.svg
+thumbnail: /images/projects/segara.webp
 accent: ocean
 featured: true
 ---

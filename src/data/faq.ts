@@ -5,24 +5,24 @@ export interface FaqItem {
 
 export const faqs: FaqItem[] = [
   {
-    question: 'What is your typical process from first call to launch?',
+    question: 'What industries do you work with?',
     answer:
-      'A short discovery call, a written scope with milestones, then two-week build cycles with a working preview at the end of each cycle. You get review windows built into the plan, not tacked on at the end. Launch is a small event, not a big one — because staging has already looked exactly like production for weeks.',
+      'We work with a variety of industries, including hospitality, e-commerce, SaaS, and more. Our team has experience in building solutions for different business needs and challenges.',
   },
   {
-    question: 'How is pricing structured?',
+    question: 'Do you provide customized solutions?',
     answer:
-      'Fixed price for defined scopes (Starter Build), monthly retainer for ongoing work, and quotes for anything custom. You always know what a change costs before it happens. No hourly billing surprises at the end of the month.',
+      'Yes, we provide customized solutions tailored to your specific requirements. We work closely with our clients to understand their needs and deliver solutions that meet their goals.',
   },
   {
-    question: 'What technologies do you primarily work with?',
+    question: 'How long does a typical project take?',
     answer:
-      'Laravel and PHP for backend, TypeScript with Astro, Vue, or React on the frontend, Tailwind for styling, and MySQL or PostgreSQL for data. When AI helps the workflow — code review, refactors, doc generation — we lean on it, but every commit is human-reviewed.',
+      'Depending on the complexity and scope of the project, timelines can vary. A simple website may take a few weeks, while a more complex application could take several months. We provide detailed project timelines during the planning phase.',
   },
   {
-    question: 'How many revisions are included?',
+    question: 'What type of websites do you build?',
     answer:
-      'Unlimited revisions inside the agreed scope during the review windows for each milestone. Scope changes are quoted separately so pricing stays honest and predictable for both sides.',
+      'We build a wide range of websites, including marketing sites, e-commerce platforms, content management systems (CMS), and custom web applications. Our team is skilled in various technologies to deliver the best solution for your needs.',
   },
   {
     question: 'What is a typical project timeline?',
@@ -42,6 +42,6 @@ export const faqs: FaqItem[] = [
   {
     question: 'Where are you based and how do you handle timezones?',
     answer:
-      'We are based in Indonesia (UTC+7) but work asynchronously with clients across Asia, Australia, and Europe. Weekly video call, daily written updates, and a shared board — you never have to guess where a project stands.',
+      'We are based in Indonesia (UTC+8) based in Nusa Ceningan Bali',
   },
 ];

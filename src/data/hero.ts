@@ -44,8 +44,8 @@ export const hero: HeroContent = {
     'Working closely with your team to deliver web builds, IT support, and villa OTA management that merge creativity, technical excellence, and long-term value.',
   corner: ['The Web & IT Studio.', "That's Giattech."],
   stats: [
-    { value: 80, suffix: '+', label: 'Projects', logo: '/images/logo-white.png' },
-    { value: 3, suffix: '+', label: 'Years of experience' },
+    { value: 27, suffix: '+', label: 'Projects', logo: '/images/logo-white.png' },
+    { value: 4, suffix: '+', label: 'Years of experience' },
   ],
   ctas: [
     { label: 'Book a Call', href: '#cta', variant: 'primary' },

@@ -11,7 +11,7 @@ tags:
 role: Solo Build
 client: Casa Bambu
 url: https://casabambucantina.com
-thumbnail: /images/projects/kelola-studio.svg
+thumbnail: /images/projects/cbc.webp
 accent: clay
 ---
 

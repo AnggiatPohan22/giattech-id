@@ -22,14 +22,14 @@ export interface SidebarStat {
 }
 
 export const sidebarStats: SidebarStat[] = [
-  { value: 80, suffix: '+', label: 'Projects' },
-  { value: 3, suffix: '+', label: 'Years of<br/>Experience' },
+  { value: 27, suffix: '+', label: 'Projects' },
+  { value: 4, suffix: '+', label: 'Years of<br/>Experience' },
 ];
 
 export const sidebarClients: string[] = [
   'Bintan Prestige',
-  'Prima Logistik',
-  'Kelola Studio',
-  'Rimba Kopi',
-  'Aksara',
+  'Casa Bambu Cantina',
+  'Segara Seaside Resort',
+  'La Kaban',
+  'Gotobintan',
 ];
