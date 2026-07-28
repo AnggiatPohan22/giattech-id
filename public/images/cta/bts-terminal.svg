@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice">
+  <rect width="480" height="320" fill="#0a0a0a"/>
+
+  <!-- Terminal chrome -->
+  <rect width="480" height="28" fill="#151515"/>
+  <circle cx="14" cy="14" r="5" fill="#ff5f56"/>
+  <circle cx="30" cy="14" r="5" fill="#ffbd2e"/>
+  <circle cx="46" cy="14" r="5" fill="#27c93f"/>
+  <text x="240" y="18" font-family="ui-monospace,monospace" font-size="10" fill="#8a877e" text-anchor="middle">ssh giattech@production ~ zsh</text>
+
+  <!-- Body -->
+  <g font-family="ui-monospace,monospace" font-size="10">
+    <!-- deploy command -->
+    <text x="16" y="52" fill="#a6e3a1">giattech@prod</text>
+    <text x="93" y="52" fill="#89b4fa">:~/app</text>
+    <text x="123" y="52" fill="#cdd6f4">$ </text>
+    <text x="132" y="52" fill="#f9e2af">git pull &amp;&amp; php artisan deploy</text>
+
+    <text x="16" y="70" fill="#8a877e">Updating a1b2c3d..d4e5f6a</text>
+    <text x="16" y="84" fill="#8a877e">Fast-forward</text>
+    <text x="16" y="98" fill="#a6e3a1"> 12 files changed, 284 insertions(+), 47 deletions(-)</text>
+
+    <text x="16" y="122" fill="#89dceb">→</text>
+    <text x="28" y="122" fill="#cdd6f4"> composer install --no-dev --optimize-autoloader</text>
+    <text x="16" y="136" fill="#a6e3a1"> ✓ Dependencies installed (2.3s)</text>
+
+    <text x="16" y="156" fill="#89dceb">→</text>
+    <text x="28" y="156" fill="#cdd6f4"> php artisan migrate --force</text>
+    <text x="16" y="170" fill="#a6e3a1"> ✓ 2 migrations ran</text>
+
+    <text x="16" y="190" fill="#89dceb">→</text>
+    <text x="28" y="190" fill="#cdd6f4"> php artisan config:cache route:cache view:cache</text>
+    <text x="16" y="204" fill="#a6e3a1"> ✓ Cached</text>
+
+    <text x="16" y="224" fill="#89dceb">→</text>
+    <text x="28" y="224" fill="#cdd6f4"> php artisan queue:restart</text>
+    <text x="16" y="238" fill="#a6e3a1"> ✓ Queue workers restarted</text>
+
+    <text x="16" y="262" fill="#f9e2af">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</text>
+    <text x="16" y="278" fill="#a6e3a1">✓ Deploy successful · 8.42s · zero downtime</text>
+    <text x="16" y="292" fill="#f9e2af">━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━</text>
+
+    <!-- prompt with caret -->
+    <text x="16" y="310" fill="#a6e3a1">giattech@prod</text>
+    <text x="93" y="310" fill="#89b4fa">:~/app</text>
+    <text x="123" y="310" fill="#cdd6f4">$ </text>
+    <rect x="133" y="301" width="6" height="11" fill="#cdd6f4">
+      <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+    </rect>
+  </g>
+</svg>

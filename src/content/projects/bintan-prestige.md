@@ -1,16 +1,17 @@
 ---
-title: Bintan Prestige — Booking Platform
-summary: A full booking, payment, and dispatch system for a private-island transfer service — replacing three spreadsheets and a WhatsApp inbox.
-year: 2024
+title: Bintan Prestige Transport — Taxy & Tour
+summary: Premium private transport, taxi services, and customized island tours across Bintan. Delivering comfortable, reliable, and hassle-free travel for tourists and business visitors alike.
+year: 2026
 order: 1
 tags:
-  - Laravel
-  - Livewire
-  - MySQL
-  - Payments
+  - Astro
+  - GSAP
+  - Static
+  - Direct WA
 role: Full-Stack Lead
 client: Bintan Prestige
-url: https://bintanprestige.com
+url: https://bintanprestigetransport.com
+thumbnail: /images/projects/bintan-prestige.webp
 accent: ocean
 featured: true
 ---

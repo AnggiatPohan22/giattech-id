@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 760" width="600" height="760" role="img" aria-label="Placeholder portrait">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#232323"/>
+      <stop offset="100%" stop-color="#161616"/>
+    </linearGradient>
+    <linearGradient id="head" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#2c2c2c"/>
+      <stop offset="100%" stop-color="#1d1d1d"/>
+    </linearGradient>
+  </defs>
+  <!-- shoulders / torso -->
+  <path fill="url(#body)" d="M300 330c-58 0-92 26-124 52-38 31-70 72-88 130-14 45-22 122-24 248h472c-2-126-10-203-24-248-18-58-50-99-88-130-32-26-66-52-124-52z"/>
+  <!-- neck -->
+  <path fill="url(#head)" d="M262 268h76v96c0 21-17 38-38 38s-38-17-38-38v-96z"/>
+  <!-- head -->
+  <ellipse cx="300" cy="196" rx="92" ry="108" fill="url(#head)"/>
+  <!-- subtle accent rim light -->
+  <path fill="none" stroke="#A3B18A" stroke-opacity="0.28" stroke-width="3" d="M212 214c-4-64 34-122 88-122s92 58 88 122"/>
+  <path fill="none" stroke="#A3B18A" stroke-opacity="0.18" stroke-width="3" d="M92 742c4-118 12-190 25-232 18-57 49-97 86-127"/>
+</svg>

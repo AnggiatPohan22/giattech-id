@@ -16,60 +16,60 @@ export interface AboutContent {
 }
 
 export const about: AboutContent = {
-  eyebrow: 'The Journey',
-  heading: 'How Giattech Got Here',
+  eyebrow: 'Start Small, Grow Big',
+  heading: 'About Giattech (&)<br />The Journey',
   intro:
-    'What started as freelance work between semester breaks turned into a studio that ships Laravel platforms teams actually want to log into.',
+    'Starting out as a freelancer in 2025, I brought a wealth of knowledge built from my college years to my work in the hospitality industry. What followed is better shown than explained.',
   timeline: [
-    {
-      year: '2017',
-      handle: '@giattech',
-      timeLabel: '8 years ago',
-      title: 'First paid project — a coffee shop landing page',
-      short:
-        'Hand-coded HTML, a few PHP includes, and a shared hosting cPanel. It went live on a Friday afternoon and the owner still uses the domain today.',
-      full: 'Learned three lessons that still shape how we work: understand the client before opening the editor, ship the smallest version that solves the actual problem, and set up a proper backup routine before anything else. The site was crude but honest — and it paid for the semester.',
-      tags: ['PHP', 'HTML', 'cPanel'],
-    },
-    {
-      year: '2019',
-      handle: '@giattech',
-      timeLabel: '6 years ago',
-      title: 'Went full-time on Laravel platforms',
-      short:
-        'Left the office job to focus on building admin systems for small businesses — booking apps, inventory dashboards, reservation flows.',
-      full: 'The move from copy-pasting PHP into a proper framework changed everything. Laravel forced good habits: migrations, tested logic, and API-first thinking. Two long-term clients from that year are still on retainer.',
-      tags: ['Laravel', 'MySQL', 'Full-Stack'],
-    },
     {
       year: '2022',
       handle: '@giattech',
-      timeLabel: '3 years ago',
-      title: 'Started shipping headless marketing sites',
+      timeLabel: '4 years ago',
+      title: 'First paid project — Landing page Tour Travel',
       short:
-        'Astro and Tailwind entered the workflow. Client marketing sites went from 65 Lighthouse scores to 95+ overnight.',
-      full: 'Splitting the marketing surface from the Laravel backend meant editors got a clean CMS and visitors got a static site that loads instantly. This is now the default for most new engagements.',
-      tags: ['Astro', 'Tailwind', 'Headless'],
+        'Built using clean PHP, CSS, and JavaScript for lightning-fast load times. Powered by reliable shared hosting with automated cPanel backups for complete peace of mind.',
+      full: 'Optimized for Speed, Simplicity, and ReliabilityA custom-built website engineered for performance and effortless maintenance. By utilizing straightforward PHP, CSS, and JavaScript rather than heavy, bloated frameworks, the site remains lightweight, responsive, and exceptionally fast for visitors on any device. Hosted on an efficient shared hosting environment, it includes automated cPanel maintenance and backup systems to ensure your data stays secure and your site stays online around the clock.',
+      tags: ['PHP', 'HTML', 'cPanel', 'JavaScript', 'SharedHosting'],
+    },
+    {
+      year: '2023',
+      handle: '@giattech',
+      timeLabel: '3 years ago',
+      title: 'Setup Network at outlet restaurant - Lagoi Bay Bintan',
+      short:
+        'Network & CCTV Infrastructure Setup — Lagoi Bay, Bintan Complete network installation and security setup for a restaurant outlet, including cable routing, CCTV with NVR configuration, and dual Ruijie Access Point deployment for seamless Wi-Fi coverage.',
+      full: 'End-to-End Network & Security Solution for Restaurant OutletA comprehensive network and security infrastructure setup for a restaurant outlet, ensuring reliable connectivity and robust surveillance. The project involved meticulous cable routing, installation of CCTV cameras with NVR configuration for real-time monitoring, and deployment of dual Ruijie Access Points to provide seamless Wi-Fi coverage throughout the premises. This setup guarantees a secure and efficient environment for both staff and customers.',
+      tags: ['Network', 'CCTV', 'Security', 'Ruijie', 'AccessPoint', 'Hikvision', 'NVR', 'Wi-Fi'],
     },
     {
       year: '2024',
       handle: '@giattech',
       timeLabel: '2 years ago',
-      title: 'Added GSAP-driven motion to the toolkit',
+      title: 'Build Website for One Of A Kind Resort Bintan',
       short:
-        'Learned to design animation like a system, not decoration. Scroll-triggered reveals, staggered cards, restrained micro-interactions.',
-      full: 'Motion is now part of the design brief, not tacked on at the end. Every animation is gated behind prefers-reduced-motion and profiled for Core Web Vitals — no more heavy libraries breaking the LCP budget.',
-      tags: ['GSAP', 'ScrollTrigger', 'Motion Design'],
+        'Bespoke Resort Website & Booking System — OOAK Resort Bintan End-to-end web development for One Of A Kind Resort Bintan, featuring custom UI/UX design, direct reservation flows, and tailored service modules for luxury island stays.',
+      full: 'Custom Web Development for Luxury Resort ExperienceA complete web development project for One Of A Kind Resort Bintan, focusing on delivering a seamless online experience for potential guests. The website features a custom-designed user interface and user experience, enabling direct reservations and showcasing the resort’s unique offerings. Tailored service modules were implemented to enhance guest interaction and streamline booking processes, ensuring a luxurious and user-friendly digital presence for the resort.',
+      tags: ['Web Development', 'UI/UX Design', 'Booking System', 'Luxury Resort', 'Custom Modules','HospitalityIT'],
+    },
+    {
+      year: '2025',
+      handle: '@giattech',
+      timeLabel: '1 years ago',
+      title: 'First time Freelance IT Support, Website & Network Setup for Small Business',
+      short:
+        'End-to-End IT, Web & Network Infrastructure for Small Business Complete initial IT setup for a growing business—delivering a custom website, structured network configuration, and ongoing IT support to establish a secure, reliable digital foundation.',
+      full: 'Comprehensive IT Solutions for Small Business GrowthA full-service IT support and infrastructure setup for a small business, encompassing the development of a custom website, structured network configuration, and continuous IT support. This project aimed to provide a secure and efficient digital environment, enabling the business to operate smoothly and scale effectively. By integrating tailored IT solutions, the business was equipped with the necessary tools to enhance productivity and customer engagement.',
+      tags: ['IT Support', 'Web Development', 'Network Configuration','Villa Management','Restaurant','Travel Agent'],
     },
     {
       year: '2026',
       handle: '@giattech',
       timeLabel: 'Now',
-      title: 'AI-assisted engineering, human-reviewed shipping',
+      title: 'Merge AI into the workflow for faster delivery without cutting corners',
       short:
-        'Every commit still goes through a human — but reviews, refactors, docs, and boilerplate lean on AI. Faster delivery without cutting corners.',
-      full: 'We use large language models as pair programmers, not autopilots. The result: clients get more of our attention on the parts that matter (architecture, UX decisions, testing) instead of typing out the parts a machine can draft.',
-      tags: ['AI-Assisted', 'Code Review', 'Automation'],
+        'AI-Assisted Development Workflow & Process Optimization Integrated cutting-edge AI tools into the core engineering and design workflow, drastically speeding up project turnaround times while preserving strict quality control and code standards.',
+      full: 'Workflow Optimization with AI Integration for Enhanced EfficiencyA strategic integration of advanced AI tools into the development and design workflow, aimed at accelerating project delivery without compromising on quality. By leveraging AI-assisted coding, design automation, and intelligent project management, the team was able to streamline processes, reduce manual effort, and maintain high standards of code integrity and user experience. This approach not only improved efficiency but also allowed for more innovative solutions to be implemented within tighter deadlines.',
+      tags: ['AI Integration', 'Workflow Optimization', 'Process Automation', 'Quality Control', 'Code Standards'],
     },
   ],
 };

@@ -1,17 +1,18 @@
 ---
-title: Kelola Studio — Headless CMS
+title: Casa Bambu Cantina Restaurant - Lembongan
 summary: A block-based content model powering the studio marketing site plus three portfolio microsites — one editor, four surfaces.
-year: 2024
+year: 2026
 order: 3
 tags:
-  - Astro
-  - Statamic
-  - Tailwind
-  - Editorial
+  - Wordpress
+  - Restaurant
+  - Lembongan 
+  - Mexican
 role: Solo Build
-client: Kelola Studio
-url: https://kelolastudio.example
-accent: stone
+client: Casa Bambu
+url: https://casabambucantina.com
+thumbnail: /images/projects/cbc.webp
+accent: clay
 ---
 
 Marketing team wanted to stop asking a developer for every copy change. Delivered a Statamic-backed CMS wired into an Astro frontend with a component library the editor can compose without breaking layout. Editors ship weekly; the developer is now on features, not fixes.

@@ -1,7 +1,7 @@
 ---
-title: Rimba Kopi — Storefront
-summary: A single-origin coffee brand's DTC storefront — subscription flow, roast calendar, and a story-driven catalog.
-year: 2025
+title: One Of A Kind Resort Bintan
+summary: Performance & Optimization Optimized for fast loading times, full mobile responsiveness, and SEO-friendly structure to boost organic discovery
+year: 2024
 order: 4
 tags:
   - Astro
@@ -10,6 +10,7 @@ tags:
   - GSAP
 role: Design + Build
 client: Rimba Kopi
+thumbnail: /images/projects/ooak.webp
 accent: clay
 ---
 

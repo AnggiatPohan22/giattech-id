@@ -1,16 +1,17 @@
 ---
-title: Prima Logistik — Ops Dashboard
+title: Setup Network Segara Seaside Resort
 summary: A real-time control tower for a mid-sized fleet — trip status, driver availability, and cost-per-route on a single screen.
-year: 2023
+year: 2025
 order: 2
 tags:
-  - Laravel
-  - Vue
-  - PostgreSQL
-  - Realtime
-role: Backend + Frontend
-client: Prima Logistik
-accent: sage
+  - Mikrotik
+  - Network
+  - Ruijie
+  - Instalation
+role: Network Management
+client: Segara Seaside Resort Ceningan
+thumbnail: /images/projects/segara.webp
+accent: ocean
 featured: true
 ---
 

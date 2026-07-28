@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Aksara API Gateway placeholder">
+  <defs>
+    <radialGradient id="g5" cx="50%" cy="15%" r="95%">
+      <stop offset="0%" stop-color="#37452e"/>
+      <stop offset="55%" stop-color="#1b2216"/>
+      <stop offset="100%" stop-color="#0d100a"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g5)"/>
+  <g fill="none" stroke="#A3B18A" stroke-opacity="0.18" stroke-width="2">
+    <path d="M600 140 V 340 M600 340 L300 520 M600 340 L600 520 M600 340 L900 520"/>
+    <rect x="520" y="60" width="160" height="80" rx="14"/>
+    <rect x="220" y="520" width="160" height="80" rx="14"/>
+    <rect x="520" y="520" width="160" height="80" rx="14"/>
+    <rect x="820" y="520" width="160" height="80" rx="14"/>
+  </g>
+  <text x="60" y="820" font-family="Arial, sans-serif" font-size="360" font-weight="800" fill="#A3B18A" fill-opacity="0.14">05</text>
+</svg>

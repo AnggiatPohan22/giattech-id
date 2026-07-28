@@ -14,6 +14,8 @@ const projects = defineCollection({
     client: z.string().optional(),
     url: z.url().optional(),
     thumbnail: z.string().optional(),
+    /** Optional looping background video (mp4/webm) — takes priority over thumbnail */
+    video: z.string().optional(),
     accent: z.enum(['sage', 'stone', 'clay', 'ocean']).default('sage'),
     featured: z.boolean().default(false),
   }),
