@@ -1,0 +1,80 @@
+---
+import SectionHeader from '../ui/SectionHeader.astro';
+import { faqs } from '../../data/faq';
+---
+
+<section
+  id="faq"
+  data-section="faq"
+  data-theme="dark"
+  class="section-dark relative section-y border-b border-[color:var(--color-border)] lg:pl-[356px]"
+>
+  <div class="container-page max-w-4xl">
+    <SectionHeader
+      eyebrow="FAQ"
+      heading="Got Questions?"
+      subtitle="The answers we've written a hundred times over — collected once, honestly."
+    />
+
+    <div
+      class="mt-14 md:mt-16 flex flex-col"
+      x-data="{ active: null }"
+      data-animate="stagger"
+    >
+      {
+        faqs.map((faq, i) => (
+          <div class="border-b border-[color:var(--color-border)]">
+            <h3>
+              <button
+                type="button"
+                @click={`active = active === ${i} ? null : ${i}`}
+                x-bind:aria-expanded={`active === ${i} ? 'true' : 'false'`}
+                aria-controls={`faq-panel-${i}`}
+                id={`faq-question-${i}`}
+                class="w-full flex items-center justify-between gap-6 py-5 md:py-6 text-left transition-colors group"
+              >
+                <span class="text-base md:text-lg font-medium text-[color:var(--color-text)] group-hover:text-[color:var(--color-accent)] transition-colors">
+                  {faq.question}
+                </span>
+                <span
+                  class="shrink-0 inline-flex items-center justify-center w-8 h-8 rounded-full border border-[color:var(--color-border-light)] text-[color:var(--color-accent)] transition-transform duration-300"
+                  x-bind:class={`active === ${i} ? 'rotate-45 bg-[color:var(--color-accent-muted)]' : ''`}
+                  aria-hidden="true"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="14"
+                    height="14"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                </span>
+              </button>
+            </h3>
+
+            <div
+              id={`faq-panel-${i}`}
+              role="region"
+              aria-labelledby={`faq-question-${i}`}
+              class="grid transition-[grid-template-rows] duration-300 ease-out"
+              x-bind:class={`active === ${i} ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'`}
+            >
+              <div class="overflow-hidden">
+                <p class="pb-5 md:pb-6 pr-14 text-[color:var(--color-text-muted)] leading-relaxed">
+                  {faq.answer}
+                </p>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

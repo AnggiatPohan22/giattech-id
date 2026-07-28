@@ -1,0 +1,70 @@
+---
+type Variant = 'primary' | 'outline' | 'ghost';
+type Size = 'sm' | 'md' | 'lg';
+
+interface Props {
+  variant?: Variant;
+  size?: Size;
+  pill?: boolean;
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  disabled?: boolean;
+  external?: boolean;
+  class?: string;
+}
+
+const {
+  variant = 'primary',
+  size = 'md',
+  pill = false,
+  href,
+  type = 'button',
+  disabled = false,
+  external = false,
+  class: className = '',
+} = Astro.props;
+
+const base =
+  'inline-flex items-center justify-center gap-2 font-medium ' +
+  'transition-all duration-300 ease-out ' +
+  'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[color:var(--color-accent)] ' +
+  'disabled:opacity-50 disabled:pointer-events-none';
+
+const variants: Record<Variant, string> = {
+  primary:
+    'bg-[color:var(--color-accent)] text-[#0C0C0C] ' +
+    'hover:bg-[color:var(--color-accent-light)] active:bg-[color:var(--color-accent-dark)]',
+  outline:
+    'border border-[color:var(--color-accent)] text-[color:var(--color-accent)] bg-transparent ' +
+    'hover:bg-[color:var(--color-accent-muted)]',
+  ghost:
+    'text-[color:var(--color-accent)] bg-transparent ' +
+    'hover:bg-[color:var(--color-accent-muted)]',
+};
+
+const sizes: Record<Size, string> = {
+  sm: 'text-sm px-4 py-2',
+  md: 'text-base px-6 py-3',
+  lg: 'text-base px-8 py-4',
+};
+
+const radius = pill ? 'rounded-full' : 'rounded-lg';
+
+const classes = [base, variants[variant], sizes[size], radius, className]
+  .filter(Boolean)
+  .join(' ');
+
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{
+  href ? (
+    <a href={href} class={classes} {...externalAttrs}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled}>
+      <slot />
+    </button>
+  )
+}

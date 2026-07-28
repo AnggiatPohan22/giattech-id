@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice">
+  <rect width="480" height="320" fill="#faf7f2"/>
+
+  <!-- Grid dots -->
+  <defs>
+    <pattern id="grid-dots" x="0" y="0" width="16" height="16" patternUnits="userSpaceOnUse">
+      <circle cx="1" cy="1" r="0.8" fill="#78716c" opacity="0.35"/>
+    </pattern>
+  </defs>
+  <rect width="480" height="320" fill="url(#grid-dots)"/>
+
+  <!-- Sketchy artboard label -->
+  <g font-family="ui-monospace,monospace" font-size="9" fill="#57534e">
+    <text x="20" y="18">artboard · 1440×900 · Wireframe v3</text>
+  </g>
+
+  <!-- Nav bar -->
+  <g stroke="#14120f" stroke-width="1.4" fill="none">
+    <rect x="20" y="30" width="440" height="24" rx="4"/>
+    <rect x="28" y="38" width="42" height="8" rx="2" fill="#14120f"/>
+    <line x1="200" y1="42" x2="230" y2="42"/>
+    <line x1="236" y1="42" x2="266" y2="42"/>
+    <line x1="272" y1="42" x2="302" y2="42"/>
+    <line x1="308" y1="42" x2="338" y2="42"/>
+    <rect x="412" y="35" width="40" height="14" rx="7"/>
+  </g>
+
+  <!-- Hero block -->
+  <g stroke="#14120f" stroke-width="1.4" fill="none">
+    <rect x="20" y="64" width="290" height="120" rx="4"/>
+    <line x1="30" y1="82" x2="180" y2="82" stroke-width="6"/>
+    <line x1="30" y1="98" x2="220" y2="98" stroke-width="6"/>
+    <line x1="30" y1="118" x2="260" y2="118"/>
+    <line x1="30" y1="128" x2="240" y2="128"/>
+    <line x1="30" y1="138" x2="200" y2="138"/>
+    <rect x="30" y="152" width="80" height="20" rx="10" fill="#14120f"/>
+    <rect x="118" y="152" width="80" height="20" rx="10"/>
+  </g>
+
+  <!-- Side hero image placeholder -->
+  <g stroke="#14120f" stroke-width="1.4" fill="none">
+    <rect x="320" y="64" width="140" height="120" rx="4"/>
+    <line x1="320" y1="64" x2="460" y2="184"/>
+    <line x1="460" y1="64" x2="320" y2="184"/>
+  </g>
+
+  <!-- Card grid -->
+  <g stroke="#14120f" stroke-width="1.4" fill="none">
+    <rect x="20"  y="196" width="140" height="102" rx="4"/>
+    <rect x="30"  y="206" width="120" height="60" rx="2"/>
+    <line x1="30" y1="276" x2="120" y2="276" stroke-width="4"/>
+    <line x1="30" y1="286" x2="100" y2="286"/>
+
+    <rect x="170" y="196" width="140" height="102" rx="4"/>
+    <rect x="180" y="206" width="120" height="60" rx="2"/>
+    <line x1="180" y1="276" x2="120" y2="276" stroke-width="4"/>
+    <line x1="180" y1="276" x2="270" y2="276" stroke-width="4"/>
+    <line x1="180" y1="286" x2="240" y2="286"/>
+
+    <rect x="320" y="196" width="140" height="102" rx="4"/>
+    <rect x="330" y="206" width="120" height="60" rx="2"/>
+    <line x1="330" y1="276" x2="420" y2="276" stroke-width="4"/>
+    <line x1="330" y1="286" x2="400" y2="286"/>
+  </g>
+
+  <!-- Callout arrow with note -->
+  <g font-family="ui-monospace,monospace" font-size="8" fill="#dc2626">
+    <path d="M330 88 Q380 60 425 78" stroke="#dc2626" stroke-width="1.4" fill="none" stroke-dasharray="3,3"/>
+    <polygon points="425,78 419,74 420,82" fill="#dc2626"/>
+    <text x="333" y="80">stagger fade</text>
+  </g>
+</svg>

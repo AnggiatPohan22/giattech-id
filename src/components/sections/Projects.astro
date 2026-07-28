@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import ProjectCard from '../ui/ProjectCard.astro';
+
+const projectEntries = (await getCollection('projects')).sort(
+  (a, b) => a.data.order - b.data.order
+);
+---
+
+<section
+  id="projects"
+  data-section="projects"
+  data-theme="dark"
+  class="work-section section-dark relative border-y border-[color:var(--color-border)] overflow-hidden lg:h-screen lg:flex lg:flex-col lg:pl-[356px]"
+>
+  <!-- Header: pill + heading left, intro right -->
+  <div class="container-page pt-20 lg:pt-16 pb-10 lg:pb-8 shrink-0">
+    <div class="grid lg:grid-cols-[1fr_minmax(0,26rem)] gap-8 items-end">
+      <div class="flex flex-col gap-5" data-animate="fade-up">
+        <span class="inline-flex w-fit items-center rounded-full border border-[color:var(--color-border-light)] px-4 py-1.5 text-eyebrow">
+          Selected Work
+        </span>
+        <h2 class="text-h2 font-display font-bold leading-[1.05]">
+          Built in Laravel &amp; Astro,<br />Made to Perform
+        </h2>
+      </div>
+      <p class="text-body text-[color:var(--color-text-muted)] leading-relaxed" data-animate="fade-in">
+        Over Four years we've helped businesses turn their ideas into platforms
+        that look and work exactly how they imagined. Here's a look at some of
+        that work.
+      </p>
+    </div>
+  </div>
+
+  <!-- Card track: pinned horizontal scroll on lg (GSAP), native swipe below -->
+  <div class="work-track-wrap grow min-h-0 pb-14 lg:pb-16">
+    <div
+      class="work-track flex gap-5 lg:gap-6 h-full items-stretch px-5 md:px-8 lg:px-12 overflow-x-auto lg:overflow-x-visible lg:overflow-y-visible snap-x snap-mandatory lg:snap-none"
+    >
+      {
+        projectEntries.map((entry, i) => (
+          <ProjectCard
+            index={i + 1}
+            title={entry.data.title}
+            summary={entry.data.summary}
+            tags={entry.data.tags}
+            year={entry.data.year}
+            url={entry.data.url}
+            thumbnail={entry.data.thumbnail}
+            video={entry.data.video}
+          />
+        ))
+      }
+
+      <!-- End spacer card pointing to CTA -->
+      <a
+        href="#cta"
+        class="shrink-0 snap-start w-[70vw] sm:w-[40vw] lg:w-[24vw] h-[62svh] lg:h-full rounded-3xl border border-dashed border-[color:var(--color-border-light)] grid place-items-center text-center p-8 transition-colors hover:border-[color:var(--color-accent)] group"
+      >
+        <span class="flex flex-col items-center gap-4">
+          <span class="font-display text-2xl font-bold text-[color:var(--color-text)] group-hover:text-[color:var(--color-accent)] transition-colors">
+            Your project<br />next?
+          </span>
+          <span class="inline-flex items-center gap-2 text-sm text-[color:var(--color-accent)]">
+            Let's talk
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12" />
+              <polyline points="12 5 19 12 12 19" />
+            </svg>
+          </span>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>

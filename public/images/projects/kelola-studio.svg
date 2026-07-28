@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 900" width="1200" height="900" role="img" aria-label="Kelola Studio placeholder">
+  <defs>
+    <radialGradient id="g3" cx="30%" cy="75%" r="95%">
+      <stop offset="0%" stop-color="#4a4438"/>
+      <stop offset="55%" stop-color="#242019"/>
+      <stop offset="100%" stop-color="#12100c"/>
+    </radialGradient>
+  </defs>
+  <rect width="1200" height="900" fill="url(#g3)"/>
+  <g fill="none" stroke="#A8A29E" stroke-opacity="0.18" stroke-width="2">
+    <rect x="180" y="160" width="380" height="260" rx="18"/>
+    <rect x="620" y="240" width="420" height="300" rx="18"/>
+    <rect x="320" y="480" width="360" height="240" rx="18"/>
+  </g>
+  <text x="60" y="820" font-family="Arial, sans-serif" font-size="360" font-weight="800" fill="#A8A29E" fill-opacity="0.14">03</text>
+</svg>

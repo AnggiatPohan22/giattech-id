@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 320" preserveAspectRatio="xMidYMid slice">
+  <!-- Editor chrome -->
+  <rect width="480" height="320" fill="#1e1e2e"/>
+  <rect width="480" height="28" fill="#181825"/>
+  <circle cx="14" cy="14" r="5" fill="#f38ba8"/>
+  <circle cx="30" cy="14" r="5" fill="#f9e2af"/>
+  <circle cx="46" cy="14" r="5" fill="#a6e3a1"/>
+  <rect x="70" y="6" width="90" height="16" rx="4" fill="#313244"/>
+  <text x="79" y="17" font-family="ui-monospace,monospace" font-size="9" fill="#cdd6f4">app/Http/Controllers</text>
+
+  <!-- Line numbers gutter -->
+  <rect x="0" y="28" width="30" height="292" fill="#181825"/>
+  <g font-family="ui-monospace,monospace" font-size="9" fill="#6c7086" text-anchor="end">
+    <text x="24" y="52">1</text><text x="24" y="66">2</text><text x="24" y="80">3</text>
+    <text x="24" y="94">4</text><text x="24" y="108">5</text><text x="24" y="122">6</text>
+    <text x="24" y="136">7</text><text x="24" y="150">8</text><text x="24" y="164">9</text>
+    <text x="24" y="178">10</text><text x="24" y="192">11</text><text x="24" y="206">12</text>
+    <text x="24" y="220">13</text><text x="24" y="234">14</text><text x="24" y="248">15</text>
+    <text x="24" y="262">16</text><text x="24" y="276">17</text><text x="24" y="290">18</text>
+    <text x="24" y="304">19</text>
+  </g>
+
+  <!-- Code -->
+  <g font-family="ui-monospace,monospace" font-size="10">
+    <text x="40" y="52" fill="#cba6f7">&lt;?php</text>
+    <text x="40" y="80" fill="#cba6f7">namespace</text><text x="97" y="80" fill="#cdd6f4"> App\Http\Controllers;</text>
+    <text x="40" y="108" fill="#cba6f7">use</text><text x="63" y="108" fill="#cdd6f4"> App\Models\Booking;</text>
+    <text x="40" y="122" fill="#cba6f7">use</text><text x="63" y="122" fill="#cdd6f4"> Illuminate\Http\Request;</text>
+    <text x="40" y="150" fill="#cba6f7">class</text><text x="72" y="150" fill="#89b4fa"> BookingController</text><text x="176" y="150" fill="#cba6f7"> extends</text><text x="221" y="150" fill="#89b4fa"> Controller</text>
+    <text x="40" y="164" fill="#cdd6f4">{</text>
+    <text x="52" y="178" fill="#cba6f7">public function</text><text x="132" y="178" fill="#89dceb"> store</text><text x="164" y="178" fill="#cdd6f4">(</text><text x="170" y="178" fill="#89b4fa">Request</text><text x="209" y="178" fill="#cdd6f4"> $request)</text>
+    <text x="52" y="192" fill="#cdd6f4">{</text>
+    <text x="64" y="206" fill="#cdd6f4">$data = $request-&gt;</text><text x="165" y="206" fill="#89dceb">validate</text><text x="206" y="206" fill="#cdd6f4">([</text>
+    <text x="76" y="220" fill="#a6e3a1">'villa_id'</text><text x="126" y="220" fill="#cdd6f4"> =&gt; </text><text x="150" y="220" fill="#a6e3a1">'required|integer'</text><text x="238" y="220" fill="#cdd6f4">,</text>
+    <text x="76" y="234" fill="#a6e3a1">'check_in'</text><text x="122" y="234" fill="#cdd6f4"> =&gt; </text><text x="146" y="234" fill="#a6e3a1">'required|date'</text><text x="220" y="234" fill="#cdd6f4">,</text>
+    <text x="76" y="248" fill="#a6e3a1">'guests'</text><text x="112" y="248" fill="#cdd6f4"> =&gt; </text><text x="136" y="248" fill="#a6e3a1">'required|min:1'</text><text x="216" y="248" fill="#cdd6f4">,</text>
+    <text x="64" y="262" fill="#cdd6f4">]);</text>
+    <text x="64" y="290" fill="#cba6f7">return</text><text x="99" y="290" fill="#89b4fa"> Booking</text><text x="139" y="290" fill="#cdd6f4">::</text><text x="149" y="290" fill="#89dceb">create</text><text x="181" y="290" fill="#cdd6f4">($data);</text>
+    <text x="52" y="304" fill="#cdd6f4">}</text>
+  </g>
+
+  <!-- Caret -->
+  <rect x="220" y="282" width="1.5" height="12" fill="#cdd6f4">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+</svg>

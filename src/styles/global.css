@@ -1,0 +1,534 @@
+@import "./theme.css";
+@import "tailwindcss";
+
+/* ============================================================
+   THEME — Tailwind v4 tokens exposed via @theme
+   These become utilities: bg-bg, text-accent, font-display, etc.
+   ============================================================ */
+@theme {
+  --font-display: "Outfit Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+
+  --color-bg: #0C0C0C;
+  --color-surface: #141414;
+  --color-surface-hover: #1A1A1A;
+  --color-border: #1F1F1F;
+  --color-border-light: #2A2A2A;
+
+  --color-text: #F5F5F4;
+  --color-text-muted: #A8A29E;
+  --color-text-subtle: #78716C;
+
+  --color-accent: var(--brand);
+  --color-accent-light: var(--brand-light);
+  --color-accent-dark: var(--brand-dark);
+}
+
+/* ============================================================
+   ROOT — non-theme tokens (spacing, type scale, tints)
+   ============================================================ */
+:root {
+  /* Spacing scale */
+  --space-xs:  0.5rem;
+  --space-sm:  1rem;
+  --space-md:  1.5rem;
+  --space-lg:  2rem;
+  --space-xl:  3rem;
+  --space-2xl: 5rem;
+  --space-3xl: 7.5rem;
+
+  /* Fluid type scale */
+  --text-hero:    clamp(2.5rem, 5vw + 1rem, 5rem);
+  --text-h2:      clamp(2rem, 4vw + 0.5rem, 3.5rem);
+  --text-h3:      clamp(1.25rem, 2vw + 0.5rem, 1.75rem);
+  --text-body:    clamp(1rem, 0.5vw + 0.875rem, 1.125rem);
+  --text-small:   0.875rem;
+  --text-eyebrow: 0.75rem;
+
+  /* Muted tint derives from the brand rgb so it swaps too */
+  --color-accent-muted: rgba(var(--brand-rgb), 0.18);
+
+  /* Layout */
+  --nav-height: 80px;
+  --max-content: 1280px;
+}
+
+/* ============================================================
+   BASE — resets & element defaults
+   ============================================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: var(--nav-height);
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* CTA anchor lands with the section's own top padding as breathing
+     room — no strip of the previous (dark FAQ) section peeking behind
+     the mobile navbar. scroll-margin-top negates the html-level
+     scroll-padding-top so #cta lines up at viewport Y = 0, then the
+     section-y padding-top provides the visual gap above the card. */
+  #cta {
+    scroll-margin-top: calc(var(--nav-height) * -1);
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text);
+    font-size: var(--text-body);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.2;
+    color: var(--color-text);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background-color: var(--color-accent-muted);
+    color: var(--color-accent);
+  }
+
+  [x-cloak] {
+    display: none !important;
+  }
+
+  /* Focus ring — visible only for keyboard users */
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+}
+
+/* ============================================================
+   UTILITIES — small helpers layered on top of Tailwind
+   ============================================================ */
+@layer utilities {
+  .text-hero    { font-size: var(--text-hero); line-height: 1.1; }
+  .text-h2      { font-size: var(--text-h2);   line-height: 1.2; }
+  .text-h3      { font-size: var(--text-h3);   line-height: 1.3; }
+  .text-body    { font-size: var(--text-body); }
+  .text-small   { font-size: var(--text-small); }
+  .text-eyebrow {
+    font-size: var(--text-eyebrow);
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .container-page {
+    width: 100%;
+    max-width: var(--max-content);
+    margin-inline: auto;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-page { padding-inline: 2rem; }
+  }
+  @media (min-width: 1024px) {
+    .container-page { padding-inline: 3rem; }
+  }
+
+  .section-y {
+    padding-block: var(--space-2xl);
+  }
+  @media (min-width: 1024px) {
+    .section-y { padding-block: var(--space-3xl); }
+  }
+}
+
+/* ============================================================
+   SECTION THEMES — light and dark, alternating per section
+   Each section sets its own bg + overrides the color tokens so
+   children (headings, cards, borders) adapt automatically.
+   ============================================================ */
+.section-light {
+  --color-bg:            #E5E0D1;
+  --color-surface:       rgba(255, 255, 255, 0.55);
+  --color-surface-hover: rgba(255, 255, 255, 0.75);
+  --color-border:        rgba(20, 18, 15, 0.10);
+  --color-border-light:  rgba(20, 18, 15, 0.20);
+  --color-text:          #14120F;
+  --color-text-muted:    #5A564E;
+  --color-text-subtle:   #8A877E;
+  --color-accent-muted:  rgba(var(--brand-rgb), 0.14);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.section-dark {
+  --color-bg:            #0B0B0B;
+  --color-surface:       #141414;
+  --color-surface-hover: #1A1A1A;
+  --color-border:        #1F1F1F;
+  --color-border-light:  #2A2A2A;
+  --color-text:          #F5F5F4;
+  --color-text-muted:    #A8A29E;
+  --color-text-subtle:   #78716C;
+  --color-accent-muted:  rgba(var(--brand-rgb), 0.18);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ============================================================
+   NAVBAR — Adaptive glass bar (mobile / tablet only, lg:hidden)
+   Re-declares the section theme tokens scoped to itself, so
+   text/border/bg inside the header always read against the
+   section currently behind it. A tiny JS controller updates
+   [data-nav-theme] on scroll.
+   ============================================================ */
+.nav-shell[data-nav-theme='light'] {
+  --color-bg:            #E5E0D1;
+  --color-surface:       rgba(255, 255, 255, 0.55);
+  --color-border:        rgba(20, 18, 15, 0.10);
+  --color-border-light:  rgba(20, 18, 15, 0.20);
+  --color-text:          #14120F;
+  --color-text-muted:    #5A564E;
+}
+.nav-shell[data-nav-theme='dark'] {
+  --color-bg:            #0B0B0B;
+  --color-surface:       #141414;
+  --color-border:        #1F1F1F;
+  --color-border-light:  #2A2A2A;
+  --color-text:          #F5F5F4;
+  --color-text-muted:    #A8A29E;
+}
+/* Glass state: always a subtle translucent bar with backdrop-blur so
+   text stays legible even when the section behind is roughly the same
+   tone. Never fully transparent — that's what caused the "menu text
+   not visible" issue at the top of the page. */
+.nav-shell {
+  background: color-mix(in oklab, var(--color-bg) 45%, transparent);
+  border-bottom: 1px solid transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.nav-shell.nav-solid {
+  background: color-mix(in oklab, var(--color-bg) 90%, transparent);
+  border-bottom-color: var(--color-border);
+}
+/* Fallback for browsers without color-mix — uses the section-light /
+   section-dark colours at the same opacity. */
+@supports not (background: color-mix(in oklab, red, blue)) {
+  .nav-shell[data-nav-theme='light']            { background: rgba(229, 224, 209, 0.45); }
+  .nav-shell[data-nav-theme='light'].nav-solid  { background: rgba(229, 224, 209, 0.90); }
+  .nav-shell[data-nav-theme='dark']             { background: rgba(11,  11,  11,  0.45); }
+  .nav-shell[data-nav-theme='dark'].nav-solid   { background: rgba(11,  11,  11,  0.90); }
+}
+
+/* ============================================================
+   SIDEBAR — Floating card blocks + dual-tone adaptive system
+   ============================================================ */
+/* ---------- TOKENS: LIGHT MODE ----------
+   Applies at the sidebar wrapper (fallback for legacy consumers) AND at
+   any element with data-sb-mode="light" — the per-block observer sets
+   this attribute on each box independently as it crosses light/dark
+   sections, so each box picks its own tone. Nested elements inherit the
+   token from their nearest ancestor with the attribute. */
+.sidebar[data-mode='light'],
+[data-sb-mode='light'] {
+  --sb-card-bg:        rgba(255, 255, 255, 0.72);
+  --sb-card-border:    rgba(0, 0, 0, 0.06);
+  --sb-text:           #1C1C1A;
+  --sb-text-muted:     #57534E;
+  --sb-icon:           #57534E;
+  --sb-divider:        rgba(0, 0, 0, 0.12);
+  --sb-nav-bg:         rgba(255, 255, 255, 0.85);
+  --sb-nav-text:       #1C1C1A;
+  --sb-nav-hover-bg:   #FFFFFF;
+  --sb-accent:         var(--brand);
+  --sb-accent-text:    var(--brand-on);
+  --sb-icon-btn-bg:    #1C1C1A;
+  --sb-icon-btn-text:  #F5F5F4;
+  --sb-input-bg:       rgba(0, 0, 0, 0.045);
+  --sb-input-hover-bg: rgba(0, 0, 0, 0.07);
+}
+/* ---------- TOKENS: DARK MODE ---------- */
+.sidebar[data-mode='dark'],
+[data-sb-mode='dark'] {
+  --sb-card-bg:        rgba(20, 20, 20, 0.82);
+  --sb-card-border:    rgba(255, 255, 255, 0.09);
+  --sb-text:           #F5F5F4;
+  --sb-text-muted:     #A8A29E;
+  --sb-icon:           #A8A29E;
+  --sb-divider:        rgba(255, 255, 255, 0.14);
+  --sb-nav-bg:         rgba(255, 255, 255, 0.08);
+  --sb-nav-text:       #E7E5E4;
+  --sb-nav-hover-bg:   rgba(255, 255, 255, 0.14);
+  --sb-accent:         var(--brand);
+  --sb-accent-text:    var(--brand-on);
+  --sb-icon-btn-bg:    rgba(255, 255, 255, 0.10);
+  --sb-icon-btn-text:  #F5F5F4;
+  --sb-input-bg:       rgba(255, 255, 255, 0.06);
+  --sb-input-hover-bg: rgba(255, 255, 255, 0.10);
+}
+
+.sidebar { scrollbar-width: none; }
+.sidebar::-webkit-scrollbar { display: none; }
+
+/* ---------- CARD BLOCK ---------- */
+.sb-card {
+  background: var(--sb-card-bg);
+  border: 1px solid var(--sb-card-border);
+  border-radius: 20px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: background-color 0.55s ease, border-color 0.55s ease;
+}
+
+/* ---------- LOGO BADGE ---------- */
+.sb-logo-badge {
+  display: inline-block;
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+  padding: 6px 12px;
+  border-radius: 10px;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: -0.02em;
+  transition: color 0.55s ease;
+}
+
+/* ---------- SOCIAL ICON BUTTONS ---------- */
+.sb-icon-btn {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  background: var(--sb-icon-btn-bg);
+  color: var(--sb-icon-btn-text);
+  transition: background-color 0.55s ease, color 0.55s ease,
+              opacity 0.2s ease, transform 0.2s ease;
+}
+.sb-icon-btn:hover { opacity: 0.78; transform: scale(1.05); }
+.sb-icon-btn svg { width: 15px; height: 15px; }
+
+/* ---------- TAGLINE ---------- */
+.sb-tagline {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--sb-text-muted);
+  transition: color 0.55s ease;
+}
+
+/* ---------- STATS ---------- */
+.sb-stat-number {
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 26px;
+  line-height: 1;
+  color: var(--sb-accent);
+}
+.sb-stat-label {
+  margin-top: 4px;
+  font-weight: 700;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  line-height: 1.25;
+  color: var(--sb-text);
+  transition: color 0.55s ease;
+}
+.sb-divider {
+  width: 1px;
+  height: 44px;
+  background: var(--sb-divider);
+  transition: background-color 0.55s ease;
+}
+.sb-stat-logo {
+  width: 22px;
+  height: 22px;
+  margin: 0 auto 4px;
+  object-fit: contain;
+  display: block;
+}
+/* Logo image is white — invert it on light-mode cards so it stays visible.
+   Matches whether the light mode is set on the sidebar wrapper or on the
+   nearest [data-sb-mode='light'] ancestor (per-block observer). */
+.sidebar[data-mode='light'] .sb-stat-logo,
+[data-sb-mode='light'] .sb-stat-logo {
+  filter: invert(1) brightness(0.2);
+}
+
+/* ---------- NAV ITEMS — PILL, WIDTH FIT CONTENT ---------- */
+.sb-nav-item {
+  display: inline-flex;
+  width: auto;
+  align-items: center;
+  gap: 7px;
+  padding: 5px 12px;
+  border-radius: 9px;
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--sb-nav-bg);
+  color: var(--sb-nav-text);
+  transition: background-color 0.35s ease, color 0.35s ease,
+              transform 0.25s ease;
+}
+.sb-nav-item:hover {
+  background: var(--sb-nav-hover-bg);
+  transform: translateX(3px);
+}
+.sb-nav-item.sb-nav-active {
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+}
+.sb-nav-item.sb-nav-active:hover {
+  transform: translateX(3px);
+  filter: brightness(1.04);
+}
+.sb-nav-icon { display: flex; align-items: center; flex-shrink: 0; }
+.sb-nav-icon svg { width: 13px; height: 13px; }
+
+/* ---------- CLIENT MARQUEE ---------- */
+.sb-marquee {
+  overflow: hidden;
+  padding: 4px 0;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent);
+}
+.sb-marquee-track {
+  display: flex;
+  gap: 32px;
+  width: max-content;
+  animation: sb-marquee 22s linear infinite;
+}
+.sb-marquee:hover .sb-marquee-track { animation-play-state: paused; }
+.sb-marquee-item {
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  color: var(--sb-text-muted);
+  opacity: 0.55;
+  transition: color 0.55s ease;
+}
+@keyframes sb-marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ---------- EMAIL PILL ---------- */
+.sb-email-pill {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 9px 12px;
+  border-radius: 12px;
+  background: var(--sb-input-bg);
+  border: 1px solid var(--sb-card-border);
+  color: var(--sb-text-muted);
+  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.35s ease, color 0.55s ease,
+              border-color 0.55s ease;
+}
+.sb-email-pill:hover { background: var(--sb-input-hover-bg); }
+.sb-email-pill svg { color: var(--sb-icon); }
+
+/* ---------- CTA BUTTON ---------- */
+.sb-cta {
+  display: block;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 14px;
+  background: var(--sb-accent);
+  color: var(--sb-accent-text);
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  text-align: center;
+  transition: filter 0.25s ease, transform 0.25s ease,
+              color 0.55s ease;
+}
+.sb-cta:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.sb-cta:active { transform: translateY(0); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sb-marquee-track { animation: none; }
+}
+
+/* ============================================================
+   SIDEBAR LAYOUT — memberi jarak dari sisi viewport
+   ============================================================ */
+.sidebar-wrapper {
+  width: 100%;
+  padding-inline: 0.95rem; /* 12px kiri dan kanan */
+  box-sizing: border-box;
+}
+
+@media (min-width: 480px) {
+  .sidebar-wrapper {
+    padding-inline: 1rem; /* 16px */
+  }
+}
+
+@media (min-width: 1024px) {
+  .sidebar-wrapper {
+    padding-inline: 0;
+  }
+}
+
+/* ============================================================
+   SCROLL EFFECTS — word reveal & living media
+   ============================================================ */
+/* Words start dimmed; GSAP scrubs them to full as the user scrolls */
+.scrub-word {
+  opacity: 0.15;
+}
+
+/* Slow drift on work-card media so images feel alive (videos exempt) */
+@keyframes kenburns {
+  from { transform: scale(1) translate(0, 0); }
+  to   { transform: scale(1.12) translate(-1.5%, 1.5%); }
+}
+.work-media img {
+  animation: kenburns 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+/* Hide native scrollbar on the work track (mobile swipe still works) */
+.work-track {
+  scrollbar-width: none;
+}
+.work-track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ============================================================
+   MOTION — honor user preference
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* No GSAP scrub in reduced motion — words must be fully readable */
+  .scrub-word {
+    opacity: 1;
+  }
+}

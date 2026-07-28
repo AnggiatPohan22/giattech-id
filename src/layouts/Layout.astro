@@ -1,0 +1,111 @@
+---
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import { site, analytics } from '../config/site';
+
+interface Props {
+  /** Override the default `<title>` — e.g. per-page. Defaults to
+   *  `{PUBLIC_SITE_NAME} — {PUBLIC_SITE_TAGLINE}` from .env. */
+  title?: string;
+  description?: string;
+  canonical?: string;
+  ogImage?: string;
+}
+
+const {
+  title = site.title,
+  description = site.description,
+  canonical = site.url,
+  ogImage = site.ogImage,
+} = Astro.props;
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  name: site.name,
+  description,
+  url: canonical,
+  areaServed: 'Indonesia',
+  serviceType: [
+    'Web Application Development',
+    'CMS & Admin Dashboard',
+    'API Development & Integration',
+    'Performance & SEO Optimization',
+  ],
+};
+---
+
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0C0C0C" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="alternate icon" href="/favicon.ico" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={site.name} />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <!-- Structured data -->
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify(structuredData)}
+    />
+
+    {
+      /* Optional analytics — only rendered when a provider is
+         configured in .env. Both providers coexist safely if both
+         are set (rare, but supported). */
+      analytics.gaId && (
+        <>
+          <script
+            is:inline
+            async
+            src={`https://www.googletagmanager.com/gtag/js?id=${analytics.gaId}`}
+          />
+          <script
+            is:inline
+            set:html={`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${analytics.gaId}');`}
+          />
+        </>
+      )
+    }
+    {
+      analytics.plausibleDomain && (
+        <script
+          is:inline
+          defer
+          data-domain={analytics.plausibleDomain}
+          src="https://plausible.io/js/script.js"
+        />
+      )
+    }
+  </head>
+  <body class="min-h-screen antialiased">
+    <slot />
+    <script>
+      import '../scripts/animations';
+      import '../scripts/alpine-init';
+      import '../scripts/sidebar-scroll';
+    </script>
+  </body>
+</html>

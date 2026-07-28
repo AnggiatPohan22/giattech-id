@@ -1,0 +1,248 @@
+---
+import Button from '../ui/Button.astro';
+import { ctaContent } from '../../data/cta';
+
+const { logo, eyebrow, heading, description, primaryCta, secondaryCta, footnote, frames } = ctaContent;
+---
+
+<section
+  id="cta"
+  data-section="cta"
+  data-theme="light"
+  class="section-light relative section-y lg:pl-[356px]"
+>
+  <div class="container-page">
+    <div
+      class="cta-card relative overflow-hidden rounded-3xl border border-[color:var(--color-border-light)] bg-[color:var(--color-surface)] p-6 sm:p-8 md:p-16 lg:p-20"
+    >
+      <!-- Soft brand-tinted glow behind everything -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 opacity-80"
+        style="background-image:
+            radial-gradient(circle at 15% 20%, rgba(var(--brand-rgb),0.20) 0%, transparent 45%),
+            radial-gradient(circle at 85% 75%, rgba(var(--brand-rgb),0.10) 0%, transparent 45%);"
+      >
+      </div>
+
+      <!-- Behind-the-scenes frame gallery — each frame cycles 2–3 images
+           with its own transition type; positioned & tilted individually
+           via data (src/data/cta.ts). Sits BEHIND the CTA content (z-0).
+           Hidden below md (768px): on mobile the card is too narrow for
+           the frames to sit anywhere without colliding with the heading /
+           description / buttons, so we drop them for a clean read. -->
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0 z-0 hidden md:block"
+      >
+        {
+          frames.map((frame) => {
+            const posStyle = [
+              frame.position.top    !== undefined && `top: ${frame.position.top}`,
+              frame.position.right  !== undefined && `right: ${frame.position.right}`,
+              frame.position.bottom !== undefined && `bottom: ${frame.position.bottom}`,
+              frame.position.left   !== undefined && `left: ${frame.position.left}`,
+              `width: ${frame.width}`,
+              `height: ${frame.height}`,
+              `rotate: ${frame.rotation ?? 0}deg`,
+              frame.opacity !== undefined && `opacity: ${frame.opacity}`,
+              `--frame-dur: ${frame.duration ?? 700}ms`,
+            ].filter(Boolean).join('; ');
+
+            return (
+              <div
+                class="cta-frame"
+                data-cta-frame
+                data-transition={frame.transition}
+                data-interval={frame.interval ?? 4000}
+                data-start-delay={frame.startDelay ?? 0}
+                style={posStyle}
+              >
+                {frame.images.map((src, i) => (
+                  <img
+                    src={src}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class={i === 0 ? 'is-active' : ''}
+                  />
+                ))}
+              </div>
+            );
+          })
+        }
+      </div>
+
+      <!-- CTA content (on top of frames) — each item marked data-cta-in
+           gets a fade+slide in/out animation via initCtaScroll. Items
+           are ordered top-to-bottom so the wave stagger reads naturally. -->
+      <div class="relative z-10 flex flex-col items-center text-center gap-8 max-w-2xl mx-auto">
+        <span
+          aria-hidden={logo ? 'true' : undefined}
+          data-cta-in
+          class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-[color:var(--color-accent-muted)] text-[color:var(--color-accent)] font-display text-2xl font-bold overflow-hidden"
+        >
+          {
+            logo ? (
+              <img
+                src={logo.src}
+                alt={logo.alt}
+                width="64"
+                height="64"
+                loading="lazy"
+                decoding="async"
+                class="w-full h-full object-cover"
+              />
+            ) : (
+              'Gt'
+            )
+          }
+        </span>
+
+        <div class="flex flex-col gap-5">
+          <span data-cta-in class="text-eyebrow">{eyebrow}</span>
+          <h2 data-cta-in class="text-h2 font-display font-bold leading-tight">
+            {heading}
+          </h2>
+          <p data-cta-in class="text-body text-[color:var(--color-text-muted)] max-w-lg mx-auto">
+            {description}
+          </p>
+        </div>
+
+        <div data-cta-in class="flex flex-wrap items-center justify-center gap-3">
+          <Button href={primaryCta.href} variant="primary" size="lg" pill>
+            {primaryCta.label}
+          </Button>
+          <Button href={secondaryCta.href} variant="ghost" size="lg" pill>
+            {secondaryCta.label}
+          </Button>
+        </div>
+
+        <p data-cta-in class="text-xs text-[color:var(--color-text-subtle)]">
+          {footnote}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* ─── Frame container ─────────────────────────────────────────
+     No border and no background — the SVG image is the whole thing.
+     Rounded corners give the "printed photo" feel, and a very soft
+     shadow keeps images seated on the surface without a visible frame. */
+  .cta-frame {
+    position: absolute;
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px -14px rgba(20, 18, 15, 0.35);
+    isolation: isolate;
+  }
+
+  /* All images stacked; only .is-active is fully visible.
+     Base state = hidden with a transition-specific starting transform,
+     so when an image loses .is-active it settles back to hidden with
+     an exit animation and the incoming .is-active plays its enter
+     animation. */
+  .cta-frame img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition:
+      opacity var(--frame-dur, 700ms) ease,
+      transform var(--frame-dur, 700ms) ease,
+      filter    var(--frame-dur, 700ms) ease,
+      clip-path var(--frame-dur, 700ms) ease;
+    backface-visibility: hidden;
+    will-change: opacity, transform, filter;
+  }
+
+  .cta-frame img.is-active {
+    opacity: 1;
+    z-index: 2;
+    transform: none;
+    filter: none;
+    clip-path: inset(0 0 0 0);
+  }
+
+  /* ─── Transition variants ─────────────────────────────────────
+     The from-state is applied ONLY to non-active images via
+     :not(.is-active) — that way it can't override the neutral
+     .is-active state via cascade order (both selectors otherwise
+     tie on specificity, and the transition rule wins by ordering,
+     which was making blur frames stay blurry, flip frames go
+     invisible, and slide/zoom frames stay off-center). */
+
+  .cta-frame[data-transition='fade'] img:not(.is-active) {
+    /* pure opacity — no transform needed */
+  }
+
+  .cta-frame[data-transition='slide-left']  img:not(.is-active) { transform: translateX(-30%); }
+  .cta-frame[data-transition='slide-right'] img:not(.is-active) { transform: translateX(30%); }
+  .cta-frame[data-transition='slide-up']    img:not(.is-active) { transform: translateY(30%); }
+  .cta-frame[data-transition='slide-down']  img:not(.is-active) { transform: translateY(-30%); }
+
+  .cta-frame[data-transition='zoom-in'] img:not(.is-active) {
+    transform: scale(0.75);
+  }
+
+  .cta-frame[data-transition='flip'] {
+    perspective: 800px;
+  }
+  .cta-frame[data-transition='flip'] img:not(.is-active) {
+    transform: rotateY(90deg);
+    transform-origin: center;
+  }
+
+  .cta-frame[data-transition='blur'] img:not(.is-active) {
+    filter: blur(14px);
+    transform: scale(1.05);
+  }
+
+  .cta-frame[data-transition='swipe'] img:not(.is-active) {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  /* Honor reduced motion — snap between images, no fancy transitions */
+  @media (prefers-reduced-motion: reduce) {
+    .cta-frame img {
+      transition: opacity 1ms linear;
+      transform: none !important;
+      filter: none !important;
+      clip-path: none !important;
+    }
+  }
+</style>
+
+<script>
+  // Cycle images inside each frame per its own interval + start delay.
+  // Each frame is independent, so they cross-fade / slide / flip out of
+  // sync — that's what creates the layered, alive visual effect.
+  const frames = document.querySelectorAll<HTMLElement>('[data-cta-frame]');
+  frames.forEach((frame) => {
+    const imgs = Array.from(frame.querySelectorAll<HTMLImageElement>('img'));
+    if (imgs.length < 2) return;
+
+    const interval = Number(frame.dataset.interval) || 4000;
+    const delay = Number(frame.dataset.startDelay) || 0;
+    let idx = 0;
+
+    const step = () => {
+      const cur = imgs[idx];
+      idx = (idx + 1) % imgs.length;
+      const next = imgs[idx];
+      cur.classList.remove('is-active');
+      next.classList.add('is-active');
+    };
+
+    // Stagger each frame's first flip via startDelay so all frames
+    // don't fire on the exact same beat.
+    setTimeout(() => {
+      step();
+      setInterval(step, interval);
+    }, delay + interval);
+  });
+</script>

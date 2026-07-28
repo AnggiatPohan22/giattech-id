@@ -1,0 +1,107 @@
+/**
+ * ══════════════════════════════════════════════════════════════
+ *  BRAND THEME — Ganti warna accent di sini
+ * ══════════════════════════════════════════════════════════════
+ *
+ * Ini file SATU-SATUNYA yang perlu lo ubah kalau mau ganti warna
+ * accent. Nilai di :root di bawah otomatis dipakai semua elemen:
+ * badge GIATTECH, tombol CTA, pill nav aktif, angka stats, tag,
+ * highlight teks eyebrow, dst.
+ *
+ * Cara pakai:
+ *   1. Ganti nilai --brand / --brand-light / --brand-dark / --brand-rgb
+ *   2. Save
+ *   3. Hard reload browser (Ctrl+Shift+R)
+ *
+ * Yang bisa lo atur:
+ *   --brand       = warna utama (hex)
+ *   --brand-light = versi terang (hover states) — pilih ~10-15% lebih terang
+ *   --brand-dark  = versi gelap (active/pressed) — pilih ~15-20% lebih gelap
+ *   --brand-rgb   = SAMA warna dengan --brand tapi dalam format R,G,B
+ *                   (dipakai untuk versi translucent muted)
+ *   --brand-on    = warna teks/icon DI ATAS accent — pilih hitam kalau
+ *                   accent terang, putih kalau accent gelap
+ *
+ * Cara cepat dapetin R,G,B dari hex:
+ *   - Buka https://www.rapidtables.com/convert/color/hex-to-rgb.html
+ *   - Atau di browser DevTools: pilih element, klik color box di Styles
+ */
+
+:root {
+  /* ▼▼▼ PALETTE AKTIF — ubah di sini ▼▼▼ */
+  --brand:       #3B82F6;
+  --brand-light: #60A5FA;
+  --brand-dark:  #2563EB;
+  --brand-rgb:   59, 130, 246;
+  --brand-on:    #F5F9FF;   /* teks/ikon di atas accent (putih) */
+  /* ▲▲▲ */
+}
+
+/* ══════════════════════════════════════════════════════════════
+ *  PALETTE SIAP PAKAI — copy salah satu ke blok :root di atas
+ * ══════════════════════════════════════════════════════════════
+ *
+ * ┌─ LIME (aktif sekarang) ──────────────────────────────────┐
+ * │  --brand:       #B4F527;                                  │
+ * │  --brand-light: #C6F754;                                  │
+ * │  --brand-dark:  #94C819;                                  │
+ * │  --brand-rgb:   180, 245, 39;                             │
+ * │  --brand-on:    #14180F;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ SAGE (versi asli, hijau kalem) ──────────────────────────┐
+ * │  --brand:       #A3B18A;                                  │
+ * │  --brand-light: #B7C4A1;                                  │
+ * │  --brand-dark:  #8B9E74;                                  │
+ * │  --brand-rgb:   163, 177, 138;                            │
+ * │  --brand-on:    #14180F;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ NEON CYAN (segar, futuristik) ───────────────────────────┐
+ * │  --brand:       #22D3EE;                                  │
+ * │  --brand-light: #67E8F9;                                  │
+ * │  --brand-dark:  #0891B2;                                  │
+ * │  --brand-rgb:   34, 211, 238;                             │
+ * │  --brand-on:    #08383F;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ ORANGE (hangat, energik) ────────────────────────────────┐
+ * │  --brand:       #FB923C;                                  │
+ * │  --brand-light: #FDBA74;                                  │
+ * │  --brand-dark:  #EA580C;                                  │
+ * │  --brand-rgb:   251, 146, 60;                             │
+ * │  --brand-on:    #1F1108;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ PURPLE (elegan, kreatif) ────────────────────────────────┐
+ * │  --brand:       #A78BFA;                                  │
+ * │  --brand-light: #C4B5FD;                                  │
+ * │  --brand-dark:  #7C3AED;                                  │
+ * │  --brand-rgb:   167, 139, 250;                            │
+ * │  --brand-on:    #14092F;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ ELECTRIC BLUE (profesional, tech) ───────────────────────┐
+ * │  --brand:       #3B82F6;                                  │
+ * │  --brand-light: #60A5FA;                                  │
+ * │  --brand-dark:  #2563EB;                                  │
+ * │  --brand-rgb:   59, 130, 246;                             │
+ * │  --brand-on:    #F5F9FF;   (di sini teks harus PUTIH)     │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ HOT PINK (playful, bold) ────────────────────────────────┐
+ * │  --brand:       #F472B6;                                  │
+ * │  --brand-light: #F9A8D4;                                  │
+ * │  --brand-dark:  #DB2777;                                  │
+ * │  --brand-rgb:   244, 114, 182;                            │
+ * │  --brand-on:    #2B0A1B;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ *
+ * ┌─ GOLD (mewah, premium) ───────────────────────────────────┐
+ * │  --brand:       #FCD34D;                                  │
+ * │  --brand-light: #FDE68A;                                  │
+ * │  --brand-dark:  #D97706;                                  │
+ * │  --brand-rgb:   252, 211, 77;                             │
+ * │  --brand-on:    #1F1608;                                  │
+ * └───────────────────────────────────────────────────────────┘
+ */

@@ -1,0 +1,202 @@
+---
+import Button from '../ui/Button.astro';
+import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
+---
+
+<section
+  id="hero"
+  data-section="hero"
+  data-theme="light"
+  class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
+>
+  <!-- Giant background brand word. On mobile the word is split at its
+       midpoint into two stacked lines ("GI" / "AT") so it reads as a
+       hero anchor rather than one wide word bleeding off both edges.
+       md+ hides the <br> so it renders as a single line "GIAT" again. -->
+  <div
+    aria-hidden="true"
+    class="hero-giant absolute lg:fixed inset-x-0 top-[20svh] md:top-[6svh] flex justify-center pointer-events-none select-none z-0"
+  >
+    <span
+      class="font-display font-extrabold leading-[0.82] md:leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-center text-[clamp(5rem,42vw,9rem)] md:text-[clamp(9rem,55vw,38rem)]"
+    >
+      {hero.brandWord.slice(0, Math.ceil(hero.brandWord.length / 2))}<br class="md:hidden" />{hero.brandWord.slice(Math.ceil(hero.brandWord.length / 2))}
+    </span>
+  </div>
+
+  <!-- Portrait, centered over the brand word -->
+  <div class="absolute inset-x-0 bottom-0 flex justify-center z-10 pointer-events-none">
+    <img
+      src={hero.portrait.src}
+      alt={hero.portrait.alt}
+      width={hero.portrait.width}
+      height={hero.portrait.height}
+      fetchpriority="high"
+      decoding="async"
+      class="hero-portrait h-[62svh] md:h-[80svh] w-auto max-w-none object-contain object-bottom"
+      style="-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 88%, transparent 100%);
+             mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 88%, transparent 100%);"
+    />
+  </div>
+
+  <!-- Soft fade so the section blends into the page below -->
+  <div
+    aria-hidden="true"
+    class="absolute inset-x-0 bottom-0 h-[22svh] z-10 pointer-events-none"
+    style="background: linear-gradient(180deg, transparent 0%, var(--color-bg) 94%);"
+  >
+  </div>
+
+  <!-- In-hero nav: split left / right of the portrait (desktop) -->
+  <nav
+    aria-label="Hero"
+    class="hero-nav hidden lg:flex lg:fixed z-20 inset-x-0 top-[46svh] items-center justify-between px-8 xl:px-14 pointer-events-none"
+  >
+    <div class="hero-nav-left flex items-center gap-5 pointer-events-auto">
+      {
+        heroNavLeft.map((link, i) => (
+          <>
+            {i > 0 && (
+              <span aria-hidden="true" class="text-[color:var(--color-border-light)]">|</span>
+            )}
+            <a
+              href={link.href}
+              class="text-sm font-semibold tracking-wide uppercase text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors py-2"
+            >
+              {link.label}
+            </a>
+          </>
+        ))
+      }
+    </div>
+    <div class="hero-nav-right flex items-center gap-5 pointer-events-auto">
+      {
+        heroNavRight.map((link, i) => (
+          <>
+            {i > 0 && (
+              <span aria-hidden="true" class="text-[color:var(--color-border-light)]">|</span>
+            )}
+            <a
+              href={link.href}
+              class="text-sm font-semibold tracking-wide uppercase text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors py-2"
+            >
+              {link.label}
+            </a>
+          </>
+        ))
+      }
+    </div>
+  </nav>
+
+  <!-- Floating stat card: logo + 80+ Projects (left, upper) -->
+  <div
+    class="hero-card hero-stat-1 hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[47svh] items-center gap-4 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-5 py-4"
+  >
+    {hero.stats[0].logo && (
+      <img
+        src={hero.stats[0].logo}
+        alt="Giattech logo"
+        width="48"
+        height="48"
+        class="w-10 h-10 object-contain"
+      />
+    )}
+    <div class="flex flex-col leading-tight">
+      <span class="font-display text-2xl font-bold text-[color:var(--color-text)]">
+        <span data-counter data-target={hero.stats[0].value}>{hero.stats[0].value}</span>{hero.stats[0].suffix}
+      </span>
+      <span class="text-xs font-medium text-[color:var(--color-text-muted)]">{hero.stats[0].label}</span>
+    </div>
+  </div>
+
+  <!-- Floating stat card: 3+ Years of experience (left, lower) -->
+  <div
+    class="hero-card hero-stat-2 hidden md:flex absolute lg:fixed z-20 left-[15%] xl:left-[19%] top-[67svh] flex-col items-center gap-1 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-4"
+  >
+    <span class="font-display text-3xl font-bold text-[color:var(--color-accent)]">
+      <span data-counter data-target={hero.stats[1].value}>{hero.stats[1].value}</span>{hero.stats[1].suffix}
+    </span>
+    <span class="text-xs font-medium text-[color:var(--color-text-muted)] text-center max-w-[7rem]">
+      {hero.stats[1].label}
+    </span>
+  </div>
+
+  <!-- Floating traits card (right) -->
+  <ul
+    class="hero-card hero-traits hidden md:flex absolute lg:fixed z-20 right-[14%] xl:right-[18%] top-[47svh] flex-col gap-3 rounded-2xl border border-[color:var(--color-border-light)]/60 bg-[color:var(--color-surface)]/55 backdrop-blur-md px-6 py-5"
+  >
+    {
+      hero.traits.map((trait) => (
+        <li class="flex items-center gap-3 text-sm font-semibold text-[color:var(--color-text)]">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="14"
+            height="14"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="text-[color:var(--color-accent)] shrink-0"
+            aria-hidden="true"
+          >
+            <path d="M12 3l1.9 4.4L18 9l-4.1 1.6L12 15l-1.9-4.4L6 9l4.1-1.6L12 3z" />
+          </svg>
+          {trait}
+        </li>
+      ))
+    }
+  </ul>
+
+  <!-- Headline + CTAs, overlapping the portrait -->
+  <!-- Atur tinggi headline & tombol dari bawah viewport dengan `pb-[Nsvh]`.
+       Kecilkan angka N (mis. 5svh) supaya konten TURUN mendekati bawah,
+       besarkan (mis. 20svh) supaya NAIK menjauh dari bawah.
+       Format: pb-[Nsvh] (mobile)  md:pb-[Nsvh] (tablet+) -->
+  <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[3svh] md:pb-[2svh]">
+    <h1
+      class="hero-heading font-display font-bold leading-[1.0] tracking-[-0.03em] text-[clamp(2.4rem,6.5vw,5rem)] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]"
+    >
+      {
+        hero.headline.map((line) => (
+          <span class="block overflow-hidden">
+            <span class="hero-line inline-block">{line}</span>
+          </span>
+        ))
+      }
+    </h1>
+
+    <div class="hero-cta mt-8 flex flex-wrap items-center justify-center gap-3">
+      {
+        hero.ctas.map((cta) => (
+          <Button href={cta.href} variant={cta.variant} size="md" pill>
+            {cta.label}
+          </Button>
+        ))
+      }
+    </div>
+
+    <!-- Mobile stats (floating cards are hidden below md) -->
+    <dl class="hero-stats-mobile mt-8 flex md:hidden items-center gap-8">
+      {
+        hero.stats.map((stat) => (
+          <div class="flex flex-col items-center gap-0.5">
+            <dd class="font-display text-2xl font-bold text-[color:var(--color-accent)] order-first">
+              {stat.value}{stat.suffix}
+            </dd>
+            <dt class="text-xs text-[color:var(--color-text-muted)] text-center">{stat.label}</dt>
+          </div>
+        ))
+      }
+    </dl>
+  </div>
+
+  <!-- Corner texts -->
+  <p
+    class="hero-corner hero-corner-left hidden md:block absolute lg:fixed z-20 left-8 xl:left-14 bottom-[6svh] text-sm text-[color:var(--color-text-muted)] leading-relaxed"
+  >
+    {hero.corner[0]}<br />{hero.corner[1]}
+  </p>
+  <p
+    class="hero-corner hero-corner-right hidden md:block absolute lg:fixed z-20 right-8 xl:right-14 bottom-[6svh] max-w-xs text-sm text-[color:var(--color-text-muted)] leading-relaxed text-left"
+  >
+    {hero.subheadline}
+  </p>
+</section>
