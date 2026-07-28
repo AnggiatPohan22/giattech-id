@@ -81,15 +81,22 @@ export interface CtaContent {
   frames: CtaFrame[];
 }
 
+import { contact } from '../config/site';
+
 export const ctaContent: CtaContent = {
   // Uncomment and set the src to use a real logo image.
-  // logo: { src: '/images/cta/logo.png', alt: 'Giattech logo' },
+   logo: { src: '/images/cta/logo-blue.png', alt: 'Giattech logo' },
 
   eyebrow: "Let's Build",
   heading: 'Have Something in Mind?',
   description:
     "Tell us about the platform, the migration, the marketing site — or the problem you keep patching around. We'll come back with an honest read on how to solve it.",
-  primaryCta: { label: "Let's Talk", href: 'mailto:hello@giattech.com' },
+  // Primary CTA points to WhatsApp when configured (Indonesian
+  // businesses default there); falls back to email otherwise.
+  primaryCta: {
+    label: "Let's Talk",
+    href: contact.whatsappHref || contact.emailHref,
+  },
   secondaryCta: { label: 'See Our Work', href: '#projects' },
   footnote: 'Reply within 1 business day · Free discovery call · No pressure',
 
@@ -105,7 +112,7 @@ export const ctaContent: CtaContent = {
       interval: 4200,
       duration: 700,
       startDelay: 0,
-      position: { top: '8%', left: '4%' },
+      position: { top: '3%', left: '15%' },
       width: '210px',
       height: '140px',
       rotation: -8,
@@ -133,7 +140,7 @@ export const ctaContent: CtaContent = {
       interval: 4600,
       duration: 750,
       startDelay: 1400,
-      position: { top: '40%', right: '2%' },
+      position: { top: '40%', right: '0%' },
       width: '195px',
       height: '145px',
       rotation: -6,
@@ -161,7 +168,7 @@ export const ctaContent: CtaContent = {
       interval: 4800,
       duration: 800,
       startDelay: 2800,
-      position: { bottom: '4%', left: '6%' },
+      position: { bottom: '1%', left: '3%' },
       width: '225px',
       height: '150px',
       rotation: -12,
@@ -189,7 +196,7 @@ export const ctaContent: CtaContent = {
       width: '170px',
       height: '120px',
       rotation: -4,
-      opacity: 0.55,
+      opacity: 0.15,
     },
   ],
 };

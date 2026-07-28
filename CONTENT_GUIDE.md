@@ -36,11 +36,63 @@ untuk update konten normal.
 
 ```bash
 npm install         # sekali di awal
+cp .env.example .env   # sekali di awal — copy config template
+# edit .env dengan value asli (email, WA, URL, dst.)
 npm run dev         # dev server di http://localhost:4321
 npm run build       # generate output produksi ke dist/
 npm run preview     # preview hasil build
 npx astro check     # cek typescript & schema
 ```
+
+> **Penting**: setelah edit `.env`, kamu **wajib rebuild** (`npm run build`)
+> supaya value baru ter-bake ke output statis. Dev server pakai HMR
+> jadi biasanya auto-refresh, tapi tidak selalu untuk semua env var.
+
+---
+
+## 🎛️ Central config via `.env`
+
+Semua pengaturan **brand, kontak, SEO, dan analytics** ada di satu
+file: `.env` (root project). Kamu tidak perlu masuk ke section /
+komponen manapun untuk ganti email, nomor WA, domain, atau title.
+
+| Env variable                  | Untuk apa                                        |
+| ----------------------------- | ------------------------------------------------ |
+| `PUBLIC_SITE_NAME`            | Nama brand (title tag, footer, structured data)  |
+| `PUBLIC_SITE_TAGLINE`         | Tagline pendek (title tag)                       |
+| `PUBLIC_SITE_URL`             | Domain final (canonical, OG url, sitemap, robots) |
+| `PUBLIC_SITE_DESCRIPTION`     | Meta description, OG description                 |
+| `PUBLIC_OG_IMAGE`             | Path share image (letakkan di `public/`)         |
+| `PUBLIC_EMAIL`                | Email kontak (sidebar copy pill, footer, CTA fallback) |
+| `PUBLIC_WHATSAPP_NUMBER`      | Nomor WA, format E.164 (`6281234567890`)         |
+| `PUBLIC_WHATSAPP_MESSAGE`     | Pesan default WhatsApp saat user klik            |
+| `PUBLIC_LINKEDIN_URL`         | LinkedIn URL (kosongin untuk hide)               |
+| `PUBLIC_TWITTER_URL`          | X/Twitter URL                                    |
+| `PUBLIC_GITHUB_URL`           | GitHub URL                                       |
+| `PUBLIC_INSTAGRAM_URL`        | Instagram URL                                    |
+| `PUBLIC_GA_MEASUREMENT_ID`    | Google Analytics 4 ID (kosongin = disabled)      |
+| `PUBLIC_PLAUSIBLE_DOMAIN`     | Plausible domain (kosongin = disabled)           |
+
+**Cara pakai**:
+
+1. Copy `.env.example` ke `.env` (sekali)
+2. Edit value di `.env` sesuai brand kamu
+3. `npm run build`
+4. Deploy folder `dist/` (lihat section deploy di bawah)
+
+**Prinsip yang dijaga**:
+- Nomor WA / email / URL **tidak ditulis lagi** di komponen atau data file
+- Semua di-baca dari `src/config/site.ts` yang membaca `.env`
+- Kalau env kosong, ada fallback default (biar dev tidak crash), dan
+  konsumer bisa guard dengan `if (contact.whatsappHref) { ... }`
+
+**Yang TIDAK di-env** (masih di file terpisah, sengaja):
+- Favicon — file di `public/favicon.svg` + `favicon.ico`, ganti file
+  langsung karena browser cache-nya kompleks
+- Konten section (heading, testimonial, project) — di `src/data/*.ts`
+  dan `src/content/projects/` karena isinya panjang / structured
+
+
 
 Setiap kali kamu edit file di `src/data/` atau `src/content/`, dev server
 langsung hot-reload di browser. Kalau reload nggak jalan, hard-refresh
@@ -604,6 +656,94 @@ npm run build            # generate dist/
 
 Tidak perlu Node.js di server — semua sudah pre-rendered. Cukup web
 server statis (Nginx, Apache, dsb).
+
+### 🚀 Deploy ke Hostinger (step-by-step)
+
+Hostinger shared hosting = pure static hosting via cPanel / hPanel.
+Node.js tidak dijalankan di server; kita hanya upload hasil build.
+
+**1. Siapkan `.env` produksi di komputer**
+
+Edit `.env` di local dengan value production final:
+
+```
+PUBLIC_SITE_URL="https://domainmu.com"     # domain kamu di Hostinger
+PUBLIC_EMAIL="hello@domainmu.com"
+PUBLIC_WHATSAPP_NUMBER="628xxxxxxxxxx"
+# ... dst
+```
+
+**2. Build production**
+
+```bash
+npm run build
+```
+
+Output ada di folder `dist/`. Isinya semua HTML, CSS, JS, gambar,
+`robots.txt`, `sitemap.xml`, favicon — statik semua.
+
+**3. Upload ke Hostinger**
+
+Ada 3 cara, pilih yang paling nyaman:
+
+**A. Via hPanel File Manager (paling mudah)**
+1. Login ke hPanel → Files → File Manager
+2. Masuk ke folder `public_html/` (root domain kamu)
+3. **Hapus semua isi lama** (kalau ada default index.html Hostinger)
+4. Upload SEMUA isi folder `dist/` ke `public_html/`
+   - Trik cepat: zip `dist/`, upload zip, extract di server (menu
+     kanan-klik → Extract), hapus zip
+5. Selesai. Visit `https://domainmu.com` — website live
+
+**B. Via FTP (FileZilla dll)**
+
+1. Dapetin FTP credentials dari hPanel → Files → FTP Accounts
+2. Connect via FileZilla / WinSCP
+3. Navigate ke `/public_html/`
+4. Delete existing files, upload `dist/*` ke situ
+
+**C. Via Git (kalau Hostinger plan support Git deploy)**
+
+Beberapa Hostinger plan support auto-deploy dari GitHub. Setup di
+hPanel → Advanced → Git. Set build command `npm run build` dan
+deploy directory `dist`. Setiap push ke branch tertentu = auto build
++ deploy.
+
+**4. Point custom domain**
+
+Kalau domain kamu terdaftar di Hostinger, otomatis mapped ke
+`public_html/`. Kalau domain di registrar lain, update DNS:
+- A record → IP server Hostinger (ada di hPanel → Domains → DNS)
+- Atau NS records ke Hostinger nameservers
+
+**5. Enable HTTPS (WAJIB)**
+
+hPanel → Security → SSL. Pilih "Setup" untuk Let's Encrypt SSL
+(gratis). Aktifkan "Force HTTPS Redirect". Butuh ~10 menit propagate.
+
+**6. Verifikasi setelah live**
+
+```
+✅ https://domainmu.com     → tampil homepage
+✅ Ctrl+U (view source)      → cek `<title>`, meta description, OG image sesuai .env
+✅ /robots.txt               → tampil, sitemap URL bener
+✅ /sitemap.xml              → tampil dengan domain production
+✅ pagespeed.web.dev         → target Performance ≥ 95 (mobile)
+✅ search.google.com/test/rich-results → structured data valid
+✅ Test share ke WhatsApp / Slack → preview card muncul dengan OG image
+```
+
+### Kalau butuh update konten setelah live
+
+Cukup:
+1. Edit file yang perlu (data, content, `.env`, dsb.)
+2. `npm run build`
+3. Upload ulang isi `dist/` ke `public_html/` (overwrite files)
+
+Tidak perlu restart apa-apa. Perubahan langsung live setelah upload.
+
+**Tip**: aktifkan cache-busting hash filenames sudah otomatis di Astro
+build — jadi CSS/JS baru tidak konflik dengan cache browser lama.
 
 ### Setelah deploy
 

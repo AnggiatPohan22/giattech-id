@@ -1,3 +1,5 @@
+import { contact, social } from '../config/site';
+
 export interface NavLink {
   label: string;
   href: string;
@@ -6,7 +8,7 @@ export interface NavLink {
 export interface SocialLink {
   label: string;
   href: string;
-  icon: 'github' | 'linkedin' | 'twitter' | 'email';
+  icon: 'github' | 'linkedin' | 'twitter' | 'email' | 'instagram' | 'whatsapp';
 }
 
 export const navLinks: NavLink[] = [
@@ -22,12 +24,19 @@ export const primaryCta: NavLink = {
   href: '#cta',
 };
 
+/**
+ * Social links — sourced from .env via src/config/site.ts. Any entry
+ * whose env var is empty is filtered out here, so the footer / sidebar
+ * only render icons for channels the user actually has configured.
+ */
 export const socialLinks: SocialLink[] = [
-  { label: 'GitHub', href: 'https://github.com/AnggiatPohan22', icon: 'github' },
-  { label: 'LinkedIn', href: 'https://www.linkedin.com/', icon: 'linkedin' },
-  { label: 'X / Twitter', href: 'https://x.com/', icon: 'twitter' },
-  { label: 'Email', href: 'mailto:hello@giattech.com', icon: 'email' },
-];
+  social.github    && { label: 'GitHub',     href: social.github,               icon: 'github'    },
+  social.linkedin  && { label: 'LinkedIn',   href: social.linkedin,             icon: 'linkedin'  },
+  social.twitter   && { label: 'X / Twitter', href: social.twitter,             icon: 'twitter'   },
+  social.instagram && { label: 'Instagram',  href: social.instagram,            icon: 'instagram' },
+  contact.whatsappHref && { label: 'WhatsApp', href: contact.whatsappHref,      icon: 'whatsapp'  },
+                       { label: 'Email',      href: contact.emailHref,          icon: 'email'     },
+].filter(Boolean) as SocialLink[];
 
 export const sidebarSections = [
   'hero',
