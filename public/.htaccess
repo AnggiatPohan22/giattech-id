@@ -1,0 +1,119 @@
+# ══════════════════════════════════════════════════════════════════════
+#  Giattech — Apache config for Hostinger (shared hosting)
+# ══════════════════════════════════════════════════════════════════════
+#  This file lives in public/ so Astro copies it into dist/ verbatim
+#  at build. Upload it together with the rest of dist/* to public_html/
+#  (make sure your ZIP / FTP client includes hidden dotfiles — most
+#  hide .htaccess by default).
+#
+#  Why 403 Forbidden after first upload?
+#    1. index.html not found at the requested path  →  DirectoryIndex fixes it
+#    2. Directory listing disabled AND no index      →  same fix
+#    3. .htaccess missing / not uploaded             →  fixed by having this file
+#    4. Wrong file permissions on the server         →  files 644, folders 755
+# ══════════════════════════════════════════════════════════════════════
+
+# ─── 1. Serve index.html for directory requests ──────────────────────
+DirectoryIndex index.html
+
+# ─── 2. Disable directory listing (no exposing your file tree) ───────
+Options -Indexes
+
+# ─── 3. Clean URLs — Astro emits /page/index.html; this lets visitors
+#         reach it via /page and /page/ interchangeably ──────────────
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # If it's already a real file or directory, serve as-is
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # /page  →  /page/index.html
+  RewriteCond %{REQUEST_URI} !^/$
+  RewriteCond %{REQUEST_URI} !\.[a-zA-Z0-9]{1,5}$
+  RewriteCond %{REQUEST_URI} !/$
+  RewriteRule ^(.*)$ /$1/index.html [L]
+
+  # /page/  →  /page/index.html
+  RewriteRule ^(.*)/$ /$1/index.html [L]
+</IfModule>
+
+# ─── 4. Force HTTPS — uncomment once SSL is active in hPanel ─────────
+# <IfModule mod_rewrite.c>
+#   RewriteCond %{HTTPS} !=on
+#   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# </IfModule>
+
+# ─── 5. Custom 404 (Astro doesn't generate /404.html by default —
+#         if you add src/pages/404.astro this will pick it up) ───────
+ErrorDocument 404 /404.html
+
+# ─── 6. Gzip / Deflate compression ───────────────────────────────────
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css text/plain text/xml
+  AddOutputFilterByType DEFLATE application/javascript application/json application/xml
+  AddOutputFilterByType DEFLATE image/svg+xml
+  AddOutputFilterByType DEFLATE font/otf font/ttf font/woff font/woff2
+</IfModule>
+
+# ─── 7. Cache headers — HTML short, hashed assets long ───────────────
+<IfModule mod_expires.c>
+  ExpiresActive On
+
+  # HTML re-checked hourly so content updates propagate fast
+  ExpiresByType text/html                 "access plus 1 hour"
+  ExpiresByType application/xml           "access plus 1 hour"
+  ExpiresByType text/xml                  "access plus 1 hour"
+
+  # Assets carry content hashes in their filenames from Astro's build
+  # so they can safely cache for a year
+  ExpiresByType text/css                  "access plus 1 year"
+  ExpiresByType application/javascript    "access plus 1 year"
+  ExpiresByType image/png                 "access plus 1 year"
+  ExpiresByType image/jpeg                "access plus 1 year"
+  ExpiresByType image/webp                "access plus 1 year"
+  ExpiresByType image/avif                "access plus 1 year"
+  ExpiresByType image/svg+xml             "access plus 1 year"
+  ExpiresByType image/x-icon              "access plus 1 year"
+  ExpiresByType font/woff                 "access plus 1 year"
+  ExpiresByType font/woff2                "access plus 1 year"
+  ExpiresByType application/font-woff2    "access plus 1 year"
+</IfModule>
+
+# ─── 8. MIME types — belt-and-braces for hosts that miss some ────────
+<IfModule mod_mime.c>
+  AddType text/css                        .css
+  AddType application/javascript          .js
+  AddType application/json                .json
+  AddType application/manifest+json       .webmanifest
+  AddType image/svg+xml                   .svg
+  AddType image/webp                      .webp
+  AddType image/avif                      .avif
+  AddType font/woff2                      .woff2
+  AddType font/woff                       .woff
+</IfModule>
+
+# ─── 9. Security headers ─────────────────────────────────────────────
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options        "SAMEORIGIN"
+  Header always set Referrer-Policy        "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy     "geolocation=(), microphone=(), camera=()"
+
+  # Cache-Control override for HTML (belt-and-braces alongside ExpiresByType)
+  <FilesMatch "\.html$">
+    Header set Cache-Control "public, max-age=3600, must-revalidate"
+  </FilesMatch>
+
+  # Long cache for immutable hashed assets
+  <FilesMatch "\.(css|js|woff2|webp|avif|png|jpg|jpeg|svg|ico)$">
+    Header set Cache-Control "public, max-age=31536000, immutable"
+  </FilesMatch>
+</IfModule>
+
+# ─── 10. Block access to sensitive files ─────────────────────────────
+<FilesMatch "^\.env|^\.git|package(-lock)?\.json$|astro\.config\.mjs$|tsconfig\.json$">
+  Require all denied
+</FilesMatch>
