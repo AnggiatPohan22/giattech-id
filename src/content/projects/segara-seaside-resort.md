@@ -1,8 +1,8 @@
 ---
 title: Setup Network Segara Seaside Resort
-summary: A real-time control tower for a mid-sized fleet — trip status, driver availability, and cost-per-route on a single screen.
+summary: Implemented VLAN segmentation and Mikrotik routing for optimal bandwidth management, guest network security, and guest management isolation.
 year: 2025
-order: 2
+order: 5
 tags:
   - Mikrotik
   - Network

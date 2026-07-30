@@ -1,8 +1,8 @@
 ---
 title: Casa Bambu Cantina Restaurant - Lembongan
-summary: A block-based content model powering the studio marketing site plus three portfolio microsites — one editor, four surfaces.
+summary: A full-stack website design and development project for Casa Bambu Cantina in Nusa Lembongan. Focused on creating an engaging digital storefront with seamless reservation workflows, menu showcases, and optimized performance to turn casual visitors into dining guests.
 year: 2026
-order: 3
+order: 2
 tags:
   - Wordpress
   - Restaurant

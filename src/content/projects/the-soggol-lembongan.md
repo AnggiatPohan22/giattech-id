@@ -1,8 +1,8 @@
 ---
 title: Manage Villa - The Soggol Lembongan
-summary: Streamlined reservation workflows, optimized guest communication, and maintained high standards of hospitality to ensure exceptional guest satisfaction and steady occupancy.
+summary: Managed end-to-end Online Travel Agent (OTA) channels (Airbnb, Booking.com, Agoda) to maximize property visibility and drive consistent bookings.
 year: 2025
-order: 5
+order: 6
 tags:
   - OTA
   - Manage

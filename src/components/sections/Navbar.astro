@@ -36,7 +36,7 @@ import { navLinks, primaryCta } from '../../data/navigation';
   x-bind:class="scrolled || mobileOpen ? 'nav-solid' : 'nav-glass'"
   class="nav-shell lg:hidden fixed top-0 inset-x-0 z-50 transition-colors duration-300"
 >
-  <div class="container-page flex items-center justify-between h-16 md:h-[var(--nav-height)]">
+  <div class="relative z-50 container-page flex items-center justify-between h-16 md:h-[var(--nav-height)]">
     <a
       href="#hero"
       class="inline-flex items-center gap-2 font-display text-[13px] md:text-2xl md:font-bold font-semibold tracking-[0.18em] md:tracking-tight uppercase md:normal-case text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] transition-colors"
@@ -110,31 +110,40 @@ import { navLinks, primaryCta } from '../../data/navigation';
     </button>
   </div>
 
+  <!-- Full-screen mobile menu overlay — teleported to <body> so the
+       parent header's backdrop-filter doesn't create a containing block
+       that would clamp our fixed inset-0 to the header's 64px height. -->
+  <template x-teleport="body">
   <div
-    x-show="mobileOpen"
-    x-cloak
-    x-transition:enter="transition ease-out duration-300"
-    x-transition:enter-start="opacity-0"
-    x-transition:enter-end="opacity-100"
-    x-transition:leave="transition ease-in duration-200"
-    x-transition:leave-start="opacity-100"
-    x-transition:leave-end="opacity-0"
-    class="md:hidden fixed inset-0 top-16 bg-[color:var(--color-bg)] z-40"
+    x-bind:class="mobileOpen ? 'mobile-menu-open' : ''"
+    x-bind:data-nav-theme="theme"
+    class="md:hidden fixed inset-0 z-40 mobile-menu-overlay flex flex-col"
     id="mobile-menu"
   >
-    <nav aria-label="Mobile" class="container-page flex flex-col gap-2 py-8">
-      {
-        navLinks.map((link) => (
-          <a
-            href={link.href}
-            @click="mobileOpen = false"
-            class="text-lg font-medium text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] py-4 border-b border-[color:var(--color-border)] transition-colors"
-          >
-            {link.label}
-          </a>
-        ))
-      }
-      <div class="pt-6">
+    <!-- Spacer for the navbar bar height so menu content never sits under it -->
+    <div class="h-16 shrink-0" aria-hidden="true"></div>
+
+    <nav
+      aria-label="Mobile"
+      class="container-page flex-1 min-h-0 flex flex-col justify-between py-8"
+    >
+      <ul class="flex flex-col">
+        {
+          navLinks.map((link) => (
+            <li>
+              <a
+                href={link.href}
+                @click="mobileOpen = false"
+                class="mobile-menu-link block text-2xl font-display font-semibold text-[color:var(--color-text)] hover:text-[color:var(--color-accent)] py-4 border-b border-[color:var(--color-border)] transition-colors"
+              >
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+
+      <div class="mobile-menu-cta mt-8">
         <Button
           href={primaryCta.href}
           variant="primary"
@@ -144,7 +153,11 @@ import { navLinks, primaryCta } from '../../data/navigation';
         >
           {primaryCta.label}
         </Button>
+        <p class="mt-4 text-center text-xs text-[color:var(--color-text-muted)]">
+          Web dev · Freelance IT · Villa OTA
+        </p>
       </div>
     </nav>
   </div>
+  </template>
 </header>

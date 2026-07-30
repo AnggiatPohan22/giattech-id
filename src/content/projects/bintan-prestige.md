@@ -2,7 +2,7 @@
 title: Bintan Prestige Transport — Taxy & Tour
 summary: Premium private transport, taxi services, and customized island tours across Bintan. Delivering comfortable, reliable, and hassle-free travel for tourists and business visitors alike.
 year: 2026
-order: 1
+order: 3
 tags:
   - Astro
   - GSAP

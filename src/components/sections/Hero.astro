@@ -9,22 +9,43 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   data-theme="light"
   class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
 >
-  <!-- Giant background brand word. On mobile the word is split at its
-       midpoint into two stacked lines ("GI" / "AT") so it reads as a
-       hero anchor rather than one wide word bleeding off both edges.
-       md+ hides the <br> so it renders as a single line "GIAT" again. -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       GIANT BRAND WORD "GIAT" (background text)
+       ─────────────────────────────────────────────────────────────
+       Mobile: 2 baris (GI / AT). Desktop (md+): 1 baris.
+       ATUR DI SINI:
+         • top-[15svh]         → posisi vertikal MOBILE (kecil=lebih atas)
+         • md:top-[6svh]       → posisi vertikal DESKTOP
+         • text-[clamp(A,B,C)] → ukuran font MOBILE
+             A = min (7rem)   B = ideal (72vw)   C = max (15rem)
+             Naikkan B & C untuk BESARKAN, turunkan untuk kecilkan
+         • md:text-[clamp(...)] → ukuran font DESKTOP (jangan diubah kalau desktop sudah ok)
+       ═══════════════════════════════════════════════════════════════ -->
   <div
     aria-hidden="true"
-    class="hero-giant absolute lg:fixed inset-x-0 top-[20svh] md:top-[6svh] flex justify-center pointer-events-none select-none z-0"
+    class="hero-giant absolute lg:fixed inset-x-0 top-[10svh] md:top-[2svh] flex justify-center pointer-events-none select-none z-0"
   >
     <span
-      class="font-display font-extrabold leading-[0.82] md:leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-center text-[clamp(5rem,42vw,9rem)] md:text-[clamp(9rem,55vw,38rem)]"
+      class="font-display font-extrabold leading-[0.82] md:leading-none tracking-[-0.04em] text-[color:var(--color-accent)] text-center text-[clamp(8rem,82vw,25rem)] md:text-[clamp(9rem,55vw,38rem)]"
     >
       {hero.brandWord.slice(0, Math.ceil(hero.brandWord.length / 2))}<br class="md:hidden" />{hero.brandWord.slice(Math.ceil(hero.brandWord.length / 2))}
     </span>
   </div>
 
-  <!-- Portrait, centered over the brand word -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       HERO PORTRAIT (foto founder)
+       ─────────────────────────────────────────────────────────────
+       ATUR DI SINI:
+         • h-[78svh]     → tinggi gambar MOBILE (svh = % viewport height)
+                           Naikkan (mis. 82svh) untuk BESARKAN gambar
+                           Turunkan (mis. 68svh) untuk kecilkan
+         • md:h-[80svh]  → tinggi gambar DESKTOP
+         • object-bottom → menempel ke bawah section
+           (ganti "object-center" kalau mau di tengah,
+            atau "object-top" kalau mau atas)
+         • bottom-0      → jarak dari bawah section (mobile)
+                           Ganti ke bottom-[Nsvh] untuk angkat gambar
+       ═══════════════════════════════════════════════════════════════ -->
   <div class="absolute inset-x-0 bottom-0 flex justify-center z-10 pointer-events-none">
     <img
       src={hero.portrait.src}
@@ -33,7 +54,7 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
       height={hero.portrait.height}
       fetchpriority="high"
       decoding="async"
-      class="hero-portrait h-[62svh] md:h-[80svh] w-auto max-w-none object-contain object-bottom"
+      class="hero-portrait h-[78svh] md:h-[80svh] w-auto max-w-none object-contain object-bottom"
       style="-webkit-mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 88%, transparent 100%);
              mask-image: linear-gradient(180deg, transparent 0%, #000 8%, #000 88%, transparent 100%);"
     />
@@ -145,11 +166,24 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
     }
   </ul>
 
-  <!-- Headline + CTAs, overlapping the portrait -->
-  <!-- Atur tinggi headline & tombol dari bawah viewport dengan `pb-[Nsvh]`.
-       Kecilkan angka N (mis. 5svh) supaya konten TURUN mendekati bawah,
-       besarkan (mis. 20svh) supaya NAIK menjauh dari bawah.
-       Format: pb-[Nsvh] (mobile)  md:pb-[Nsvh] (tablet+) -->
+  <!-- ═══════════════════════════════════════════════════════════════
+       HEADLINE + CTA BUTTONS (blok "Web Dev, Freelance IT..." + tombol)
+       ─────────────────────────────────────────────────────────────
+       ATUR DI SINI:
+         • pb-[3svh]      → jarak blok ini dari BAWAH viewport (mobile)
+                            Kecilkan angka (mis. 2svh) → konten TURUN dekat bawah
+                            Besarkan angka (mis. 15svh) → konten NAIK menjauh bawah
+         • md:pb-[2svh]   → sama, tapi untuk desktop
+         • px-5           → padding kiri-kanan blok (jarak ke tepi layar)
+         • gap-3          → jarak antar tombol CTA
+         • mt-8           → jarak antara headline ke tombol CTA
+                            Naikkan (mt-10, mt-12) untuk RENGGANG
+                            Turunkan (mt-4, mt-6) untuk RAPAT
+         • text-[clamp(2.4rem,6.5vw,5rem)] → ukuran headline
+             Kecilkan angka clamp untuk KECIL, besarkan untuk BESAR
+             Contoh: text-[clamp(2rem,6vw,4rem)]   → lebih kecil
+                     text-[clamp(3rem,8vw,6rem)]   → lebih besar
+       ═══════════════════════════════════════════════════════════════ -->
   <div class="relative z-20 mt-auto flex flex-col items-center text-center px-5 pb-[3svh] md:pb-[2svh]">
     <h1
       class="hero-heading font-display font-bold leading-[1.0] tracking-[-0.03em] text-[clamp(2.4rem,6.5vw,5rem)] text-white [text-shadow:0_2px_28px_rgba(0,0,0,0.55)]"
