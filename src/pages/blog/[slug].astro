@@ -1,0 +1,28 @@
+---
+/**
+ * Indonesian article detail — /blog/<slug>/
+ *
+ * Static routes in this folder (tools, tentang, arsip, kategori/, en/)
+ * take precedence over this dynamic one, so no article may use those
+ * words as its slug.
+ */
+import type { GetStaticPaths } from 'astro';
+import ArticleView from '../../components/blog/views/ArticleView.astro';
+import { getPosts, type Post } from '../../utils/blog';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getPosts('id');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+};
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+---
+
+<ArticleView post={post} lang="id" />

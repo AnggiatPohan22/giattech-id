@@ -1,5 +1,34 @@
 type Gsap = typeof import('gsap').default;
 
+/**
+ * Re-scroll to `location.hash` if one is present.
+ *
+ * Why this exists: the blog links back to landing sections with `/#cta`,
+ * `/#services`, `/#projects`, etc. The browser does its own scroll to
+ * the hash on initial load — but that runs BEFORE our GSAP pins insert
+ * pin-spacers (Hero, Work, About). Those spacers push every following
+ * section further down the page, so by the time layout settles, the
+ * anchor position the browser scrolled to is stale and the reader lands
+ * near the top of the page instead of on the target section.
+ *
+ * Two triggers:
+ *   1. after ScrollTrigger.refresh() (pins are in place, layout settled)
+ *   2. `hashchange` — for readers using the URL bar or Back/Forward
+ *
+ * Uses scrollIntoView so the CSS scroll-padding-top on <html> keeps the
+ * section clear of the sticky navbar, and #cta's own negative
+ * scroll-margin still lands it flush at Y=0 (see global.css).
+ */
+function honourHash() {
+  const hash = window.location.hash;
+  if (!hash || hash.length < 2) return;
+  let id: string;
+  try { id = decodeURIComponent(hash.slice(1)); } catch { return; }
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.scrollIntoView({ block: 'start', behavior: 'auto' });
+}
+
 async function boot() {
   const prefersReducedMotion = window.matchMedia(
     '(prefers-reduced-motion: reduce)'
@@ -9,7 +38,15 @@ async function boot() {
   // even with reduced-motion (they just snap instantly there).
   initCounters(prefersReducedMotion);
 
-  if (prefersReducedMotion) return;
+  // hashchange is universal — attach it once, regardless of the motion
+  // preference or whether GSAP loads at all.
+  window.addEventListener('hashchange', honourHash);
+
+  if (prefersReducedMotion) {
+    // No pins → no layout shift → the browser's own hash scroll worked.
+    // Still honour hashchange (above) so intra-page nav feels right.
+    return;
+  }
 
   const { default: gsap } = await import('gsap');
   const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -27,6 +64,14 @@ async function boot() {
   // the entrance (set()+to()) owns the hero's initial render and nothing
   // resets it afterward.
   ScrollTrigger.refresh();
+
+  // Pins have inserted their spacers — re-scroll to the URL hash now
+  // that section offsets are final. Two passes: rAF for the immediate
+  // relayout, then a settle pass after images + fonts have painted so a
+  // late layout shift doesn't leave the reader a few hundred px off.
+  requestAnimationFrame(honourHash);
+  window.setTimeout(honourHash, 400);
+
   initHeroEntrance(gsap);
 }
 

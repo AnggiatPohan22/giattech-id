@@ -1,0 +1,83 @@
+---
+/**
+ * AdSlot — one Google AdSense placement.
+ *
+ * Two modes, same box size in both so turning ads on never shifts the
+ * layout (protects CLS / Core Web Vitals):
+ *
+ *   • PUBLIC_ADSENSE_CLIENT empty  → labelled dashed placeholder
+ *   • PUBLIC_ADSENSE_CLIENT set    → real <ins class="adsbygoogle">
+ *
+ * Add the slot ids from your AdSense dashboard to .env (see
+ * .env.example) and rebuild. A slot whose id is still empty keeps
+ * rendering the placeholder even when the client id exists, so you can
+ * roll units out one at a time.
+ */
+import { adsense, type AdSlotName } from '../../config/site';
+import { t } from '../../data/blog-i18n';
+import type { BlogLang } from '../../data/blog-categories';
+
+interface Props {
+  slot: AdSlotName;
+  lang: BlogLang;
+  /** Controls the reserved height + the AdSense format hint */
+  variant?: 'leaderboard' | 'in-article' | 'rectangle' | 'sidebar';
+  class?: string;
+}
+
+const { slot, lang, variant = 'leaderboard', class: className = '' } = Astro.props;
+
+const slotId = adsense.slots[slot];
+const live = adsense.enabled && slotId !== '';
+
+const shapeClass = {
+  leaderboard: 'bl-ad-leaderboard',
+  'in-article': 'bl-ad-inarticle',
+  rectangle: 'bl-ad-rectangle',
+  sidebar: 'bl-ad-sidebar',
+}[variant];
+
+// "fluid" + the in-article layout key is Google's recommended unit for
+// a slot dropped between paragraphs; everything else is responsive auto.
+const adFormat = variant === 'in-article' ? 'fluid' : 'auto';
+
+const hint = {
+  leaderboard: '728 × 90 / responsive',
+  'in-article': 'In-article — responsive',
+  rectangle: '336 × 280 / responsive',
+  sidebar: '300 × 600 — sticky',
+}[variant];
+---
+
+<aside
+  class:list={['bl-ad', shapeClass, live && 'is-live', className]}
+  aria-label={t[lang].common.adLabel}
+  data-ad-slot={slot}
+>
+  <span class="bl-ad-label">{t[lang].common.adLabel}</span>
+
+  {
+    live ? (
+      <>
+        <ins
+          class="adsbygoogle"
+          style="display:block"
+          data-ad-client={adsense.client}
+          data-ad-slot={slotId}
+          data-ad-format={adFormat}
+          data-ad-layout={variant === 'in-article' ? 'in-article' : undefined}
+          data-full-width-responsive="true"
+        />
+        <script is:inline>
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        </script>
+      </>
+    ) : (
+      <p class="bl-ad-hint">
+        {lang === 'id' ? 'Slot iklan' : 'Ad slot'} · <code>{slot}</code>
+        <br />
+        <span class="opacity-60">{hint}</span>
+      </p>
+    )
+  }
+</aside>

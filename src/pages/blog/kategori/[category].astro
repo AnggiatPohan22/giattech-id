@@ -1,0 +1,15 @@
+---
+/**
+ * Indonesian category archive — /blog/kategori/<category>/
+ */
+import type { GetStaticPaths } from 'astro';
+import CategoryView from '../../../components/blog/views/CategoryView.astro';
+import { blogCategories } from '../../../data/blog-categories';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  blogCategories.map((cat) => ({ params: { category: cat.slug } }));
+
+const { category } = Astro.params;
+---
+
+<CategoryView lang="id" category={category!} />

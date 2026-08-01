@@ -70,3 +70,30 @@ export const analytics = {
   gaId:            read('PUBLIC_GA_MEASUREMENT_ID'),
   plausibleDomain: read('PUBLIC_PLAUSIBLE_DOMAIN'),
 } as const;
+
+/**
+ * Google AdSense — used by the blog only.
+ *
+ * `client` is the ca-pub-XXXXXXXX publisher id. While it's empty the
+ * AdSlot component renders a labelled, correctly-sized placeholder
+ * instead of a real <ins> — so the layout (and Cumulative Layout
+ * Shift) is identical before and after you're approved by AdSense.
+ * Fill in the slot ids from the AdSense dashboard as you create each
+ * unit; a slot with no id still renders a placeholder.
+ */
+export const adsense = {
+  client: read('PUBLIC_ADSENSE_CLIENT'),
+  slots: {
+    blogTop:       read('PUBLIC_ADSENSE_SLOT_BLOG_TOP'),
+    blogInline:    read('PUBLIC_ADSENSE_SLOT_BLOG_INLINE'),
+    blogBottom:    read('PUBLIC_ADSENSE_SLOT_BLOG_BOTTOM'),
+    articleTop:    read('PUBLIC_ADSENSE_SLOT_ARTICLE_TOP'),
+    articleInline: read('PUBLIC_ADSENSE_SLOT_ARTICLE_INLINE'),
+    articleBottom: read('PUBLIC_ADSENSE_SLOT_ARTICLE_BOTTOM'),
+    sidebar:       read('PUBLIC_ADSENSE_SLOT_SIDEBAR'),
+  },
+  /** True once a publisher id exists — gates the adsbygoogle loader script. */
+  get enabled() { return this.client !== ''; },
+} as const;
+
+export type AdSlotName = keyof typeof adsense.slots;

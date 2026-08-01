@@ -1,0 +1,172 @@
+---
+/**
+ * BlogLayout — the shell for every /blog page.
+ *
+ * Deliberately separate from Layout.astro: the blog has its own nav,
+ * footer, typography scale, and per-language <html lang>. Nothing here
+ * is imported by the landing page, so giattech.com is unaffected.
+ */
+import '@fontsource-variable/outfit';
+import '@fontsource-variable/inter';
+import '../styles/global.css';
+import '../styles/blog.css';
+import { site, adsense } from '../config/site';
+import { htmlLang, t } from '../data/blog-i18n';
+import type { BlogLang } from '../data/blog-categories';
+import BlogNav from '../components/blog/BlogNav.astro';
+import BlogFooter from '../components/blog/BlogFooter.astro';
+
+interface Props {
+  lang: BlogLang;
+  title: string;
+  description: string;
+  /** Path of THIS page, e.g. "/blog/tools/" — canonical is built from it */
+  path: string;
+  /** Path of the same page in the other language; omit to disable the switch */
+  altPath?: string;
+  ogImage?: string;
+  ogType?: 'website' | 'article';
+  /** Extra JSON-LD blocks (BlogPosting, BreadcrumbList, …) */
+  jsonLd?: unknown[];
+  /** Highlights the matching item in the nav */
+  activeNav?: 'home' | 'content' | 'about' | 'tools' | 'archive';
+  /** Article pages render a reading-progress bar */
+  progressBar?: boolean;
+}
+
+const {
+  lang,
+  title,
+  description,
+  path,
+  altPath,
+  ogImage = site.ogImage,
+  ogType = 'website',
+  jsonLd = [],
+  activeNav,
+  progressBar = false,
+} = Astro.props;
+
+const origin = site.url.replace(/\/$/, '');
+const abs = (p: string) => `${origin}${p}`;
+const canonical = abs(path);
+const ogImageUrl = ogImage.startsWith('http') ? ogImage : abs(ogImage);
+const copy = t[lang];
+
+// hreflang pair. `path` is always this language; `altPath` the twin.
+// x-default points at Indonesian, the site's primary market.
+const alternates = altPath
+  ? [
+      { hreflang: lang === 'id' ? 'id' : 'en', href: canonical },
+      { hreflang: lang === 'id' ? 'en' : 'id', href: abs(altPath) },
+      { hreflang: 'x-default', href: lang === 'id' ? canonical : abs(altPath) },
+    ]
+  : [];
+
+// The site-wide organisation record — repeated on every blog page so
+// each one can stand alone as an entry point from search.
+const publisher = {
+  '@type': 'Organization',
+  name: site.name,
+  url: `${origin}/`,
+  logo: { '@type': 'ImageObject', url: abs('/images/logo-blue.png') },
+};
+---
+
+<!DOCTYPE html>
+<html lang={htmlLang[lang]} class="blog-root">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#F9F8F3" />
+    <meta name="color-scheme" content="light" />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {/* Favicons derived from public/images/logo-white.png. .ico bundles
+        16/32/48 for legacy Windows chrome; the PNGs cover modern browsers
+        and both mobile home-screen icons. */}
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    {
+      alternates.map((a) => (
+        <link rel="alternate" hreflang={a.hreflang} href={a.href} />
+      ))
+    }
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:site_name" content={`${site.name} ${copy.brandSuffix}`} />
+    <meta property="og:locale" content={lang === 'id' ? 'id_ID' : 'en_US'} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        ...publisher,
+      })}
+    />
+    {
+      jsonLd.map((block) => (
+        <script
+          is:inline
+          type="application/ld+json"
+          set:html={JSON.stringify(block)}
+        />
+      ))
+    }
+
+    {
+      /* AdSense loader — only shipped once a publisher id exists in .env.
+         Until then AdSlot renders sized placeholders and no third-party
+         script is loaded at all (keeps Lighthouse clean during dev). */
+      adsense.enabled && (
+        <script
+          is:inline
+          async
+          crossorigin="anonymous"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsense.client}`}
+        />
+      )
+    }
+  </head>
+
+  <body class="min-h-screen antialiased">
+    {progressBar && <div class="bl-progress" data-reading-progress aria-hidden="true"></div>}
+
+    <a
+      href="#bl-main"
+      class="sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[70] focus:bg-[color:var(--bl-ink)] focus:px-4 focus:py-2 focus:text-[color:var(--bl-bone)] focus:font-semibold"
+    >
+      {lang === 'id' ? 'Lompat ke konten' : 'Skip to content'}
+    </a>
+
+    <BlogNav lang={lang} active={activeNav} altPath={altPath} />
+
+    <main id="bl-main">
+      <slot />
+    </main>
+
+    <BlogFooter lang={lang} />
+
+    <script>
+      import '../scripts/alpine-init';
+      import '../scripts/blog';
+    </script>
+  </body>
+</html>

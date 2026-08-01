@@ -1,0 +1,58 @@
+---
+/**
+ * ShareBar — the share row under an article. Text links on the left
+ * (per the reference), copy-link button on the right.
+ *
+ * All three network links are EXTERNAL and open in a new tab:
+ *   x.com/intent/post · linkedin.com/sharing · wa.me
+ * The copy-link button is local and needs no network.
+ */
+import { t } from '../../data/blog-i18n';
+import type { BlogLang } from '../../data/blog-categories';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: BlogLang;
+  url: string;
+  title: string;
+}
+
+const { lang, url, title } = Astro.props;
+const copy = t[lang].post;
+const enc = encodeURIComponent;
+
+const targets = [
+  { label: 'LinkedIn', href: `https://www.linkedin.com/sharing/share-offsite/?url=${enc(url)}` },
+  { label: 'X', href: `https://x.com/intent/post?url=${enc(url)}&text=${enc(title)}` },
+  { label: 'WhatsApp', href: `https://wa.me/?text=${enc(`${title} — ${url}`)}` },
+];
+---
+
+<div class="flex flex-wrap items-center justify-between gap-4">
+  <div class="flex flex-wrap items-center gap-5">
+    <span class="bl-label" style="color: var(--bl-ink);">{copy.share}:</span>
+    {
+      targets.map((s) => (
+        <a
+          href={s.href}
+          target="_blank"
+          rel="noopener noreferrer nofollow"
+          class="bl-body transition-colors hover:text-[color:var(--bl-accent)]"
+          style="color: var(--bl-ink-40);"
+        >
+          {s.label}
+        </a>
+      ))
+    }
+  </div>
+
+  <button
+    type="button"
+    data-copy-link={url}
+    data-copied-label={copy.copied}
+    class="bl-btn bl-btn-ghost !py-2.5 !px-4 !text-[12px]"
+  >
+    <Icon name="link" size={14} />
+    <span data-copy-label>{copy.copyLink}</span>
+  </button>
+</div>

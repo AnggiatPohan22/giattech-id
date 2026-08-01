@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARCH-TECH | Detail Artikel</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&family=Outfit:wght@100..900&display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "electric-blue": "#3B82F6",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#2170e4",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2e2",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed-variant": "#004395",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9f9",
+                        "tertiary-container": "#767474",
+                        "secondary-fixed": "#e6e2d5",
+                        "secondary-fixed-dim": "#cac6ba",
+                        "on-tertiary-container": "#f7feff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#48473d",
+                        "on-primary-fixed": "#001a42",
+                        "surface-container-low": "#f3f3f4",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-surface-variant": "#424754",
+                        "outline-variant": "#c2c6d6",
+                        "warm-sand": "#E5E1D4",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "background": "#f9f9f9",
+                        "bone-white": "#F9F8F3",
+                        "surface-container-highest": "#e2e2e2",
+                        "deep-obsidian": "#0C0C0C",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#0058be",
+                        "on-error-container": "#93000a",
+                        "secondary": "#605f54",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-tint": "#005ac2",
+                        "on-surface": "#1a1c1c",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dadada",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fefcff",
+                        "surface-container": "#eeeeee",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#5d5c5b",
+                        "secondary-container": "#e4e0d3",
+                        "inverse-primary": "#adc6ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#1d1c14",
+                        "on-secondary-container": "#656358"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "display-lg-mobile": ["Outfit"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E5E1D4;
+        }
+        .hide-scroll-bar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scroll-bar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-bone-white text-deep-obsidian font-body-md selection:bg-electric-blue selection:text-white">
+<!-- Top Navigation -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 backdrop-blur-md border-b border-warm-sand/30 h-16 flex items-center px-5 justify-between">
+<a class="font-headline-md text-headline-md font-bold tracking-tighter uppercase" href="#">ARCH-TECH</a>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2">search</button>
+<button class="material-symbols-outlined p-2" id="menuToggle">menu</button>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-24 pb-16">
+<article class="max-w-full px-5">
+<!-- Header Section -->
+<header class="mb-8">
+<div class="flex gap-2 mb-4">
+<span class="bg-warm-sand text-deep-obsidian px-2 py-0.5 font-label-sm text-label-sm uppercase tracking-wider">Arsitektur</span>
+<span class="text-on-surface-variant font-label-sm text-label-sm self-center">5 Menit Baca</span>
+</div>
+<h1 class="font-headline-lg-mobile text-headline-lg-mobile leading-tight mb-4 font-bold">Masa Depan Hunian Berkelanjutan: Integrasi Teknologi dan Estetika Alam</h1>
+<div class="flex items-center gap-3 mt-6 border-b border-warm-sand pb-6">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="A professional studio portrait of a modern architect in a minimalist workspace. The lighting is soft and natural, emphasizing a clean, sophisticated aesthetic with a palette of whites and warm wood tones. The subject has a confident, visionary expression, reflecting the quiet confidence of the Arch-Tech brand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDmA0I73cbNAtb-MUlwT-WvsWkfBZj7j-A7Ld8Rh6ZbQWIFr8Cq8Zzd4aRDaVijotMiDm9rrzQ26--mc1pw4Ryc9V5aS80pyWcsP2nhJRat7jv4XVmse4tNfaOLogwZ975WdcyzUlQciOGdZYbQnwj-JcSwqo7WBjZu6bjOkctqOy-gxIzO0TiqI6QkwgK0BEVkrxgItUK69M1RtEG23qiZxZVTpm-8MklNKyRIAOjx2fc0-qHfTx9N"/>
+</div>
+<div>
+<p class="font-label-lg text-label-lg">Aris Wijaya</p>
+<p class="text-on-surface-variant text-[12px]">24 Oktober 2024</p>
+</div>
+</div>
+</header>
+<!-- Hero Image -->
+<div class="relative w-full aspect-video mb-10 overflow-hidden rounded-lg">
+<img class="w-full h-full object-cover" data-alt="A stunning wide-angle shot of a modern, minimalist villa perched on a riverbank during the golden hour. The architecture features clean lines, expansive glass walls, and natural stone textures that blend seamlessly with the lush green surroundings. The deep obsidian and bone-white color scheme of the building creates a high-contrast, professional look against the soft orange glow of the sunset." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCvoeYdRRynH_Xq_3S7Iv5cABnax7J7oU1nTYEHrS053A-HODcKE6AsmeeZ66nr5p2v6ZDN8RFGXKKUMzXrnlXznGVXaVdCqZnyYMQXeKan9G8RbRHTjxR6gf31tvnRXxy9FvczYoOmwWpZbUXYaNZljxz7FSAmMjMstnFS9_P0_aA8iLzAiKkbl0RvOu5VHKMxRZtrayfJ_NrgAe16_nl3QYZIfGIlEMEbbM6VjXazjqhvgmmHOngF"/>
+</div>
+<!-- Content Body -->
+<div class="space-y-6 text-body-lg font-body-lg text-deep-obsidian/80">
+<p>
+                    Dalam satu dekade terakhir, pergeseran paradigma dalam desain arsitektur telah membawa kita kembali ke dasar: hubungan harmonis antara manusia dan alam. Namun, kali ini kita tidak hanya sekadar membangun di tengah alam, melainkan mengintegrasikan teknologi canggih untuk memastikan keberlanjutan jangka panjang.
+                </p>
+<h2 class="font-headline-md text-headline-md text-deep-obsidian font-bold mt-10">Sinergi Struktur dan Ekosistem</h2>
+<p>
+                    Proyek terbaru kami di bantaran sungai Volzhsky Bereg menjadi manifestasi nyata dari visi ini. Dengan menggunakan struktur baja presisi dan kaca hemat energi, kami menciptakan ruang yang terasa terbuka namun tetap terlindungi secara termal.
+                </p>
+<!-- In-content full width image -->
+<figure class="my-10 -mx-5">
+<div class="w-full aspect-[4/3] bg-surface-variant overflow-hidden">
+<img class="w-full h-full object-cover" data-alt="An interior shot of a high-tech architectural studio with blueprint drawings on large tablets and physical models on minimalist white tables. The space is illuminated by expansive floor-to-ceiling windows showing a serene forest view. The mood is one of intense focus and precision, using a monochromatic palette with subtle electric blue accents in the digital displays." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB5Yd8F7NVbOSTk0gCqo93PDxSfpUtw0cBX1UUP3cF7PAWQtc3WIeNnYPylDWr1SwzQtsWM62BD8cwSApcP7lkHd-LVy8hmnjaAK_sQIsL6-P_Ieh2tIQdQh0nDUNidtI1UnnGFwd2lWw_9NOshOj5Uo7g8CkEgj9tUswIcRfzVhbR5oLS-gNzw7SRSAGgk2CDm_0IcyxfQidb4H_QdW9ezH94ZOB3fCiGOiT7Xkpl9AGTOwGeCdAN5"/>
+</div>
+<figcaption class="px-5 mt-3 text-label-sm text-on-surface-variant italic text-center">
+                        Integrasi teknologi pintar dalam setiap tahap perencanaan arsitektur.
+                    </figcaption>
+</figure>
+<p>
+                    Kunci dari kenyamanan modern adalah "keheningan yang cerdas". Sistem manajemen rumah yang tersembunyi mengatur sirkulasi udara secara alami, mengurangi ketergantungan pada pendingin udara mekanis hingga 40%. Ini bukan hanya soal penghematan biaya, tapi soal kualitas hidup yang lebih murni.
+                </p>
+<blockquote class="border-l-4 border-electric-blue pl-6 py-2 my-10 italic font-medium text-deep-obsidian">
+                    "Arsitektur masa depan tidak lagi tentang seberapa megah bangunan itu berdiri, tapi seberapa baik ia 'bernapas' bersama lingkungannya."
+                </blockquote>
+<p>
+                    Di ARCH-TECH, kami percaya bahwa presisi di setiap piksel desain digital harus diterjemahkan menjadi kenyamanan di setiap inci ruang fisik. Dengan pendekatan blueprint digital yang ketat, setiap detail dipastikan memiliki tujuan fungsional tanpa mengorbankan nilai estetika minimalis yang menjadi ciri khas kami.
+                </p>
+</div>
+<!-- Share Buttons -->
+<footer class="mt-16 pt-8 border-t border-warm-sand">
+<p class="font-label-lg text-label-lg mb-4 uppercase tracking-widest text-on-surface-variant">Bagikan Artikel</p>
+<div class="flex gap-4">
+<button class="w-12 h-12 flex items-center justify-center border border-deep-obsidian rounded-full hover:bg-deep-obsidian hover:text-white transition-all active:scale-95">
+<span class="material-symbols-outlined">share</span>
+</button>
+<button class="flex-1 border border-deep-obsidian rounded-full font-label-lg text-label-lg flex items-center justify-center gap-2 active:bg-warm-sand transition-colors">
+                        Simpan untuk Nanti
+                    </button>
+</div>
+</footer>
+</article>
+<!-- Related Articles Carousel -->
+<section class="mt-20">
+<div class="px-5 mb-6 flex justify-between items-end">
+<div>
+<h3 class="font-headline-md text-headline-md font-bold">Artikel Terkait</h3>
+<p class="text-on-surface-variant text-body-md">Mungkin Anda juga tertarik</p>
+</div>
+<div class="flex gap-2">
+<button class="material-symbols-outlined text-outline">arrow_back_ios</button>
+<button class="material-symbols-outlined text-deep-obsidian">arrow_forward_ios</button>
+</div>
+</div>
+<div class="flex overflow-x-auto hide-scroll-bar gap-5 px-5 snap-x snap-mandatory">
+<!-- Related Card 1 -->
+<div class="min-w-[280px] snap-start bg-white border border-warm-sand/50">
+<div class="h-40 bg-surface-variant relative">
+<img class="w-full h-full object-cover" data-alt="A close-up architectural detail showing the intersection of raw concrete, polished wood, and matte black steel. The lighting creates deep, dramatic shadows that emphasize the varied textures. This high-contrast, minimalist shot perfectly encapsulates the sophisticated and systematic aesthetic of modern architectural design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAbFRZlX7IyaEVVkITm_N308yNawQD51T4NPZXKmwHQ7DjxeQJJdDWC_x1YhwxllG34SDFRnTnO6LX9ABBcxzYNFkkQtg0XDAWOXIJv3lzKLkG8YLJI9GekJ6LeeNtTWiZEOqnQn0k3y05MOk00k4cL8CoHq_ksawkM3s3QvmEA0xtw5AB8cL9EL6xq31WGXx-kvxNbbjkLCIvb_djvLa9PsQCtYpD5sHhPoSSJL0dDKnx5x5y73U-5"/>
+</div>
+<div class="p-5">
+<span class="text-[10px] font-bold uppercase tracking-widest text-electric-blue">Insight</span>
+<h4 class="font-body-lg font-bold mt-2 leading-snug line-clamp-2">Material Modern: Mengapa Beton Masih Menjadi Primadona</h4>
+<a class="inline-block mt-4 text-label-sm font-bold border-b border-deep-obsidian pb-1" href="#">BACA SELENGKAPNYA</a>
+</div>
+</div>
+<!-- Related Card 2 -->
+<div class="min-w-[280px] snap-start bg-white border border-warm-sand/50">
+<div class="h-40 bg-surface-variant relative">
+<img class="w-full h-full object-cover" data-alt="A birds-eye view of a modern urban development featuring green rooftops and integrated solar panel arrays. The layout is structured like a precise grid, reminiscent of an architectural blueprint. The lighting is bright and optimistic, highlighting the fusion of technology and sustainability in a contemporary light-mode palette." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAroSdnyacKVOWAauer5DsUU2JUS9PVbpWvHKdKSaKjKg0SE2I81LKoI5PFGwrVtzg0un7Lwoi4Y_0a53GIMA0JO_wVpegW2v8I0FyK7yxDKrPSfa5ciYd3ysB3QNMNAPeqEANK8oO-BHZnfEr_BSOsxbYAqUgGquxgATCpDMlKIzkRjYxa0-okzAGlK7OIJesIlFdUZsF9XBopZgm6E62eG-zgqWlx_m_sDGc2buvzdfnSY5kSY2Yu"/>
+</div>
+<div class="p-5">
+<span class="text-[10px] font-bold uppercase tracking-widest text-electric-blue">Project</span>
+<h4 class="font-body-lg font-bold mt-2 leading-snug line-clamp-2">Revitalisasi Lahan Basah dalam Desain Lansekap Kota</h4>
+<a class="inline-block mt-4 text-label-sm font-bold border-b border-deep-obsidian pb-1" href="#">BACA SELENGKAPNYA</a>
+</div>
+</div>
+<!-- Related Card 3 -->
+<div class="min-w-[280px] snap-start bg-white border border-warm-sand/50">
+<div class="h-40 bg-surface-variant relative">
+<img class="w-full h-full object-cover" data-alt="A sleek, futuristic smart home control interface displayed on a high-resolution wall-mounted glass panel. The interface shows energy consumption graphs and climate controls with minimalist icons. The setting is a dimly lit, high-end interior, with the electric blue glow of the display providing the primary light source." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwxwcgwGfW5C6d0xN_sAnwjOOrHCFMStcsgzIqWNwvD2XPWmGw96zKeSVRyNHkOhUTGkpM-f_uxTheuJFNKH6gqqBI6yDJDfsQQMiM1QPzF7etH7pibEDlcmVy0GwSOkctW13cInZ4PXZB_v7KbcpGzLpJ3hDg1o3AQvFV7IwcD2rHkVTlnqyz55sJ7kq0brxhhWPA8iYQHrXJh53Ji7MnT-yjj8jgP-88I2A1k5jlAM1lp-SfgqkM"/>
+</div>
+<div class="p-5">
+<span class="text-[10px] font-bold uppercase tracking-widest text-electric-blue">Solution</span>
+<h4 class="font-body-lg font-bold mt-2 leading-snug line-clamp-2">Sistem Automasi Rumah: Keamanan Tanpa Kompromi</h4>
+<a class="inline-block mt-4 text-label-sm font-bold border-b border-deep-obsidian pb-1" href="#">BACA SELENGKAPNYA</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-deep-obsidian py-16 px-5 text-bone-white">
+<div class="max-w-container-max mx-auto">
+<h2 class="font-headline-lg text-headline-lg font-bold mb-8">ARCH-TECH</h2>
+<div class="grid grid-cols-2 gap-10 mb-12">
+<div class="flex flex-col gap-4">
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Insights</a>
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Solutions</a>
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Projects</a>
+</div>
+<div class="flex flex-col gap-4">
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Privacy Policy</a>
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Terms of Service</a>
+<a class="text-bone-white/40 hover:text-electric-blue transition-colors" href="#">Career</a>
+</div>
+</div>
+<div class="border-t border-white/10 pt-10">
+<p class="text-bone-white/40 text-label-sm mb-6">© 2024 Arch-Tech Systems. All rights reserved. Precision in every pixel.</p>
+<div class="flex gap-4">
+<div class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">public</span>
+</div>
+<div class="w-10 h-10 border border-white/20 rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">mail</span>
+</div>
+</div>
+</div>
+</div>
+</footer>
+<!-- Mobile Menu Overlay (Hidden by default) -->
+<div class="fixed inset-0 bg-deep-obsidian z-[100] transform translate-x-full transition-transform duration-500 flex flex-col p-8" id="mobileMenu">
+<div class="flex justify-end mb-12">
+<button class="material-symbols-outlined text-bone-white text-3xl" id="closeMenu">close</button>
+</div>
+<div class="flex flex-col gap-8">
+<a class="text-bone-white font-headline-lg text-headline-lg hover:text-electric-blue transition-colors" href="#">Insights</a>
+<a class="text-bone-white font-headline-lg text-headline-lg hover:text-electric-blue transition-colors" href="#">Solutions</a>
+<a class="text-bone-white font-headline-lg text-headline-lg hover:text-electric-blue transition-colors" href="#">Projects</a>
+<a class="text-bone-white font-headline-lg text-headline-lg hover:text-electric-blue transition-colors" href="#">Architecture</a>
+<a class="text-bone-white font-headline-lg text-headline-lg hover:text-electric-blue transition-colors" href="#">About</a>
+</div>
+<div class="mt-auto">
+<button class="w-full py-4 bg-electric-blue text-white font-bold tracking-widest uppercase rounded-sm">Get in Touch</button>
+</div>
+</div>
+<script>
+        const menuToggle = document.getElementById('menuToggle');
+        const closeMenu = document.getElementById('closeMenu');
+        const mobileMenu = document.getElementById('mobileMenu');
+
+        menuToggle.addEventListener('click', () => {
+            mobileMenu.classList.remove('translate-x-full');
+        });
+
+        closeMenu.addEventListener('click', () => {
+            mobileMenu.classList.add('translate-x-full');
+        });
+
+        // Simple scroll interaction for navbar
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 20) {
+                nav.classList.add('shadow-lg');
+            } else {
+                nav.classList.remove('shadow-lg');
+            }
+        });
+    </script>
+</body></html>

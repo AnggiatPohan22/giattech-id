@@ -1,0 +1,188 @@
+---
+/**
+ * ArchiveView — every published post, grouped by month, with search.
+ *
+ * The editorial "index" treatment from the design system: generous
+ * vertical padding on each row and thin sand separators, no cards.
+ */
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import AdSlot from '../AdSlot.astro';
+import Icon from '../Icon.astro';
+import { getPosts, groupByMonth, readingTime } from '../../../utils/blog';
+import { routes, t, otherLang, formatDate, formatMonth } from '../../../data/blog-i18n';
+import { categoryLabel, blogCategories, type BlogLang } from '../../../data/blog-categories';
+import { site } from '../../../config/site';
+
+interface Props {
+  lang: BlogLang;
+}
+
+const { lang } = Astro.props;
+const copy = t[lang];
+const other = otherLang(lang);
+const posts = await getPosts(lang);
+const groups = groupByMonth(posts);
+
+const counts = new Map<string, number>();
+for (const p of posts) counts.set(p.data.category, (counts.get(p.data.category) ?? 0) + 1);
+
+const origin = site.url.replace(/\/$/, '');
+const path = routes.archive(lang);
+const title = `${copy.nav.archive} — ${site.name} ${copy.brandSuffix}`;
+const description = copy.sections.archiveIntro;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: copy.nav.archive,
+    description,
+    url: `${origin}${path}`,
+    inLanguage: lang === 'id' ? 'id-ID' : 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: copy.common.breadcrumbHome, item: `${origin}/` },
+      { '@type': 'ListItem', position: 2, name: copy.brandSuffix, item: `${origin}${routes.home(lang)}` },
+      { '@type': 'ListItem', position: 3, name: copy.nav.archive, item: `${origin}${path}` },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  lang={lang}
+  title={title}
+  description={description}
+  path={path}
+  altPath={routes.archive(other)}
+  jsonLd={jsonLd}
+  activeNav="archive"
+>
+  <section class="bl-container pt-6 pb-10 md:pb-14">
+    <Breadcrumbs
+      class="mb-8"
+      items={[
+        { label: copy.common.breadcrumbHome, href: '/' },
+        { label: copy.brandSuffix, href: routes.home(lang) },
+        { label: copy.nav.archive },
+      ]}
+    />
+
+    <h1 class="bl-display">{copy.nav.archive}</h1>
+    <p class="mt-5 max-w-2xl bl-body-lg" style="color: var(--bl-ink-60);">{description}</p>
+
+    <div class="mt-8 max-w-md">
+      <label class="sr-only" for="bl-archive-search">{copy.hero.searchPlaceholder}</label>
+      <div class="flex items-center gap-3">
+        <Icon name="search" size={18} class="opacity-40" />
+        <input
+          id="bl-archive-search"
+          type="search"
+          data-post-search="[data-searchable]"
+          placeholder={copy.hero.searchPlaceholder}
+          autocomplete="off"
+          class="bl-input-line"
+        />
+      </div>
+      <p class="mt-3 bl-label-sm" style="color: var(--bl-ink-40);">
+        <span data-search-count>{posts.length}</span>
+        {lang === 'id' ? 'artikel' : 'articles'}
+      </p>
+    </div>
+  </section>
+
+  <div class="bl-container">
+    <AdSlot slot="blogTop" lang={lang} variant="leaderboard" />
+  </div>
+
+  <section class="bl-container py-12 md:py-16 lg:py-20">
+    <div class="grid grid-cols-12 gap-x-6 gap-y-14">
+      <div class="col-span-12 lg:col-span-8 min-w-0">
+        {
+          groups.map((group) => (
+            <div data-search-group class="mb-12 last:mb-0">
+              <h2 class="bl-label-sm pb-3 bl-rule" style="color: var(--bl-ink-40);">
+                {formatMonth(group.date, lang)}
+              </h2>
+              <ul>
+                {group.posts.map((p) => (
+                  <li
+                    data-searchable
+                    data-search-index={`${p.data.title} ${p.data.description} ${p.data.tags.join(' ')} ${categoryLabel(p.data.category, lang)}`}
+                    class="bl-rule"
+                  >
+                    <a
+                      href={routes.post(lang, p.data.slug)}
+                      class="group flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-6 py-6"
+                    >
+                      <time
+                        datetime={p.data.publishDate.toISOString()}
+                        class="bl-label-sm shrink-0 sm:w-32 tabular-nums"
+                        style="color: var(--bl-ink-40);"
+                      >
+                        {formatDate(p.data.publishDate, lang)}
+                      </time>
+                      <span class="min-w-0 flex-1">
+                        <span
+                          class="bl-card-title block font-display font-medium text-[18px] leading-snug tracking-tight"
+                          style="color: var(--bl-ink);"
+                        >
+                          {p.data.title}
+                        </span>
+                        <span class="mt-2 block bl-label-sm" style="color: var(--bl-accent);">
+                          {categoryLabel(p.data.category, lang)}
+                          <span class="ml-3" style="color: var(--bl-ink-40);">
+                            {copy.post.readingTime(readingTime(p.body ?? ''))}
+                          </span>
+                        </span>
+                      </span>
+                      <span class="hidden sm:inline-flex bl-more shrink-0 self-center">
+                        <Icon name="arrow-right" size={15} stroke={2.5} />
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+
+        <p data-search-empty hidden class="mt-8 bl-body" style="color: var(--bl-ink-60);">
+          {
+            lang === 'id'
+              ? 'Tidak ada artikel yang cocok. Coba kata kunci lain.'
+              : 'No articles match that search. Try another keyword.'
+          }
+        </p>
+      </div>
+
+      <aside class="col-span-12 lg:col-span-4 flex flex-col gap-12 lg:pl-4">
+        <div>
+          <h2 class="bl-headline-md pb-4 bl-rule">{copy.footer.categories}</h2>
+          <div class="mt-6 flex flex-wrap gap-2">
+            {
+              blogCategories.map((c) => (
+                <a
+                  href={routes.category(lang, c.slug)}
+                  class="bl-filter !normal-case !tracking-normal !text-[13px] !px-4 !py-2"
+                >
+                  {c.label[lang]} ({counts.get(c.slug) ?? 0})
+                </a>
+              ))
+            }
+          </div>
+        </div>
+
+        <AdSlot slot="blogInline" lang={lang} variant="rectangle" />
+      </aside>
+    </div>
+  </section>
+
+  <div class="bl-container pb-16 md:pb-24">
+    <AdSlot slot="blogBottom" lang={lang} variant="leaderboard" />
+  </div>
+</BlogLayout>

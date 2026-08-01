@@ -1,0 +1,33 @@
+---
+/**
+ * TableOfContents — built from the article's h2/h3 headings.
+ * Scroll-spy highlighting lives in src/scripts/blog.ts.
+ */
+import { t } from '../../data/blog-i18n';
+import type { BlogLang } from '../../data/blog-categories';
+
+interface Props {
+  lang: BlogLang;
+  headings: { depth: number; text: string; slug: string }[];
+  class?: string;
+}
+
+const { lang, headings, class: className = '' } = Astro.props;
+---
+
+{
+  headings.length > 1 && (
+    <nav class:list={['bl-toc', className]} aria-label={t[lang].sections.toc}>
+      <p class="bl-eyebrow mb-3">{t[lang].sections.toc}</p>
+      <ul class="flex flex-col">
+        {headings.map((h) => (
+          <li>
+            <a href={`#${h.slug}`} data-depth={h.depth}>
+              {h.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+  )
+}

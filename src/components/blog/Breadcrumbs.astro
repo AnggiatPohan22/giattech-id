@@ -1,0 +1,48 @@
+---
+/**
+ * Breadcrumbs — visible trail. The matching BreadcrumbList JSON-LD is
+ * emitted by each page (it needs absolute URLs, which live there).
+ *
+ * `tone="light"` renders it over the dark hero image.
+ */
+interface Crumb {
+  label: string;
+  href?: string;
+}
+
+interface Props {
+  items: Crumb[];
+  tone?: 'dark' | 'light';
+  class?: string;
+}
+
+const { items, tone = 'dark', class: className = '' } = Astro.props;
+
+const base = tone === 'light' ? 'rgba(249, 248, 243, 0.55)' : 'var(--bl-ink-40)';
+const current = tone === 'light' ? 'rgba(249, 248, 243, 0.9)' : 'var(--bl-ink-60)';
+---
+
+<nav aria-label="Breadcrumb" class:list={[className]}>
+  <ol class="flex flex-wrap items-center gap-x-2 gap-y-1 bl-label-sm" style={`color: ${base};`}>
+    {
+      items.map((item, i) => (
+        <li class="flex items-center gap-2 min-w-0">
+          {item.href ? (
+            <a href={item.href} class="transition-colors hover:text-[color:var(--bl-accent)]">
+              {item.label}
+            </a>
+          ) : (
+            <span class="truncate max-w-[14rem] sm:max-w-[22rem] normal-case tracking-normal" style={`color: ${current};`}>
+              {item.label}
+            </span>
+          )}
+          {i < items.length - 1 && (
+            <span aria-hidden="true" class="opacity-50">
+              /
+            </span>
+          )}
+        </li>
+      ))
+    }
+  </ol>
+</nav>

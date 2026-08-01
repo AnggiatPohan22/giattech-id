@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+
+<html class="light" lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ARCH-TECH | Wawasan Arsitektur Masa Depan</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Outfit:wght@500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "electric-blue": "#3B82F6",
+                        "on-secondary": "#ffffff",
+                        "primary-container": "#2170e4",
+                        "on-tertiary-fixed-variant": "#474646",
+                        "inverse-surface": "#2f3131",
+                        "surface-container-high": "#e8e8e8",
+                        "on-tertiary": "#ffffff",
+                        "surface-variant": "#e2e2e2",
+                        "on-background": "#1a1c1c",
+                        "on-primary-fixed-variant": "#004395",
+                        "error-container": "#ffdad6",
+                        "surface": "#f9f9f9",
+                        "tertiary-container": "#767474",
+                        "secondary-fixed": "#e6e2d5",
+                        "secondary-fixed-dim": "#cac6ba",
+                        "on-tertiary-container": "#f7feff",
+                        "on-primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#48473d",
+                        "on-primary-fixed": "#001a42",
+                        "surface-container-low": "#f3f3f4",
+                        "inverse-on-surface": "#f0f1f1",
+                        "on-surface-variant": "#424754",
+                        "outline-variant": "#c2c6d6",
+                        "warm-sand": "#E5E1D4",
+                        "outline": "#727785",
+                        "tertiary-fixed-dim": "#c9c6c5",
+                        "background": "#f9f9f9",
+                        "bone-white": "#F9F8F3",
+                        "surface-container-highest": "#e2e2e2",
+                        "deep-obsidian": "#0C0C0C",
+                        "surface-container-lowest": "#ffffff",
+                        "tertiary-fixed": "#e5e2e1",
+                        "primary": "#0058be",
+                        "on-error-container": "#93000a",
+                        "secondary": "#605f54",
+                        "primary-fixed-dim": "#adc6ff",
+                        "surface-tint": "#005ac2",
+                        "on-surface": "#1a1c1c",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dadada",
+                        "on-error": "#ffffff",
+                        "on-primary-container": "#fefcff",
+                        "surface-container": "#eeeeee",
+                        "surface-bright": "#f9f9f9",
+                        "on-tertiary-fixed": "#1c1b1b",
+                        "tertiary": "#5d5c5b",
+                        "secondary-container": "#e4e0d3",
+                        "inverse-primary": "#adc6ff",
+                        "primary-fixed": "#d8e2ff",
+                        "on-secondary-fixed": "#1d1c14",
+                        "on-secondary-container": "#656358"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "base": "8px",
+                        "margin-mobile": "20px",
+                        "margin-desktop": "64px",
+                        "gutter": "24px",
+                        "container-max": "1280px"
+                    },
+                    "fontFamily": {
+                        "body-md": ["Inter"],
+                        "headline-md": ["Outfit"],
+                        "display-lg-mobile": ["Outfit"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "label-lg": ["Inter"],
+                        "display-lg": ["Outfit"],
+                        "headline-lg": ["Outfit"]
+                    },
+                    "fontSize": {
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "500"}],
+                        "display-lg-mobile": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "label-lg": ["14px", {"lineHeight": "20px", "letterSpacing": "0.05em", "fontWeight": "600"}],
+                        "display-lg": ["64px", {"lineHeight": "72px", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "500"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            vertical-align: middle;
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #F9F8F3; }
+        ::-webkit-scrollbar-thumb { background: #0C0C0C; }
+        
+        .hero-gradient {
+            background: linear-gradient(to right, rgba(12, 12, 12, 0.9) 0%, rgba(12, 12, 12, 0.4) 50%, rgba(12, 12, 12, 0) 100%);
+        }
+    </style>
+</head>
+<body class="bg-bone-white text-deep-obsidian font-body-md selection:bg-electric-blue selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-surface/70 dark:bg-deep-obsidian/70 backdrop-blur-md border-b border-warm-sand/30">
+<div class="flex justify-between items-center h-20 px-margin-desktop max-w-container-max mx-auto">
+<div class="font-headline-md text-headline-md font-bold text-deep-obsidian tracking-tighter">ARCH-TECH</div>
+<div class="hidden md:flex items-center gap-10">
+<a class="font-body-md text-body-md uppercase tracking-widest text-electric-blue font-bold border-b-2 border-electric-blue pb-1" href="#">Insights</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-deep-obsidian/60 hover:text-electric-blue transition-colors" href="#">Solutions</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-deep-obsidian/60 hover:text-electric-blue transition-colors" href="#">Projects</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-deep-obsidian/60 hover:text-electric-blue transition-colors" href="#">Architecture</a>
+<a class="font-body-md text-body-md uppercase tracking-widest text-deep-obsidian/60 hover:text-electric-blue transition-colors" href="#">About</a>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden lg:flex items-center text-deep-obsidian/40 border-b border-deep-obsidian/10 pb-1">
+<span class="material-symbols-outlined text-[20px] mr-2">search</span>
+<input class="bg-transparent border-none focus:ring-0 p-0 text-sm placeholder-deep-obsidian/30" placeholder="Cari artikel..." type="text"/>
+</div>
+<button class="bg-deep-obsidian text-bone-white px-6 py-3 font-label-lg uppercase tracking-widest hover:bg-electric-blue transition-all duration-300 active:opacity-80 active:scale-[0.99]">
+                    Get in Touch
+                </button>
+</div>
+</div>
+</nav>
+<!-- Main Content -->
+<main class="pt-20">
+<!-- Hero Section: Featured Article -->
+<section class="relative h-[85vh] min-h-[600px] w-full overflow-hidden flex items-center group">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-1000 group-hover:scale-105" data-alt="A cinematic, wide-angle photograph of a modern glass-walled architectural villa at dusk. The building is surrounded by lush, dark green pine trees, with soft interior lights reflecting on a still pool of water in the foreground. The lighting is low-key and dramatic, echoing a high-end minimalist design aesthetic with deep obsidian shadows and warm sand tones." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAPkHQcYq1qKJcX_LMJSVfPf29ch8hdvKFcyXXcopsxCvA2kydKN5zWSFXT4O-8F-ZQ5zadmXivT-tgOPydMm5WU9w1HC2Y5ZSfP57DxD5BMiW6s8x1V36NBCWRpb3bUiXKuIb0l9WQom5uVCmXx1M7oezqvpDShR7SDIPVFiKeKUyftT_sMpSArN_k3_JA8i2XI6iuLiagpy5Pn1cGk81Budv41k67O2pK5DuswRLKqeXXdzvcYFsB')">
+</div>
+<div class="absolute inset-0 hero-gradient"></div>
+</div>
+<div class="relative z-10 px-margin-desktop max-w-container-max mx-auto w-full">
+<div class="max-w-3xl">
+<div class="flex items-center gap-4 mb-8">
+<span class="bg-electric-blue text-white px-3 py-1 font-label-sm uppercase tracking-widest">Featured</span>
+<span class="text-bone-white/60 font-label-sm uppercase tracking-widest">12 October 2024</span>
+</div>
+<h1 class="font-display-lg text-display-lg text-bone-white mb-6 leading-tight">
+                        Simfoni Beton: Masa Depan Hunian Brutalis yang Humanis
+                    </h1>
+<p class="font-body-lg text-body-lg text-bone-white/70 mb-10 leading-relaxed max-w-2xl">
+                        Menjelajahi bagaimana arsitektur modern mengintegrasikan material mentah dengan teknologi pintar untuk menciptakan ruang hidup yang tidak hanya efisien, tetapi juga emosional.
+                    </p>
+<a class="inline-flex items-center gap-4 group/btn" href="#">
+<span class="bg-bone-white text-deep-obsidian w-16 h-16 rounded-full flex items-center justify-center group-hover/btn:bg-electric-blue group-hover/btn:text-white transition-colors duration-300">
+<span class="material-symbols-outlined">arrow_forward</span>
+</span>
+<span class="font-label-lg text-bone-white uppercase tracking-[0.2em]">Baca Artikel Lengkap</span>
+</a>
+</div>
+</div>
+<!-- Scroll Indicator -->
+<div class="absolute bottom-10 left-margin-desktop hidden md:flex items-center gap-4 text-bone-white/40">
+<div class="w-[1px] h-20 bg-bone-white/20 relative">
+<div class="absolute top-0 left-0 w-full h-1/2 bg-electric-blue animate-bounce"></div>
+</div>
+<span class="font-label-sm uppercase tracking-widest vertical-rl rotate-180">Gulir Eksplorasi</span>
+</div>
+</section>
+<!-- Blog Grid Filters -->
+<section class="bg-bone-white py-16 px-margin-desktop max-w-container-max mx-auto">
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-8 border-b border-warm-sand pb-8">
+<div>
+<h2 class="font-headline-lg text-headline-lg mb-2">Arsip Wawasan</h2>
+<p class="text-deep-obsidian/60 max-w-md">Pemikiran mendalam tentang teknologi, desain, dan keberlanjutan dalam infrastruktur modern.</p>
+</div>
+<div class="flex flex-wrap gap-4">
+<button class="px-6 py-2 bg-deep-obsidian text-bone-white font-label-sm uppercase tracking-widest">Semua</button>
+<button class="px-6 py-2 border border-warm-sand hover:border-deep-obsidian transition-colors font-label-sm uppercase tracking-widest">Teknologi</button>
+<button class="px-6 py-2 border border-warm-sand hover:border-deep-obsidian transition-colors font-label-sm uppercase tracking-widest">Desain</button>
+<button class="px-6 py-2 border border-warm-sand hover:border-deep-obsidian transition-colors font-label-sm uppercase tracking-widest">Urbanisme</button>
+</div>
+</div>
+</section>
+<!-- Blog Grid Content -->
+<section class="bg-bone-white pb-32 px-margin-desktop max-w-container-max mx-auto">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-gutter gap-y-20">
+<!-- Post Card 1 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[4/3] overflow-hidden mb-6 bg-warm-sand">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Close-up shot of architectural blueprints laid out on a dark concrete table with a sleek silver pen. The lighting is crisp, coming from a side window, creating sharp shadows and highlighting the texture of the paper. Minimalist aesthetic with a color palette of deep blacks, bone whites, and subtle electric blue accents in the line work." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCA3puCrZuYzQdxbNS_AtbgnykNUz07bOImlnqLTXbrKNohvFEWf8aGqW7XQebAq32o2gvmAOoZVqmCFUgVgSE69KWXyTec_GtRsaX60LZz5QuIl_6vbt2_No7eG2LkFU10QUFrT0pZ3zpmBYZ-OOxjW92SjPaGHfsRxb-j0pL_D4R5eQsHVD0UYy2Xd4uWupF1KI0UK9PPlm1AN4oSZCF4bvm4vEgg6-aXqANap62WfOFIwHvvcPcw"/>
+<div class="absolute top-4 left-4">
+<span class="bg-bone-white/90 backdrop-blur-sm px-3 py-1 font-label-sm text-deep-obsidian uppercase tracking-widest">Inovasi</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="text-deep-obsidian/40 font-label-sm uppercase tracking-widest">Desember 14, 2024</span>
+<h3 class="font-headline-md text-headline-md group-hover:text-electric-blue transition-colors duration-300">Optimasi Struktur Melalui Kecerdasan Buatan</h3>
+<p class="text-deep-obsidian/60 line-clamp-3">
+                            Bagaimana algoritma generatif mendefinisikan ulang batas-batas kemungkinan dalam konstruksi gedung pencakar langit modern yang lebih ringan dan efisien.
+                        </p>
+<a class="inline-flex items-center gap-2 font-label-lg text-deep-obsidian uppercase tracking-widest group-hover:gap-4 transition-all" href="#">
+                            Baca Selengkapnya
+                            <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</article>
+<!-- Post Card 2 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[4/3] overflow-hidden mb-6 bg-warm-sand">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A minimal interior view of a brutalist concrete hallway with a single beam of natural light cutting across the floor from a skylight. The walls have a raw, tactile texture, and the floor is polished dark stone. The mood is contemplative and quiet, capturing a high-end architectural atmosphere with deep shadows and clean, linear perspective." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2zN7MXzWL-hZD9F_x8rRDSM_DT816V1MVQuVHR2dpN6LPkY2j_80k7wKUbHNH3fn43s2g8DVUZw4EkjNSHgXY__33I9mHuX0CL5zw9Ryc9bI5qxFlq4TYZz2sJcfpj7bzvgMCN1DubOEYwfLiYYTFXhIUeMVRvhBCgdMIEtGTmSa1mkdl2Ex4TMzQhKNFj1D6_FzoWDYIP8w46Dlj_q9qpNcG8mMSZVxe7178XIWev85zGr5T0Zvq"/>
+<div class="absolute top-4 left-4">
+<span class="bg-bone-white/90 backdrop-blur-sm px-3 py-1 font-label-sm text-deep-obsidian uppercase tracking-widest">Urbanisme</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="text-deep-obsidian/40 font-label-sm uppercase tracking-widest">November 28, 2024</span>
+<h3 class="font-headline-md text-headline-md group-hover:text-electric-blue transition-colors duration-300">Ruang Publik di Era Digital: Transformasi Fisik</h3>
+<p class="text-deep-obsidian/60 line-clamp-3">
+                            Menilik pergeseran fungsi taman kota dan alun-alun di mana konektivitas digital menjadi elemen desain utama yang tak terpisahkan dari struktur fisik.
+                        </p>
+<a class="inline-flex items-center gap-2 font-label-lg text-deep-obsidian uppercase tracking-widest group-hover:gap-4 transition-all" href="#">
+                            Baca Selengkapnya
+                            <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</article>
+<!-- Post Card 3 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[4/3] overflow-hidden mb-6 bg-warm-sand">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A macro shot of a sustainable building material made from compressed earth and recycled fiber. The texture is organic yet refined, with subtle variations in earth tones. Professional photography with soft, natural lighting that emphasizes the environmental consciousness and high-end tech integration of the material. Minimalist and grounded." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGLZEdLzE-r_e_fJvFWF9Vm7fcG0UzWwnSm7Gu5xNA6xZ6_uO03RVh5rryUcP9J43gG-0SF2CqHlKj-wwByV9v5gLaPcVMCqmvAiGtJZnbLQyKMhuR-1EKE2wCj8QVplse0m3dS9ACDSCfYteGwNJMEVCeHaQkkBVU3JHgiVywBz8msRe6lpGDkdTL0unUyqfxWTUpsbfSgZBRYGdZHEx7yZtxmhv3h7tyeZWzFdsbAY5f8T1gM6uI"/>
+<div class="absolute top-4 left-4">
+<span class="bg-bone-white/90 backdrop-blur-sm px-3 py-1 font-label-sm text-deep-obsidian uppercase tracking-widest">Material</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="text-deep-obsidian/40 font-label-sm uppercase tracking-widest">November 10, 2024</span>
+<h3 class="font-headline-md text-headline-md group-hover:text-electric-blue transition-colors duration-300">Material Berkelanjutan: Kembali ke Tanah</h3>
+<p class="text-deep-obsidian/60 line-clamp-3">
+                            Eksperimen dengan tanah yang dipadatkan dan bio-komposit yang menjanjikan pengurangan jejak karbon konstruksi hingga 70% di masa depan.
+                        </p>
+<a class="inline-flex items-center gap-2 font-label-lg text-deep-obsidian uppercase tracking-widest group-hover:gap-4 transition-all" href="#">
+                            Baca Selengkapnya
+                            <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</article>
+<!-- Post Card 4 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[4/3] overflow-hidden mb-6 bg-warm-sand">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="A night view of a smart city control room with large, glowing holographic data displays floating in a dark, minimalist space. Tech professionals move as blurred figures, highlighting the speed of digital transformation. The lighting is dominated by deep obsidian and electric blue hues, creating a futuristic, high-performance atmosphere." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUs5ggFE0d-bsjLPkMvMz2FpRBDtu-nTN4aoOcGVvty8r7BglvBgkwGssgytHKu-1LR2nfv1Kyppu2skoLmpu4qhsMgHmLlnRwFVRWlQ0zsphrLtGMd07TH-uAyTXd1_S20ZDsmPHtQ1Sg9TeBbFtoqT3HNCqNFWbDEQK_sIdognc7UDoGwhjAfV-4GPOVIWxSHiPJ9QLjYXo7ZQ9E8udzbhswcq9mNZODrNa_BPJoJqdOs6XF2Mv7"/>
+<div class="absolute top-4 left-4">
+<span class="bg-bone-white/90 backdrop-blur-sm px-3 py-1 font-label-sm text-deep-obsidian uppercase tracking-widest">Digital</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="text-deep-obsidian/40 font-label-sm uppercase tracking-widest">Oktober 22, 2024</span>
+<h3 class="font-headline-md text-headline-md group-hover:text-electric-blue transition-colors duration-300">Digital Twins: Mereplikasi Realitas Kota</h3>
+<p class="text-deep-obsidian/60 line-clamp-3">
+                            Implementasi teknologi digital twin dalam manajemen infrastruktur kota besar untuk simulasi bencana dan optimasi lalu lintas secara real-time.
+                        </p>
+<a class="inline-flex items-center gap-2 font-label-lg text-deep-obsidian uppercase tracking-widest group-hover:gap-4 transition-all" href="#">
+                            Baca Selengkapnya
+                            <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</article>
+<!-- Post Card 5 -->
+<article class="group cursor-pointer">
+<div class="relative aspect-[4/3] overflow-hidden mb-6 bg-warm-sand">
+<img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="An abstract architectural composition of overlapping white steel beams against a clear blue sky. The angles are sharp and geometric, creating a sense of precision and intentionality. The sunlight creates high-contrast shadows that form new geometric patterns on the structure. Modern, clean, and technologically advanced feel." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWrWGE7GZoKgPmmjwHcYcJ01PsIGcC3-0J7aI7y4h1_nF6zdV1g9g71R5DDspSnkkD4nGaXgZe2YbtNO2VB1vSN04fqnvuLP0WtdNLtHpAw9MIv8dP4uw18RXYZAKIfsdTFy_AYXI0yNiR6A5r2azBkhzjwAia3jaEkFw-hiTCe_7CWQCEcXcpYZE08-XHXK-uC4FbYanBb7GT9TFsM-JCI5WvkK8wHG2OF3wVo7NvvqbQ-q4A218P"/>
+<div class="absolute top-4 left-4">
+<span class="bg-bone-white/90 backdrop-blur-sm px-3 py-1 font-label-sm text-deep-obsidian uppercase tracking-widest">Struktur</span>
+</div>
+</div>
+<div class="space-y-4">
+<span class="text-deep-obsidian/40 font-label-sm uppercase tracking-widest">September 15, 2024</span>
+<h3 class="font-headline-md text-headline-md group-hover:text-electric-blue transition-colors duration-300">Estetika Modular: Fleksibilitas Tanpa Batas</h3>
+<p class="text-deep-obsidian/60 line-clamp-3">
+                            Menganalisis tren bangunan modular yang menawarkan kecepatan pembangunan luar biasa tanpa mengorbankan integritas artistik desain.
+                        </p>
+<a class="inline-flex items-center gap-2 font-label-lg text-deep-obsidian uppercase tracking-widest group-hover:gap-4 transition-all" href="#">
+                            Baca Selengkapnya
+                            <span class="material-symbols-outlined text-[18px]">east</span>
+</a>
+</div>
+</article>
+<!-- Featured Project Teaser (Bento-style card) -->
+<div class="bg-deep-obsidian p-10 flex flex-col justify-between group hover:bg-electric-blue transition-colors duration-500 lg:col-span-1">
+<div>
+<span class="material-symbols-outlined text-bone-white text-[48px] mb-8" style="font-variation-settings: 'FILL' 1;">architecture</span>
+<h3 class="font-headline-lg text-headline-lg text-bone-white mb-4">Ingin Mengetahui Lebih Lanjut?</h3>
+<p class="text-bone-white/60 mb-8">Dapatkan laporan eksklusif kami mengenai tren arsitektur 2025 langsung ke email Anda.</p>
+</div>
+<div class="space-y-4">
+<input class="w-full bg-white/10 border-b border-white/20 text-white placeholder-white/30 focus:border-white focus:ring-0 px-0 py-3 text-sm" placeholder="Alamat email Anda" type="email"/>
+<button class="w-full py-4 bg-bone-white text-deep-obsidian font-label-lg uppercase tracking-widest hover:translate-y-[-2px] transition-transform">Berlangganan</button>
+</div>
+</div>
+</div>
+<!-- Pagination -->
+<div class="mt-24 flex items-center justify-center gap-8">
+<button class="flex items-center gap-2 text-deep-obsidian/30 cursor-not-allowed">
+<span class="material-symbols-outlined">west</span>
+<span class="font-label-lg uppercase tracking-widest">Sebelumnya</span>
+</button>
+<div class="flex items-center gap-4">
+<span class="font-label-lg text-deep-obsidian border-b-2 border-deep-obsidian pb-1">01</span>
+<span class="font-label-lg text-deep-obsidian/40 hover:text-deep-obsidian transition-colors cursor-pointer">02</span>
+<span class="font-label-lg text-deep-obsidian/40 hover:text-deep-obsidian transition-colors cursor-pointer">03</span>
+</div>
+<button class="flex items-center gap-2 text-deep-obsidian group">
+<span class="font-label-lg uppercase tracking-widest">Berikutnya</span>
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">east</span>
+</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-deep-obsidian dark:bg-black w-full py-20 border-t border-white/5">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-margin-desktop max-w-container-max mx-auto">
+<div class="md:col-span-2">
+<div class="font-headline-lg text-headline-lg font-bold text-bone-white mb-6">ARCH-TECH</div>
+<p class="text-bone-white/40 max-w-sm mb-10 font-body-md text-body-md">
+                    Mendefinisikan ulang batas fisik melalui inovasi digital. Arsitektur presisi untuk masa depan yang berlanjut.
+                </p>
+<div class="flex gap-6">
+<a class="text-bone-white/60 hover:text-electric-blue transition-colors" href="#">
+<span class="material-symbols-outlined">share</span>
+</a>
+<a class="text-bone-white/60 hover:text-electric-blue transition-colors" href="#">
+<span class="material-symbols-outlined">public</span>
+</a>
+<a class="text-bone-white/60 hover:text-electric-blue transition-colors" href="#">
+<span class="material-symbols-outlined">alternate_email</span>
+</a>
+</div>
+</div>
+<div class="space-y-4">
+<h4 class="text-bone-white font-medium uppercase tracking-widest text-sm mb-6">Navigasi</h4>
+<ul class="space-y-4">
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block" href="#">Privacy Policy</a></li>
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block" href="#">Terms of Service</a></li>
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block" href="#">Newsletter</a></li>
+</ul>
+</div>
+<div class="space-y-4">
+<h4 class="text-bone-white font-medium uppercase tracking-widest text-sm mb-6">Sumber Daya</h4>
+<ul class="space-y-4">
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block" href="#">Case Studies</a></li>
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block" href="#">Career</a></li>
+<li><a class="text-bone-white/40 hover:text-electric-blue transition-colors hover:translate-x-1 inline-block font-medium text-bone-white" href="#">Insights</a></li>
+</ul>
+</div>
+</div>
+<div class="px-margin-desktop max-w-container-max mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between gap-4">
+<p class="text-bone-white/40 font-body-md text-body-md">© 2024 Arch-Tech Systems. All rights reserved. Precision in every pixel.</p>
+<p class="text-bone-white/20 font-body-md text-body-md">Made with intentionality in Jakarta.</p>
+</div>
+</footer>
+<script>
+        // Micro-interaction for header scroll
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('shadow-xl', 'bg-surface/90');
+            } else {
+                nav.classList.remove('shadow-xl', 'bg-surface/90');
+            }
+        });
+    </script>
+</body></html>

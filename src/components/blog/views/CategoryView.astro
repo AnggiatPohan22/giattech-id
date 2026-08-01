@@ -1,0 +1,157 @@
+---
+/**
+ * CategoryView — archive for one of the five content categories.
+ * Same editorial shell as the index, minus the featured hero.
+ */
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import PostCard from '../PostCard.astro';
+import AdSlot from '../AdSlot.astro';
+import Newsletter from '../Newsletter.astro';
+import Icon from '../Icon.astro';
+import { getPostsByCategory, getPosts } from '../../../utils/blog';
+import { routes, t, otherLang } from '../../../data/blog-i18n';
+import { blogCategories, getCategory, type BlogLang } from '../../../data/blog-categories';
+import { site } from '../../../config/site';
+
+interface Props {
+  lang: BlogLang;
+  category: string;
+}
+
+const { lang, category } = Astro.props;
+const copy = t[lang];
+const other = otherLang(lang);
+const cat = getCategory(category)!;
+const posts = await getPostsByCategory(lang, category);
+const all = await getPosts(lang);
+
+const counts = new Map<string, number>();
+for (const p of all) counts.set(p.data.category, (counts.get(p.data.category) ?? 0) + 1);
+
+const origin = site.url.replace(/\/$/, '');
+const path = routes.category(lang, category);
+const title = `${cat.label[lang]} — ${site.name} ${copy.brandSuffix}`;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: cat.label[lang],
+    description: cat.description[lang],
+    url: `${origin}${path}`,
+    inLanguage: lang === 'id' ? 'id-ID' : 'en',
+    hasPart: posts.map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      url: `${origin}${routes.post(lang, p.data.slug)}`,
+      datePublished: p.data.publishDate.toISOString(),
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: copy.common.breadcrumbHome, item: `${origin}/` },
+      { '@type': 'ListItem', position: 2, name: copy.brandSuffix, item: `${origin}${routes.home(lang)}` },
+      { '@type': 'ListItem', position: 3, name: cat.label[lang], item: `${origin}${path}` },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  lang={lang}
+  title={title}
+  description={cat.description[lang]}
+  path={path}
+  altPath={routes.category(other, category)}
+  jsonLd={jsonLd}
+  activeNav="content"
+>
+  <section class="bl-container pt-6 pb-10 md:pb-14">
+    <Breadcrumbs
+      class="mb-8"
+      items={[
+        { label: copy.common.breadcrumbHome, href: '/' },
+        { label: copy.brandSuffix, href: routes.home(lang) },
+        { label: cat.label[lang] },
+      ]}
+    />
+
+    <div class="flex items-start gap-5 md:gap-7">
+      <span
+        class="hidden sm:inline-flex items-center justify-center w-14 h-14 shrink-0"
+        style="background: var(--bl-sand); color: var(--bl-ink); border-radius: var(--bl-r-md);"
+        aria-hidden="true"
+      >
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+          <path d={cat.icon} />
+        </svg>
+      </span>
+      <div class="min-w-0">
+        <h1 class="bl-display">{cat.label[lang]}</h1>
+        <p class="mt-5 max-w-2xl bl-body-lg" style="color: var(--bl-ink-60);">
+          {cat.description[lang]}
+        </p>
+        <p class="mt-5 bl-label-sm" style="color: var(--bl-ink-40);">
+          {posts.length} {copy.sections.inCategory}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Sibling categories -->
+  <section class="bl-container">
+    <div class="bl-scroll-x -mx-5 px-5 md:-mx-10 md:px-10 lg:mx-0 lg:px-0 bl-rule pb-6">
+      <div class="flex gap-3 lg:flex-wrap">
+        <a href={routes.home(lang)} class="bl-filter bl-filter-pill lg:!rounded-[var(--bl-r-md)]">
+          {lang === 'id' ? 'Semua' : 'All'}
+        </a>
+        {
+          blogCategories.map((c) => (
+            <a
+              href={routes.category(lang, c.slug)}
+              class="bl-filter bl-filter-pill lg:!rounded-[var(--bl-r-md)]"
+              aria-current={c.slug === category ? 'page' : undefined}
+            >
+              {c.label[lang]} ({counts.get(c.slug) ?? 0})
+            </a>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <div class="bl-container pt-10">
+    <AdSlot slot="blogTop" lang={lang} variant="leaderboard" />
+  </div>
+
+  <section class="bl-container py-12 md:py-16 lg:py-20">
+    {
+      posts.length === 0 ? (
+        <p class="bl-body" style="color: var(--bl-ink-60);">
+          {copy.common.noPosts}
+        </p>
+      ) : (
+        <div class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-x-6 md:gap-y-16">
+          {posts.map((p, i) => (
+            <PostCard post={p} lang={lang} variant="grid" headingLevel={2} eager={i < 3} />
+          ))}
+        </div>
+      )
+    }
+
+    <div class="mt-14 md:mt-20">
+      <a href={routes.home(lang)} class="inline-flex items-center gap-2 bl-more">
+        <Icon name="arrow-left" size={15} stroke={2.5} />
+        {copy.post.backToBlog}
+      </a>
+    </div>
+  </section>
+
+  <div class="bl-container pb-16 md:pb-24 flex flex-col gap-10">
+    <Newsletter lang={lang} variant="wide" />
+    <AdSlot slot="blogBottom" lang={lang} variant="leaderboard" />
+  </div>
+</BlogLayout>

@@ -1,0 +1,123 @@
+---
+/**
+ * Newsletter — deep obsidian block.
+ *
+ *   bento — fills one cell of the article grid (reference blog index)
+ *   wide  — full-width band for the secondary pages
+ *
+ * The site is static (no backend), so this hands the address to the
+ * studio inbox via a pre-filled mailto rather than pretending to POST
+ * somewhere. Swap the form action for a Mailchimp / Buttondown
+ * endpoint later without touching the layout.
+ */
+import { t } from '../../data/blog-i18n';
+import { contact } from '../../config/site';
+import type { BlogLang } from '../../data/blog-categories';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: BlogLang;
+  variant?: 'bento' | 'wide';
+}
+
+const { lang, variant = 'wide' } = Astro.props;
+const copy = t[lang].sections;
+
+const subject = lang === 'id' ? 'Berlangganan Giattech Blog' : 'Subscribe to Giattech Blog';
+const bodyText =
+  lang === 'id'
+    ? 'Halo Giattech, saya mau berlangganan update artikel blog.'
+    : 'Hi Giattech, I would like to subscribe to blog updates.';
+const cta = lang === 'id' ? 'Berlangganan' : 'Subscribe';
+const inputId = `bl-newsletter-${variant}`;
+---
+
+{
+  variant === 'bento' ? (
+    <div class="bl-ink-block p-8 lg:p-10 flex flex-col justify-between h-full min-h-[380px]">
+      <div>
+        <span
+          class="inline-flex items-center justify-center w-14 h-14"
+          style="background: rgba(59, 130, 246, 0.15); color: var(--bl-accent); border-radius: var(--bl-r-md);"
+          aria-hidden="true"
+        >
+          <Icon name="mail" size={26} stroke={1.75} />
+        </span>
+        <h2 class="bl-headline-lg mt-8" style="color: var(--bl-bone);">
+          {copy.newsletter}
+        </h2>
+        <p class="mt-4 bl-body" style="color: rgba(249, 248, 243, 0.6);">
+          {copy.newsletterSub}
+        </p>
+      </div>
+
+      <form
+        method="get"
+        action={contact.emailHref}
+        class="mt-8 flex flex-col gap-4"
+        data-newsletter
+        data-subject={subject}
+        data-body={bodyText}
+        data-mailto={contact.emailHref}
+      >
+        <label class="sr-only" for={inputId}>Email</label>
+        <input
+          id={inputId}
+          name="email"
+          type="email"
+          required
+          autocomplete="email"
+          placeholder={lang === 'id' ? 'Alamat email Anda' : 'Your email address'}
+          class="bl-input-box"
+        />
+        <button type="submit" class="bl-btn bl-btn-light w-full">
+          {cta}
+        </button>
+      </form>
+    </div>
+  ) : (
+    <section class="bl-ink-block p-8 sm:p-10 lg:p-14">
+      <div class="grid gap-8 lg:grid-cols-[1.15fr_1fr] lg:items-end">
+        <div>
+          <span
+            class="inline-flex items-center justify-center w-12 h-12"
+            style="background: rgba(59, 130, 246, 0.15); color: var(--bl-accent); border-radius: var(--bl-r-md);"
+            aria-hidden="true"
+          >
+            <Icon name="mail" size={24} stroke={1.75} />
+          </span>
+          <h2 class="bl-headline-lg mt-6" style="color: var(--bl-bone);">
+            {copy.newsletter}
+          </h2>
+          <p class="mt-4 max-w-lg bl-body" style="color: rgba(249, 248, 243, 0.6);">
+            {copy.newsletterSub}
+          </p>
+        </div>
+
+        <form
+          method="get"
+          action={contact.emailHref}
+          class="flex flex-col sm:flex-row gap-3"
+          data-newsletter
+          data-subject={subject}
+          data-body={bodyText}
+          data-mailto={contact.emailHref}
+        >
+          <label class="sr-only" for={inputId}>Email</label>
+          <input
+            id={inputId}
+            name="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder={lang === 'id' ? 'Alamat email Anda' : 'Your email address'}
+            class="bl-input-box flex-1 min-w-0"
+          />
+          <button type="submit" class="bl-btn bl-btn-accent shrink-0">
+            {cta}
+          </button>
+        </form>
+      </div>
+    </section>
+  )
+}

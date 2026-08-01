@@ -1,0 +1,68 @@
+---
+/**
+ * CategoryGrid — the five reading tracks as bordered editorial rows,
+ * with live post counts. Used on About Blog.
+ */
+import { blogCategories, type BlogLang } from '../../data/blog-categories';
+import { routes, t } from '../../data/blog-i18n';
+import type { Post } from '../../utils/blog';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: BlogLang;
+  posts: Post[];
+}
+
+const { lang, posts } = Astro.props;
+const copy = t[lang];
+
+const counts = new Map<string, number>();
+for (const p of posts) {
+  counts.set(p.data.category, (counts.get(p.data.category) ?? 0) + 1);
+}
+const unit = lang === 'id' ? 'artikel' : 'articles';
+---
+
+<div class="grid gap-px" style="background: var(--bl-sand);">
+  {
+    blogCategories.map((cat, i) => (
+      <a
+        href={routes.category(lang, cat.slug)}
+        class="group flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8 p-6 sm:p-8 transition-colors"
+        style="background: var(--bl-bone);"
+      >
+        <span class="bl-label-sm shrink-0 sm:w-10" style="color: var(--bl-ink-40);">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+
+        <span
+          class="inline-flex items-center justify-center w-12 h-12 shrink-0 transition-colors"
+          style="background: var(--bl-sand); color: var(--bl-ink); border-radius: var(--bl-r-md);"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d={cat.icon} />
+          </svg>
+        </span>
+
+        <span class="min-w-0 flex-1">
+          <span class="bl-card-title block bl-headline-md" style="color: var(--bl-ink);">
+            {cat.label[lang]}
+          </span>
+          <span class="mt-2 block bl-body" style="color: var(--bl-ink-60);">
+            {cat.description[lang]}
+          </span>
+        </span>
+
+        <span class="flex items-center gap-6 shrink-0">
+          <span class="bl-label-sm" style="color: var(--bl-ink-40);">
+            {counts.get(cat.slug) ?? 0} {unit}
+          </span>
+          <span class="bl-more">
+            <Icon name="arrow-right" size={16} stroke={2.5} />
+            <span class="sr-only">{copy.common.viewAll}</span>
+          </span>
+        </span>
+      </a>
+    ))
+  }
+</div>
