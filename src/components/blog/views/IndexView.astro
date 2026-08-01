@@ -1,0 +1,340 @@
+---
+/**
+ * IndexView — the blog home, shared by /blog and /blog/en.
+ *
+ * Follows ai/reference/halaman_blog_{desktop,mobile}:
+ *   md+     full-bleed featured hero, "Arsip Wawasan" header with
+ *           filter chips, 3-col card grid with a dark newsletter
+ *           bento cell, reveal-more row
+ *   mobile  portrait featured card, scrolling category pills,
+ *           thumbnail list, full-width reveal button, newsletter
+ *
+ * Both layouts come from one DOM tree (see .bl-hero and PostCard) —
+ * no `hidden md:block` duplicates of the same headline.
+ */
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import PostCard from '../PostCard.astro';
+import AdSlot from '../AdSlot.astro';
+import Newsletter from '../Newsletter.astro';
+import CoverArt from '../CoverArt.astro';
+import Icon from '../Icon.astro';
+import { getPosts, readingTime } from '../../../utils/blog';
+import { routes, t, otherLang, formatDate } from '../../../data/blog-i18n';
+import {
+  blogCategories,
+  categoryLabel,
+  type BlogLang,
+  type CategorySlug,
+} from '../../../data/blog-categories';
+import { site } from '../../../config/site';
+
+interface Props {
+  lang: BlogLang;
+}
+
+const { lang } = Astro.props;
+const copy = t[lang];
+const posts = await getPosts(lang);
+const other = otherLang(lang);
+
+// The hero takes the newest featured post (falling back to the newest
+// post overall); everything else flows into the grid.
+const hero = posts.find((p) => p.data.featured) ?? posts[0];
+const rest = hero ? posts.filter((p) => p.id !== hero.id) : posts;
+
+// ── Grid pagination ──────────────────────────────────────────
+// Six slots per page. Page 1 spends its sixth slot on the newsletter
+// bento (5 fresh articles + 1 built-in card); every later page carries
+// six articles. Server pre-assigns page numbers so search engines see
+// the full set of cards; JS just toggles which page is visible.
+const PAGE_1_ARTICLES = 5;
+const PER_PAGE = 6;
+const totalPages =
+  rest.length <= PAGE_1_ARTICLES
+    ? 1
+    : 1 + Math.ceil((rest.length - PAGE_1_ARTICLES) / PER_PAGE);
+
+const pageForArticle = (i: number): number =>
+  i < PAGE_1_ARTICLES ? 1 : 2 + Math.floor((i - PAGE_1_ARTICLES) / PER_PAGE);
+
+// Prev/next + numeric buttons. Cheap to render, JS wires the clicks.
+const pageNumbers = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+const origin = site.url.replace(/\/$/, '');
+const path = routes.home(lang);
+const title = `${site.name} ${copy.brandSuffix} — ${
+  lang === 'id'
+    ? 'Tutorial, Tips Bisnis Digital & Studi Kasus'
+    : 'Tutorials, Digital Business Tips & Case Studies'
+}`;
+const description = copy.hero.subtitle;
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: `${site.name} ${copy.brandSuffix}`,
+    description,
+    url: `${origin}${path}`,
+    inLanguage: lang === 'id' ? 'id-ID' : 'en',
+    publisher: { '@type': 'Organization', name: site.name, url: `${origin}/` },
+    blogPost: posts.slice(0, 10).map((p) => ({
+      '@type': 'BlogPosting',
+      headline: p.data.title,
+      description: p.data.description,
+      datePublished: p.data.publishDate.toISOString(),
+      url: `${origin}${routes.post(lang, p.data.slug)}`,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: copy.common.breadcrumbHome, item: `${origin}/` },
+      { '@type': 'ListItem', position: 2, name: copy.brandSuffix, item: `${origin}${path}` },
+    ],
+  },
+];
+
+const archiveTitle = lang === 'id' ? 'Arsip Wawasan' : 'The Archive';
+const listTitle = lang === 'id' ? 'Wawasan Terbaru' : 'Latest Insights';
+const moreLabel = lang === 'id' ? 'Tampilkan Lebih Banyak' : 'Show More';
+const featuredLabel = lang === 'id' ? 'Utama' : 'Featured';
+const scrollLabel = lang === 'id' ? 'Gulir Eksplorasi' : 'Scroll to Explore';
+const readFull = lang === 'id' ? 'Baca Artikel Lengkap' : 'Read Full Article';
+---
+
+<BlogLayout
+  lang={lang}
+  title={title}
+  description={description}
+  path={path}
+  altPath={routes.home(other)}
+  jsonLd={jsonLd}
+  activeNav="home"
+>
+  {/* ══════════════ Featured hero ══════════════ */}
+  {
+    hero && (
+      <section class="bl-hero">
+        {/* Media is edge-to-edge and sits behind the text on every
+            breakpoint — no bl-container wrapper, no mobile stacking. */}
+        <div class="bl-hero-media">
+          {hero.data.cover ? (
+            <img
+              src={hero.data.cover}
+              alt={hero.data.coverAlt ?? ''}
+              width="1920"
+              height="1080"
+              fetchpriority="high"
+              decoding="async"
+            />
+          ) : (
+            <CoverArt
+              seed={hero.data.slug}
+              category={hero.data.category as CategorySlug}
+              label={hero.data.title}
+            />
+          )}
+        </div>
+
+        <div class="bl-hero-scrim bl-hero-scrim-x" aria-hidden="true" />
+
+        <div class="bl-hero-frame bl-hero-frame-center">
+          <div class="bl-container w-full">
+            <div class="bl-hero-body max-w-3xl">
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-2 mb-5 md:mb-8">
+                <span class="bl-badge bl-badge-accent">{featuredLabel}</span>
+                <span class="bl-label-sm bl-hero-subtle">
+                  <time datetime={hero.data.publishDate.toISOString()}>
+                    {formatDate(hero.data.publishDate, lang)}
+                  </time>
+                </span>
+                <span class="bl-label-sm bl-hero-subtle">
+                  {copy.post.readingTime(readingTime(hero.body ?? ''))}
+                </span>
+              </div>
+
+              <h1 class="bl-display mb-4 md:mb-6">{hero.data.title}</h1>
+
+              <p class="bl-body md:bl-body-lg max-w-2xl mb-6 md:mb-10 bl-hero-muted">
+                {hero.data.description}
+              </p>
+
+              <a
+                href={routes.post(lang, hero.data.slug)}
+                class="group inline-flex items-center gap-4 md:gap-5"
+              >
+                <span class="bl-btn-round">
+                  <Icon name="arrow-right" size={20} stroke={2} />
+                </span>
+                <span class="bl-label" style="color: var(--hero-fg); letter-spacing: 0.18em;">
+                  {readFull}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="absolute bottom-10 left-0 right-0 hidden lg:block pointer-events-none z-10"
+          aria-hidden="true"
+        >
+          <div class="bl-container">
+            <div class="flex items-center gap-4" style="color: rgba(249, 248, 243, 0.4);">
+              <span class="relative block w-px h-20" style="background: rgba(249, 248, 243, 0.2);">
+                <span class="absolute top-0 left-0 w-full h-1/2" style="background: var(--bl-accent);" />
+              </span>
+              <span class="bl-label-sm bl-scroll-hint">{scrollLabel}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  {/* ══════════════ Filters ══════════════ */}
+  <section class="bl-container pt-10 md:pt-16 lg:pt-20">
+    <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 lg:gap-8 bl-rule pb-6 lg:pb-8">
+      <div>
+        <h2 class="bl-headline-lg">{archiveTitle}</h2>
+        <p class="mt-3 max-w-md bl-body" style="color: var(--bl-ink-60);">
+          {copy.sections.byCategorySub}
+        </p>
+      </div>
+
+      <div class="bl-scroll-x -mx-5 px-5 md:-mx-10 md:px-10 lg:mx-0 lg:px-0">
+        <div class="flex gap-3 lg:flex-wrap lg:justify-end">
+          <span class="bl-filter bl-filter-pill lg:!rounded-[var(--bl-r-md)] is-active">
+            {lang === 'id' ? 'Semua' : 'All'}
+          </span>
+          {
+            blogCategories.map((cat) => (
+              <a
+                href={routes.category(lang, cat.slug)}
+                class="bl-filter bl-filter-pill lg:!rounded-[var(--bl-r-md)]"
+              >
+                {cat.label[lang]}
+              </a>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* ══════════════ Top ad ══════════════ */}
+  <div class="bl-container pt-10">
+    <AdSlot slot="blogTop" lang={lang} variant="leaderboard" />
+  </div>
+
+  {/* ══════════════ Articles ══════════════ */}
+  <section class="bl-container py-12 md:py-16 lg:py-20" aria-labelledby="bl-latest">
+    <div class="flex items-end justify-between gap-6 mb-8 md:mb-10 bl-rule pb-4 md:border-b-0 md:pb-0">
+      <h2 id="bl-latest" class="bl-headline-md md:bl-headline-lg">{listTitle}</h2>
+
+      <div class="hidden sm:block w-56 md:w-64 shrink-0">
+        <label class="sr-only" for="bl-search">{copy.hero.searchPlaceholder}</label>
+        <div class="flex items-center gap-2">
+          <Icon name="search" size={17} class="opacity-40" />
+          <input
+            id="bl-search"
+            type="search"
+            data-post-search="[data-searchable]"
+            placeholder={copy.hero.searchPlaceholder}
+            autocomplete="off"
+            class="bl-input-line"
+          />
+        </div>
+      </div>
+    </div>
+
+    <div
+      data-paged-grid
+      data-total-pages={totalPages}
+      class="grid gap-8 md:grid-cols-2 lg:grid-cols-3 md:gap-x-6 md:gap-y-16 bl-flip-grid"
+    >
+      {
+        rest.map((p, i) => (
+          <div
+            data-searchable
+            data-page={pageForArticle(i)}
+            hidden={pageForArticle(i) !== 1}
+            data-search-index={`${p.data.title} ${p.data.description} ${p.data.tags.join(' ')} ${categoryLabel(p.data.category, lang)}`}
+          >
+            <PostCard post={p} lang={lang} variant="grid" headingLevel={3} eager={i < 3} />
+          </div>
+        ))
+      }
+
+      {/* Newsletter — page 1 only, always the last slot on that page */}
+      <div data-page="1" data-page-fixed class="md:col-span-2 lg:col-span-1">
+        <Newsletter lang={lang} variant="bento" />
+      </div>
+    </div>
+
+    <p data-search-empty hidden class="mt-10 text-center bl-body" style="color: var(--bl-ink-60);">
+      {
+        lang === 'id'
+          ? 'Tidak ada artikel yang cocok. Coba kata kunci lain.'
+          : 'No articles match that search. Try another keyword.'
+      }
+    </p>
+
+    {
+      totalPages > 1 && (
+        <nav
+          data-pager
+          class="mt-10 md:mt-16 flex flex-wrap items-center justify-center gap-4 md:gap-8"
+          aria-label={lang === 'id' ? 'Navigasi halaman' : 'Pagination'}
+        >
+          <button
+            type="button"
+            data-page-prev
+            class="group inline-flex items-center gap-2 bl-label"
+            style="color: var(--bl-ink);"
+            disabled
+          >
+            <Icon name="arrow-left" size={16} stroke={2} />
+            <span class="hidden sm:inline">{lang === 'id' ? 'Sebelumnya' : 'Previous'}</span>
+          </button>
+
+          <ol class="flex items-center gap-4 md:gap-5" role="list">
+            {pageNumbers.map((n) => (
+              <li>
+                <button
+                  type="button"
+                  data-goto-page={n}
+                  class="bl-page-btn bl-label"
+                  aria-current={n === 1 ? 'page' : undefined}
+                >
+                  {String(n).padStart(2, '0')}
+                </button>
+              </li>
+            ))}
+          </ol>
+
+          <button
+            type="button"
+            data-page-next
+            class="group inline-flex items-center gap-2 bl-label"
+            style="color: var(--bl-ink);"
+          >
+            <span class="hidden sm:inline">{lang === 'id' ? 'Berikutnya' : 'Next'}</span>
+            <Icon name="arrow-right" size={16} stroke={2} />
+          </button>
+        </nav>
+      )
+    }
+  </section>
+
+  {/* ══════════════ Inline ad ══════════════ */}
+  <div class="bl-container pb-12 md:pb-16">
+    <AdSlot slot="blogInline" lang={lang} variant="rectangle" />
+  </div>
+
+  {/* ══════════════ Bottom ad ══════════════ */}
+  <div class="bl-container pb-16 md:pb-24">
+    <AdSlot slot="blogBottom" lang={lang} variant="leaderboard" />
+  </div>
+</BlogLayout>

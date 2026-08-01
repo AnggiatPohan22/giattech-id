@@ -1,0 +1,147 @@
+---
+/**
+ * CoverArt — deterministic generated cover art for an article.
+ *
+ * The reference design leans on architectural photography we don't
+ * have, so each post gets a unique blueprint-style composition
+ * derived from its slug: obsidian ground, drafting grid, geometric
+ * massing, and a single electric-blue "digital thread". It reads as
+ * intentional artwork on the bone-white page rather than a
+ * placeholder.
+ *
+ * Drop a real image path into a post's `cover:` frontmatter and
+ * PostCard / the article header use that instead — no code change.
+ */
+import { getCategory, type CategorySlug } from '../../data/blog-categories';
+
+interface Props {
+  seed: string;
+  category: CategorySlug;
+  label?: string;
+  class?: string;
+}
+
+const { seed, category, label, class: className = '' } = Astro.props;
+
+const hue = getCategory(category)?.hue ?? 0;
+
+// FNV-1a → xorshift, so one slug always renders the same artwork.
+function hash(str: string): number {
+  let h = 2166136261;
+  for (let i = 0; i < str.length; i++) {
+    h ^= str.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return h >>> 0;
+}
+let state = hash(seed) || 1;
+const rand = () => {
+  state ^= state << 13; state >>>= 0;
+  state ^= state >> 17;
+  state ^= state << 5;  state >>>= 0;
+  return state / 4294967296;
+};
+
+const uid = `a${hash(seed + category).toString(36)}`;
+
+// Skyline massing — blocks of varying height and depth, drawn from
+// the horizon up. Two tonal bands give a sense of foreground/back.
+const blocks = Array.from({ length: 9 }, (_, i) => {
+  const back = rand() < 0.45;
+  const w = 54 + rand() * 86;
+  const h = back ? 120 + rand() * 200 : 190 + rand() * 250;
+  return {
+    x: -30 + i * 98 + rand() * 24,
+    w,
+    h,
+    back,
+    // A few blocks get lit window bands
+    lit: rand() < 0.55,
+  };
+});
+
+// Diagonal light shaft crossing the composition
+const shaftX = 120 + rand() * 420;
+---
+
+<svg
+  viewBox="0 0 800 600"
+  role="img"
+  aria-label={label ?? 'Article cover'}
+  preserveAspectRatio="xMidYMid slice"
+  class:list={[className]}
+  style={`filter: hue-rotate(${hue}deg);`}
+>
+  <defs>
+    <linearGradient id={`${uid}-sky`} x1="0" y1="0" x2="0.3" y2="1">
+      <stop offset="0%" stop-color="#171717" />
+      <stop offset="55%" stop-color="#101010" />
+      <stop offset="100%" stop-color="#080808" />
+    </linearGradient>
+    <linearGradient id={`${uid}-shaft`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--bl-accent)" stop-opacity="0.30" />
+      <stop offset="100%" stop-color="var(--bl-accent)" stop-opacity="0" />
+    </linearGradient>
+    <linearGradient id={`${uid}-front`} x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#242424" />
+      <stop offset="100%" stop-color="#141414" />
+    </linearGradient>
+    <pattern id={`${uid}-grid`} width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M40 0H0v40" fill="none" stroke="#FFFFFF" stroke-opacity="0.05" stroke-width="1" />
+    </pattern>
+    <pattern id={`${uid}-fine`} width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M8 0H0v8" fill="none" stroke="#FFFFFF" stroke-opacity="0.02" stroke-width="0.5" />
+    </pattern>
+  </defs>
+
+  <!-- Ground -->
+  <rect width="800" height="600" fill={`url(#${uid}-sky)`} />
+  <rect width="800" height="600" fill={`url(#${uid}-fine)`} />
+  <rect width="800" height="600" fill={`url(#${uid}-grid)`} />
+
+  <!-- Light shaft -->
+  <polygon
+    points={`${shaftX},0 ${shaftX + 130},0 ${shaftX - 60},600 ${shaftX - 210},600`}
+    fill={`url(#${uid}-shaft)`}
+  />
+
+  <!-- Massing -->
+  <g>
+    {
+      blocks.filter((b) => b.back).map((b) => (
+        <rect x={b.x} y={600 - b.h} width={b.w} height={b.h} fill="#1C1C1C" />
+      ))
+    }
+    {
+      blocks.filter((b) => !b.back).map((b) => (
+        <>
+          <rect x={b.x} y={600 - b.h} width={b.w} height={b.h} fill={`url(#${uid}-front)`} />
+          <line
+            x1={b.x + 0.5}
+            y1={600 - b.h}
+            x2={b.x + 0.5}
+            y2="600"
+            stroke="#FFFFFF"
+            stroke-opacity="0.10"
+            stroke-width="1"
+          />
+          {b.lit &&
+            Array.from({ length: Math.max(2, Math.floor(b.h / 74)) }, (_, r) => (
+              <rect
+                x={b.x + 12}
+                y={600 - b.h + 26 + r * 68}
+                width={Math.max(10, b.w - 24)}
+                height="7"
+                fill="var(--bl-accent)"
+                opacity={0.22 + (r % 3) * 0.12}
+              />
+            ))}
+        </>
+      ))
+    }
+  </g>
+
+  <!-- Horizon rule + accent baseline, echoing the drafting grid -->
+  <line x1="0" y1="599" x2="800" y2="599" stroke="var(--bl-accent)" stroke-opacity="0.85" stroke-width="4" />
+  <line x1="0" y1="470" x2="800" y2="470" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="1" />
+</svg>

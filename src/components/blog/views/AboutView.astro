@@ -1,0 +1,296 @@
+---
+/**
+ * AboutView — "About Blog": what this blog is, who writes it, how it
+ * is edited, and every route back into giattech.com.
+ */
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import Breadcrumbs from '../Breadcrumbs.astro';
+import CategoryGrid from '../CategoryGrid.astro';
+import AdSlot from '../AdSlot.astro';
+import Newsletter from '../Newsletter.astro';
+import Icon from '../Icon.astro';
+import { getPosts } from '../../../utils/blog';
+import { routes, t, otherLang, langNames } from '../../../data/blog-i18n';
+import type { BlogLang } from '../../../data/blog-categories';
+import { site, contact } from '../../../config/site';
+
+interface Props {
+  lang: BlogLang;
+}
+
+const { lang } = Astro.props;
+const copy = t[lang];
+const other = otherLang(lang);
+const posts = await getPosts(lang);
+
+const origin = site.url.replace(/\/$/, '');
+const path = routes.about(lang);
+const title = `${copy.nav.about} — ${site.name} ${copy.brandSuffix}`;
+const description =
+  lang === 'id'
+    ? 'Tentang Giattech Blog: apa yang kami tulis, siapa yang menulisnya, prinsip editorial kami, dan cara menghubungi kami.'
+    : 'About the Giattech Blog: what we write, who writes it, our editorial principles, and how to reach us.';
+
+const principles = lang === 'id'
+  ? [
+      {
+        title: 'Ditulis dari pekerjaan nyata',
+        body: 'Setiap artikel berangkat dari proyek yang benar-benar kami kerjakan atau masalah yang benar-benar kami temui. Kami tidak menulis tentang hal yang belum pernah kami jalankan.',
+      },
+      {
+        title: 'Angka, bukan kata sifat',
+        body: 'Kalau kami menyebut sesuatu cepat atau mahal, kami sertakan angkanya. Rentang harga dan target metrik ditulis terbuka, termasuk ketika itu tidak menguntungkan kami.',
+      },
+      {
+        title: 'Menyebut batasannya',
+        body: 'Setiap pendekatan punya kekurangan. Kami menuliskannya, termasuk kelemahan cara kerja kami sendiri.',
+      },
+      {
+        title: 'Tidak ada tautan afiliasi',
+        body: 'Tools yang kami rekomendasikan adalah tools yang kami pakai. Tidak ada komisi di balik satu pun tautan di blog ini.',
+      },
+      {
+        title: 'Diperbarui, bukan ditinggalkan',
+        body: 'Artikel teknis menua. Kami memperbarui yang sudah tidak akurat dan mencantumkan tanggal pembaruannya.',
+      },
+      {
+        title: 'Dua bahasa, dua URL',
+        body: 'Setiap tulisan terbit dalam Bahasa Indonesia dan Inggris di alamat terpisah, jadi Anda bisa membagikan versi yang tepat ke pembaca yang tepat.',
+      },
+    ]
+  : [
+      {
+        title: 'Written from real work',
+        body: 'Every article starts from a project we actually ran or a problem we actually hit. We don’t write about things we haven’t done.',
+      },
+      {
+        title: 'Numbers, not adjectives',
+        body: 'If we call something fast or expensive, we include the number. Price ranges and metric targets are published openly, including when that isn’t in our favour.',
+      },
+      {
+        title: 'We name the trade-offs',
+        body: 'Every approach has downsides. We write them down, including the weaknesses of how we work.',
+      },
+      {
+        title: 'No affiliate links',
+        body: 'The tools we recommend are the tools we use. There is no commission behind a single link on this blog.',
+      },
+      {
+        title: 'Updated, not abandoned',
+        body: 'Technical articles age. We revise the ones that stop being accurate and show the update date.',
+      },
+      {
+        title: 'Two languages, two URLs',
+        body: 'Every piece is published in Indonesian and English at separate addresses, so you can share the right version with the right reader.',
+      },
+    ];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: copy.nav.about,
+    description,
+    url: `${origin}${path}`,
+    inLanguage: lang === 'id' ? 'id-ID' : 'en',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: copy.common.breadcrumbHome, item: `${origin}/` },
+      { '@type': 'ListItem', position: 2, name: copy.brandSuffix, item: `${origin}${routes.home(lang)}` },
+      { '@type': 'ListItem', position: 3, name: copy.nav.about, item: `${origin}${path}` },
+    ],
+  },
+];
+
+const mainLinks = lang === 'id'
+  ? [
+      { label: 'Tentang Giattech', href: '/#about', note: 'Perjalanan dan cara kami bekerja' },
+      { label: 'Layanan', href: '/#services', note: 'Yang bisa kami kerjakan untuk Anda' },
+      { label: 'Portofolio', href: '/#projects', note: 'Proyek yang sudah kami kirim' },
+      { label: 'Harga', href: '/#pricing', note: 'Struktur paket dan retainer' },
+      { label: 'FAQ', href: '/#faq', note: 'Pertanyaan yang paling sering masuk' },
+      { label: 'Hubungi Kami', href: '/#cta', note: 'Mulai percakapan' },
+    ]
+  : [
+      { label: 'About Giattech', href: '/#about', note: 'Our story and how we work' },
+      { label: 'Services', href: '/#services', note: 'What we can build for you' },
+      { label: 'Projects', href: '/#projects', note: 'Work we have shipped' },
+      { label: 'Pricing', href: '/#pricing', note: 'Package and retainer structure' },
+      { label: 'FAQ', href: '/#faq', note: 'The questions we get most' },
+      { label: 'Contact', href: '/#cta', note: 'Start a conversation' },
+    ];
+---
+
+<BlogLayout
+  lang={lang}
+  title={title}
+  description={description}
+  path={path}
+  altPath={routes.about(other)}
+  jsonLd={jsonLd}
+  activeNav="about"
+>
+  <section class="bl-container pt-6 pb-10 md:pb-14">
+    <Breadcrumbs
+      class="mb-8"
+      items={[
+        { label: copy.common.breadcrumbHome, href: '/' },
+        { label: copy.brandSuffix, href: routes.home(lang) },
+        { label: copy.nav.about },
+      ]}
+    />
+    <h1 class="bl-display max-w-4xl">
+      {
+        lang === 'id'
+          ? 'Catatan kerja dari studio yang membangun aplikasi web'
+          : 'Field notes from a studio that ships web applications'
+      }
+    </h1>
+    <p class="mt-6 max-w-2xl bl-body-lg" style="color: var(--bl-ink-60);">
+      {
+        lang === 'id'
+          ? 'Blog ini adalah catatan kerja Giattech — studio aplikasi web dari Indonesia. Kami menulis apa yang kami kerjakan, keputusan yang kami ambil, dan apa yang kami pelajari dari proyek nyata.'
+          : 'This blog is the working notebook of Giattech — a web application studio from Indonesia. We write about what we build, the decisions we make, and what we learn from real projects.'
+      }
+    </p>
+  </section>
+
+  <div class="bl-container">
+    <AdSlot slot="blogTop" lang={lang} variant="leaderboard" />
+  </div>
+
+  <!-- What you'll find here -->
+  <section class="bl-container py-12 md:py-16 lg:py-20">
+    <div class="bl-rule pb-6">
+      <h2 class="bl-headline-lg">{lang === 'id' ? 'Apa yang ada di sini' : "What you'll find here"}</h2>
+      <p class="mt-3 max-w-2xl bl-body" style="color: var(--bl-ink-60);">
+        {copy.sections.byCategorySub}
+      </p>
+    </div>
+    <div class="mt-8" style="border: 1px solid var(--bl-sand);">
+      <CategoryGrid lang={lang} posts={posts} />
+    </div>
+  </section>
+
+  <!-- Editorial principles -->
+  <section class="bl-band-alt">
+    <div class="bl-container py-14 md:py-20 lg:py-24">
+      <h2 class="bl-headline-lg bl-rule pb-6">
+        {lang === 'id' ? 'Prinsip Editorial' : 'Editorial Principles'}
+      </h2>
+      <ol class="mt-10 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          principles.map((p, i) => (
+            <li>
+              <span class="bl-label-sm" style="color: var(--bl-accent);">
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="mt-3 bl-headline-md">{p.title}</h3>
+              <p class="mt-3 bl-body" style="color: var(--bl-ink-60);">
+                {p.body}
+              </p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- Author / languages / contact -->
+  <section class="bl-container py-12 md:py-16 lg:py-20">
+    <div class="grid gap-px md:grid-cols-3" style="background: var(--bl-sand);">
+      <div class="p-7 lg:p-8" style="background: var(--bl-bone);">
+        <h2 class="bl-label-sm" style="color: var(--bl-ink-40);">
+          {lang === 'id' ? 'Penulis' : 'Author'}
+        </h2>
+        <p class="mt-4 bl-headline-md">{site.name}</p>
+        <p class="mt-3 bl-body" style="color: var(--bl-ink-60);">
+          {
+            lang === 'id'
+              ? 'Ditulis oleh tim yang mengerjakan proyeknya — bukan penulis lepas yang tidak pernah membuka kodenya.'
+              : 'Written by the people who do the work — not by freelance writers who never opened the codebase.'
+          }
+        </p>
+      </div>
+
+      <div class="p-7 lg:p-8" style="background: var(--bl-bone);">
+        <h2 class="bl-label-sm" style="color: var(--bl-ink-40);">
+          {lang === 'id' ? 'Bahasa' : 'Languages'}
+        </h2>
+        <p class="mt-4 bl-body" style="color: var(--bl-ink-60);">
+          {
+            lang === 'id'
+              ? 'Setiap artikel terbit dalam dua bahasa dengan URL terpisah, jadi Anda bisa membagikan versi yang tepat ke pembaca yang tepat.'
+              : 'Every article is published in both languages on separate URLs, so you can share the right version with the right reader.'
+          }
+        </p>
+        <div class="mt-5 flex flex-wrap gap-2">
+          <a href={routes.home('id')} class="bl-tag" hreflang="id">{langNames.id}</a>
+          <a href={routes.home('en')} class="bl-tag" hreflang="en">{langNames.en}</a>
+        </div>
+      </div>
+
+      <div class="p-7 lg:p-8" style="background: var(--bl-bone);">
+        <h2 class="bl-label-sm" style="color: var(--bl-ink-40);">
+          {lang === 'id' ? 'Hubungi' : 'Contact'}
+        </h2>
+        <p class="mt-4 bl-body" style="color: var(--bl-ink-60);">
+          {
+            lang === 'id'
+              ? 'Ada koreksi, pertanyaan, atau topik yang ingin kami bahas? Kirim ke:'
+              : 'Spotted a correction, have a question, or want us to cover a topic? Write to:'
+          }
+        </p>
+        <a
+          href={contact.emailHref}
+          class="mt-4 inline-flex items-center gap-2 bl-more bl-more-accent"
+        >
+          <Icon name="mail" size={15} />
+          <span class="normal-case tracking-normal">{contact.email}</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Straight back into the main site -->
+  <section class="bl-container pb-12 md:pb-16">
+    <div class="bl-rule pb-6">
+      <h2 class="bl-headline-lg">{lang === 'id' ? 'Tentang Giattech' : 'About Giattech'}</h2>
+      <p class="mt-3 max-w-2xl bl-body" style="color: var(--bl-ink-60);">
+        {
+          lang === 'id'
+            ? 'Giattech membangun aplikasi web, dashboard admin, dan situs berperforma tinggi untuk bisnis di Indonesia. Blog ini adalah bagian dari situs utama kami.'
+            : 'Giattech builds web applications, admin dashboards, and high-performance sites for businesses in Indonesia and beyond. This blog is part of our main site.'
+        }
+      </p>
+    </div>
+
+    <ul class="mt-8 grid gap-px sm:grid-cols-2 lg:grid-cols-3" style="background: var(--bl-sand);">
+      {
+        mainLinks.map((l) => (
+          <li style="background: var(--bl-bone);">
+            <a href={l.href} class="group flex items-center justify-between gap-4 p-6">
+              <span class="min-w-0">
+                <span class="bl-card-title block bl-headline-md">{l.label}</span>
+                <span class="mt-1 block bl-body" style="color: var(--bl-ink-40);">
+                  {l.note}
+                </span>
+              </span>
+              <span class="bl-more shrink-0">
+                <Icon name="arrow-right" size={16} stroke={2.5} />
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <div class="bl-container pb-16 md:pb-24 flex flex-col gap-10">
+    <Newsletter lang={lang} variant="wide" />
+    <AdSlot slot="blogBottom" lang={lang} variant="leaderboard" />
+  </div>
+</BlogLayout>

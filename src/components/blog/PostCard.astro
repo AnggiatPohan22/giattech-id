@@ -1,0 +1,117 @@
+---
+/**
+ * PostCard — one article.
+ *
+ *   grid    — the workhorse. ONE DOM tree that renders as a
+ *             thumbnail-left row on phones (per the mobile reference)
+ *             and a full 4:3 card from md up (desktop reference).
+ *             No duplicated markup, so crawlers see each title once.
+ *   compact — text only: blue category label, title, meta (sidebar)
+ *
+ * Everything below md hides the excerpt and the read-more affordance:
+ * the whole row is the link, and the reference mobile list is title +
+ * meta only.
+ */
+import type { Post } from '../../utils/blog';
+import { readingTime } from '../../utils/blog';
+import { routes, t, formatDate } from '../../data/blog-i18n';
+import { categoryLabel, type BlogLang, type CategorySlug } from '../../data/blog-categories';
+import CoverArt from './CoverArt.astro';
+import Icon from './Icon.astro';
+
+interface Props {
+  post: Post;
+  lang: BlogLang;
+  variant?: 'grid' | 'compact';
+  headingLevel?: 2 | 3;
+  eager?: boolean;
+}
+
+const { post, lang, variant = 'grid', headingLevel = 3, eager = false } = Astro.props;
+const { data } = post;
+const copy = t[lang];
+const href = routes.post(lang, data.slug);
+const minutes = readingTime(post.body ?? '');
+const Heading = `h${headingLevel}` as 'h2' | 'h3';
+const catName = categoryLabel(data.category, lang);
+const dateStr = formatDate(data.publishDate, lang);
+const readStr = copy.post.readingTime(minutes);
+---
+
+{
+  variant === 'compact' ? (
+    <article class="group">
+      <a href={href} class="block">
+        <span class="bl-label-sm" style="color: var(--bl-accent);">
+          {catName}
+        </span>
+        <Heading class="bl-card-title mt-2 bl-body-lg font-medium" style="color: var(--bl-ink);">
+          {data.title}
+        </Heading>
+        <p class="mt-2 text-[12px] leading-4" style="color: var(--bl-ink-40);">
+          <time datetime={data.publishDate.toISOString()}>{dateStr}</time>
+          <span aria-hidden="true"> · </span>
+          {readStr}
+        </p>
+      </a>
+    </article>
+  ) : (
+    <article class="group h-full">
+      <a href={href} class="flex gap-4 md:flex-col md:gap-0 h-full">
+        <span class="bl-media w-28 h-28 shrink-0 md:w-full md:h-auto md:aspect-[4/3] md:mb-6">
+          {data.cover ? (
+            <img
+              src={data.cover}
+              alt=""
+              width="800"
+              height="600"
+              loading={eager ? 'eager' : 'lazy'}
+              decoding="async"
+            />
+          ) : (
+            <CoverArt seed={data.slug} category={data.category as CategorySlug} label={data.title} />
+          )}
+
+          {/* Overlay badge belongs to the card layout only */}
+          <span class="hidden md:block absolute top-4 left-4">
+            <span class="bl-badge">{catName}</span>
+          </span>
+        </span>
+
+        <span class="flex flex-col gap-1 md:gap-4 min-w-0 flex-1">
+          {/* Phones lead with the blue category label; the card layout
+              leads with the date and carries the category in the badge. */}
+          <span class="bl-label-sm md:hidden" style="color: var(--bl-accent);">
+            {catName}
+          </span>
+          <time
+            datetime={data.publishDate.toISOString()}
+            class="hidden md:block bl-label-sm"
+            style="color: var(--bl-ink-40);"
+          >
+            {dateStr}
+          </time>
+
+          <Heading class="bl-card-title bl-card-heading" style="color: var(--bl-ink);">
+            {data.title}
+          </Heading>
+
+          <span class="mt-1 md:hidden text-[12px] leading-4" style="color: var(--bl-ink-40);">
+            <time datetime={data.publishDate.toISOString()}>{dateStr}</time>
+            <span aria-hidden="true"> · </span>
+            {readStr}
+          </span>
+
+          <span class="hidden md:block bl-body bl-line-clamp-3" style="color: var(--bl-ink-60);">
+            {data.description}
+          </span>
+
+          <span class="hidden md:inline-flex bl-more mt-auto pt-1">
+            {copy.common.readMore}
+            <Icon name="arrow-right" size={15} stroke={2.5} />
+          </span>
+        </span>
+      </a>
+    </article>
+  )
+}

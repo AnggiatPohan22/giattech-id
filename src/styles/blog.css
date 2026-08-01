@@ -1,0 +1,1058 @@
+/* ============================================================
+   BLOG — "Lumina Tech Editorial"
+   ------------------------------------------------------------
+   Design system per ai/reference/lumina_tech_editorial/DESIGN.md:
+   a light, architectural, editorial surface. Bone White base,
+   Deep Obsidian ink, Warm Sand as the only border/tint colour,
+   and Electric Blue used sparingly as the "digital thread".
+
+   No shadows — depth comes from tonal layers and 1px sand rules.
+   Corner radius is disciplined: 4px on most things, 12px only on
+   large media containers.
+
+   Loaded ONLY by BlogLayout.astro. Everything is namespaced under
+   .blog-root or a bl-* class, so the giattech.com landing page is
+   completely untouched.
+   ============================================================ */
+
+.blog-root {
+  /* ---- Palette ---- */
+  --bl-bone:        #F9F8F3;  /* page base */
+  --bl-white:       #FFFFFF;  /* raised surfaces */
+  --bl-alt:         #F3F3F4;  /* section alternation (related, archive) */
+  --bl-sand:        #E5E1D4;  /* the only border colour */
+  --bl-sand-soft:   #EFEDE4;  /* sand at low emphasis */
+  --bl-ink:         #0C0C0C;  /* deep obsidian */
+  --bl-ink-70:      rgba(12, 12, 12, 0.70);
+  --bl-ink-60:      rgba(12, 12, 12, 0.60);
+  --bl-ink-40:      rgba(12, 12, 12, 0.40);
+  --bl-ink-20:      rgba(12, 12, 12, 0.20);
+  --bl-ink-10:      rgba(12, 12, 12, 0.10);
+  --bl-accent:      var(--brand);        /* electric blue #3B82F6 */
+  --bl-accent-dark: var(--brand-dark);
+  --bl-on-accent:   #FFFFFF;
+
+  /* ---- Shape ---- */
+  --bl-r:      2px;    /* default — nearly square, architectural */
+  --bl-r-md:   4px;    /* cards, chips, inputs */
+  --bl-r-lg:   8px;
+  --bl-r-xl:   12px;   /* large media + hero containers */
+
+  /* ---- Rhythm (8px scale) ---- */
+  --bl-nav-h:    80px;
+  --bl-gutter:   24px;
+  --bl-max:      1280px;
+  --bl-measure:  68ch;
+
+  /* Base layer: override the landing page's dark tokens so the
+     shared base rules in global.css resolve to the light theme. */
+  --color-bg:           var(--bl-bone);
+  --color-text:         var(--bl-ink);
+  --color-text-muted:   rgba(12, 12, 12, 0.60);
+  --color-text-subtle:  rgba(12, 12, 12, 0.40);
+  --color-border:       var(--bl-sand);
+  --color-surface:      var(--bl-white);
+  --color-accent-muted: rgba(var(--brand-rgb), 0.12);
+
+  background-color: var(--bl-bone);
+  color: var(--bl-ink);
+  scroll-padding-top: calc(var(--bl-nav-h) + 16px);
+}
+
+.blog-root body {
+  background-color: var(--bl-bone);
+  color: var(--bl-ink);
+}
+
+/* Architectural scrollbar — thin, obsidian on bone. */
+.blog-root ::-webkit-scrollbar       { width: 6px; height: 6px; }
+.blog-root ::-webkit-scrollbar-track { background: var(--bl-bone); }
+.blog-root ::-webkit-scrollbar-thumb { background: var(--bl-ink); }
+
+.blog-root ::selection {
+  background-color: var(--bl-accent);
+  color: var(--bl-on-accent);
+}
+
+/* ------------------------------------------------------------
+   Everything below sits in Tailwind's `components` layer on
+   purpose. Unlayered CSS outranks layered CSS, so a plain
+   `.bl-btn { display:inline-flex }` would otherwise beat the
+   `hidden` utility sitting beside it in the class list.
+   ------------------------------------------------------------ */
+@layer components {
+
+/* ============================================================
+   LAYOUT
+   ============================================================ */
+.bl-container {
+  width: 100%;
+  max-width: var(--bl-max);
+  margin-inline: auto;
+  padding-inline: 20px;                    /* margin-mobile */
+}
+@media (min-width: 768px)  { .bl-container { padding-inline: 40px; } }
+@media (min-width: 1280px) { .bl-container { padding-inline: 64px; } }  /* margin-desktop */
+
+.bl-section        { padding-block: 56px; }
+@media (min-width: 768px)  { .bl-section { padding-block: 80px; } }
+@media (min-width: 1024px) { .bl-section { padding-block: 120px; } }
+
+/* Alternate tonal band — related articles, archive lists */
+.bl-band-alt { background: var(--bl-alt); }
+.bl-band-ink { background: var(--bl-ink); color: var(--bl-bone); }
+
+/* ============================================================
+   TYPOGRAPHY — Outfit for structure, Inter for reading
+   ============================================================ */
+.bl-display {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4.6vw + 12px, 64px);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 600;
+}
+.bl-headline-lg {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 1.6vw + 18px, 32px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+.bl-headline-md {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 0.8vw + 17px, 24px);
+  line-height: 1.33;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+}
+.bl-body-lg {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 28px;
+  font-weight: 400;
+}
+.bl-body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+/* Labels are navigational markers: uppercase, tracked, small. */
+.bl-label {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.bl-label-sm {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.bl-eyebrow {
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--bl-accent);
+}
+
+/* Section heading + rule, the recurring editorial pattern */
+.bl-rule {
+  border-bottom: 1px solid var(--bl-sand);
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.bl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 24px;
+  border-radius: var(--bl-r-md);
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease, color 0.3s ease,
+              border-color 0.3s ease, transform 0.2s ease;
+}
+.bl-btn:active { transform: scale(0.99); }
+
+/* Primary = solid obsidian, per the design system (blue is reserved) */
+.bl-btn-primary {
+  background: var(--bl-ink);
+  color: var(--bl-bone);
+}
+.bl-btn-primary:hover { background: var(--bl-accent); color: #fff; }
+
+.bl-btn-outline {
+  border: 1px solid var(--bl-ink);
+  color: var(--bl-ink);
+  background: transparent;
+}
+.bl-btn-outline:hover { background: var(--bl-ink); color: var(--bl-bone); }
+
+/* Quiet variant sitting on sand rules */
+.bl-btn-ghost {
+  border: 1px solid var(--bl-sand);
+  color: var(--bl-ink-60);
+  background: transparent;
+}
+.bl-btn-ghost:hover { border-color: var(--bl-ink); color: var(--bl-ink); }
+
+/* On dark surfaces */
+.bl-btn-light {
+  background: var(--bl-bone);
+  color: var(--bl-ink);
+}
+.bl-btn-light:hover { transform: translateY(-2px); }
+.bl-btn-accent {
+  background: var(--bl-accent);
+  color: #fff;
+}
+.bl-btn-accent:hover { filter: brightness(1.1); }
+
+/* Circular arrow used on the hero CTA */
+.bl-btn-round {
+  width: 56px;
+  height: 56px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bl-bone);
+  color: var(--bl-ink);
+  flex-shrink: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+@media (min-width: 768px) { .bl-btn-round { width: 64px; height: 64px; } }
+.group:hover .bl-btn-round { background: var(--bl-accent); color: #fff; }
+
+/* ============================================================
+   CHIPS / FILTERS / TAGS
+   ============================================================ */
+/* Filter chip — square on desktop rows, pill in the mobile scroller */
+.bl-filter {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  padding: 9px 24px;
+  border: 1px solid var(--bl-sand);
+  border-radius: var(--bl-r-md);
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bl-ink-60);
+  transition: border-color 0.25s ease, color 0.25s ease,
+              background-color 0.25s ease;
+}
+.bl-filter:hover { border-color: var(--bl-ink); color: var(--bl-ink); }
+.bl-filter[aria-current='page'],
+.bl-filter.is-active {
+  background: var(--bl-ink);
+  border-color: var(--bl-ink);
+  color: var(--bl-bone);
+}
+.bl-filter-pill { border-radius: 999px; }
+
+/* Category badge floating on card media */
+.bl-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 12px;
+  border-radius: var(--bl-r);
+  background: rgba(249, 248, 243, 0.92);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  color: var(--bl-ink);
+  font-family: var(--font-body);
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.bl-badge-accent {
+  background: var(--bl-accent);
+  color: #fff;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Flat sand tag used under articles */
+.bl-tag {
+  display: inline-flex;
+  padding: 6px 12px;
+  border-radius: var(--bl-r);
+  background: var(--bl-sand);
+  color: var(--bl-ink);
+  font-family: var(--font-body);
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+a.bl-tag:hover { background: var(--bl-ink); color: var(--bl-bone); }
+
+/* ============================================================
+   CARDS & MEDIA
+   ============================================================ */
+.bl-media {
+  position: relative;
+  overflow: hidden;
+  background: var(--bl-sand);
+  border-radius: var(--bl-r-lg);
+}
+.bl-media-4x3 { aspect-ratio: 4 / 3; }
+.bl-media-4x5 { aspect-ratio: 4 / 5; }
+.bl-media-16x9 { aspect-ratio: 16 / 9; }
+.bl-media img,
+.bl-media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+}
+@media (hover: hover) {
+  .group:hover .bl-media img,
+  .group:hover .bl-media svg { transform: scale(1.06); }
+}
+
+/* Card heading: compact on the phone list, headline-md on the card
+   layout. One rule so the title only ever appears once in the DOM. */
+.bl-card-heading {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  font-weight: 600;
+}
+@media (min-width: 768px) {
+  .bl-card-heading {
+    font-size: clamp(20px, 0.8vw + 17px, 24px);
+    line-height: 1.33;
+    font-weight: 500;
+  }
+}
+
+/* Titles shift to the digital thread on hover */
+.bl-card-title { transition: color 0.3s ease; }
+@media (hover: hover) {
+  .group:hover .bl-card-title { color: var(--bl-accent); }
+}
+
+/* "Baca selengkapnya" — the arrow opens up its gap on hover */
+.bl-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bl-ink);
+  transition: gap 0.3s ease, color 0.3s ease;
+}
+.group:hover .bl-more { gap: 16px; color: var(--bl-accent); }
+.bl-more-accent { color: var(--bl-accent); }
+
+/* Bordered surface panel (sidebar widgets, list rows) */
+.bl-panel {
+  background: var(--bl-white);
+  border: 1px solid var(--bl-sand);
+  border-radius: var(--bl-r-md);
+}
+
+/* Dark bento block — newsletter, CTA */
+.bl-ink-block {
+  background: var(--bl-ink);
+  color: var(--bl-bone);
+  border-radius: var(--bl-r-md);
+}
+.bl-ink-block a:not(.bl-btn) { color: var(--bl-bone); }
+
+/* ============================================================
+   NAV — light glass over the bone page
+   ============================================================ */
+.bl-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(249, 249, 249, 0.72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229, 225, 212, 0.5);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+@supports not (backdrop-filter: blur(1px)) {
+  .bl-nav { background: #F9F9F9; }
+}
+.bl-nav.is-scrolled {
+  background: rgba(249, 249, 249, 0.94);
+  border-bottom-color: var(--bl-sand);
+}
+
+.bl-nav-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 0;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bl-ink-60);
+  border-bottom: 2px solid transparent;
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.bl-nav-link:hover { color: var(--bl-accent); }
+.bl-nav-link[aria-current='page'],
+.bl-nav-link.is-active {
+  color: var(--bl-accent);
+  font-weight: 700;
+  border-bottom-color: var(--bl-accent);
+}
+
+/* Architectural input: bottom rule only, blue on focus */
+.bl-input-line {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--bl-ink-20);
+  border-radius: 0;
+  padding: 10px 0;
+  font-size: 14px;
+  color: var(--bl-ink);
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+.bl-input-line::placeholder { color: var(--bl-ink-40); }
+.bl-input-line:focus { border-bottom-color: var(--bl-accent); }
+
+/* Boxed input (dark blocks) */
+.bl-input-box {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: var(--bl-r-md);
+  padding: 13px 16px;
+  font-size: 14px;
+  color: var(--bl-bone);
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+.bl-input-box::placeholder { color: rgba(249, 248, 243, 0.4); }
+.bl-input-box:focus { border-color: var(--bl-accent); }
+
+.bl-dropdown {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 0;
+  min-width: 300px;
+  padding: 8px;
+  background: var(--bl-white);
+  border: 1px solid var(--bl-sand);
+  border-radius: var(--bl-r-md);
+  /* the one shadow the system allows: ultra-diffused, functional */
+  box-shadow: 0 10px 30px rgba(12, 12, 12, 0.05);
+  animation: bl-fade-in 0.15s ease both;
+}
+.bl-dropdown-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--bl-r);
+  color: var(--bl-ink-60);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+.bl-dropdown-item:hover { background: var(--bl-bone); color: var(--bl-ink); }
+
+@keyframes bl-fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+.bl-fade { animation: bl-fade-in 0.15s ease both; }
+
+/* Language switch — square, sand-bordered */
+.bl-lang {
+  display: inline-flex;
+  border: 1px solid var(--bl-sand);
+  border-radius: var(--bl-r-md);
+  overflow: hidden;
+}
+.bl-lang a {
+  padding: 6px 12px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--bl-ink-40);
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+.bl-lang a:hover { color: var(--bl-ink); }
+.bl-lang a[aria-current='true'] {
+  background: var(--bl-ink);
+  color: var(--bl-bone);
+}
+
+/* ============================================================
+   HERO — one full-bleed cinematic frame at every breakpoint
+   ------------------------------------------------------------
+   The image sits behind the text on desktop AND mobile. A single
+   layout, one DOM tree, no `hidden md:block` duplicates and no
+   phone-only stacking that pushes the copy off the picture.
+
+   Text stays legible over the image via an obsidian scrim; the
+   scrim direction (-x for the index, -y for articles) is picked
+   per page.
+   ============================================================ */
+.bl-hero {
+  /* Foreground token — always bone, since the frame is always dark */
+  --hero-fg:        var(--bl-bone);
+  --hero-fg-muted:  rgba(249, 248, 243, 0.75);
+  --hero-fg-subtle: rgba(249, 248, 243, 0.6);
+
+  position: relative;
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  background: var(--bl-ink);
+  color: var(--hero-fg);
+  isolation: isolate;
+}
+
+/* Image is absolute so the frame height drives the crop. dvh handles
+   mobile browser UI chrome (address bar / bottom bar) properly — the
+   fallback vh keeps the layout sane on browsers without dvh. */
+.bl-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--bl-sand);
+  border-radius: 0;
+}
+.bl-hero-media img,
+.bl-hero-media svg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.bl-hero-scrim {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+/* Index hero: light falls left→right across the frame.
+   On phones the frame narrows, so we tilt the scrim toward vertical
+   so the bottom (where the CTA sits) stays legibly dark. */
+.bl-hero-scrim-x {
+  background: linear-gradient(
+    170deg,
+    rgba(12, 12, 12, 0.85) 0%,
+    rgba(12, 12, 12, 0.55) 55%,
+    rgba(12, 12, 12, 0.20) 100%
+  );
+}
+@media (min-width: 768px) {
+  .bl-hero-scrim-x {
+    background: linear-gradient(
+      to right,
+      rgba(12, 12, 12, 0.92) 0%,
+      rgba(12, 12, 12, 0.62) 45%,
+      rgba(12, 12, 12, 0.15) 100%
+    );
+  }
+}
+/* Article hero: text sits along the bottom, scrim rises from there. */
+.bl-hero-scrim-y {
+  background: linear-gradient(
+    to top,
+    rgba(12, 12, 12, 0.92) 0%,
+    rgba(12, 12, 12, 0.55) 45%,
+    rgba(12, 12, 12, 0.12) 100%
+  );
+}
+
+.bl-hero-body {
+  position: relative;
+  z-index: 10;
+}
+.bl-hero-body h1 { color: var(--hero-fg); }
+
+.bl-hero-muted  { color: var(--hero-fg-muted); }
+.bl-hero-subtle { color: var(--hero-fg-subtle); }
+
+/* ── The frame — tall on every breakpoint ─────────────────────
+   Mobile:  min 620px, prefers 88dvh (accounts for browser UI)
+   Tablet:  92vh, capped at 900px so it doesn't tower on landscape iPads
+   Desktop: 92vh, capped at 920px so 4K displays don't look bloated  */
+.bl-hero-frame {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  width: 100%;
+  min-height: 620px;
+  min-height: 88dvh;
+  padding-top: calc(var(--bl-nav-h) + 20px);
+  padding-bottom: 56px;
+}
+@media (min-width: 768px) {
+  .bl-hero-frame {
+    min-height: 92vh;
+    min-height: 92dvh;
+    max-height: 900px;
+    padding-bottom: 72px;
+  }
+}
+@media (min-width: 1024px) {
+  .bl-hero-frame { max-height: 920px; }
+}
+.bl-hero-frame-center { align-items: center; }
+.bl-hero-frame-bottom { align-items: flex-end; }
+
+/* Slow ken-burns on hover — desktop only, and honoured by
+   prefers-reduced-motion further down. */
+@media (hover: hover) and (min-width: 768px) {
+  .bl-hero:hover .bl-hero-media img,
+  .bl-hero:hover .bl-hero-media svg { transform: scale(1.04); }
+}
+
+/* Category badge in the hero: solid blue */
+.bl-hero .bl-badge-accent { background: var(--bl-accent); color: #fff; }
+
+/* Round CTA — always the bone/ink inversion because the frame is
+   always dark now. Hover shifts to accent. */
+.bl-hero .bl-btn-round { background: var(--bl-bone); color: var(--bl-ink); }
+.bl-hero .group:hover .bl-btn-round { background: var(--bl-accent); color: #fff; }
+
+/* Vertical "scroll" marker, desktop only */
+.bl-scroll-hint {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+/* Compatibility no-ops — these modifiers used to switch the mobile
+   crop; now that mobile and desktop share the same overlay layout
+   there's nothing to do. Kept so existing markup still parses. */
+.bl-hero-portrait,
+.bl-hero-landscape,
+.bl-hero-full { }
+
+/* ============================================================
+   ADS — reserved space so enabling AdSense causes no layout shift
+   ============================================================ */
+.bl-ad {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  overflow: hidden;
+  border: 1px dashed var(--bl-sand);
+  border-radius: var(--bl-r-md);
+  background:
+    repeating-linear-gradient(
+      45deg,
+      rgba(12, 12, 12, 0.015) 0 10px,
+      transparent 10px 20px
+    ),
+    var(--bl-sand-soft);
+}
+.bl-ad.is-live { border-style: solid; border-color: var(--bl-sand); background: transparent; }
+.bl-ad-label {
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bl-ink-40);
+}
+.bl-ad-hint {
+  font-size: 12px;
+  color: var(--bl-ink-40);
+  text-align: center;
+  padding: 8px 16px;
+}
+.bl-ad ins.adsbygoogle { display: block; width: 100%; }
+
+.bl-ad-leaderboard { min-height: 110px; }
+.bl-ad-inarticle   { min-height: 260px; }
+.bl-ad-rectangle   { min-height: 260px; }
+.bl-ad-sidebar     { min-height: 600px; }
+@media (min-width: 768px) {
+  .bl-ad-leaderboard { min-height: 100px; }
+  .bl-ad-inarticle   { min-height: 280px; }
+  .bl-ad-rectangle   { min-height: 280px; }
+}
+@media (min-width: 1024px) { .bl-ad-leaderboard { min-height: 120px; } }
+
+/* ============================================================
+   PROSE — long-form article body (Inter, generous leading)
+   ============================================================ */
+.bl-prose {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--bl-ink-70);
+  max-width: var(--bl-measure);
+  overflow-wrap: break-word;
+}
+@media (min-width: 768px) { .bl-prose { font-size: 17px; line-height: 1.8; } }
+
+.bl-prose > * + * { margin-top: 1.4em; }
+
+.bl-prose h2 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 1.6vw + 17px, 32px);
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: var(--bl-ink);
+  margin-top: 2.2em;
+  margin-bottom: 0.1em;
+  scroll-margin-top: calc(var(--bl-nav-h) + 24px);
+}
+.bl-prose h3 {
+  font-family: var(--font-display);
+  font-size: clamp(19px, 0.8vw + 16px, 24px);
+  line-height: 1.33;
+  letter-spacing: -0.01em;
+  font-weight: 500;
+  color: var(--bl-ink);
+  margin-top: 1.8em;
+  margin-bottom: 0;
+  scroll-margin-top: calc(var(--bl-nav-h) + 24px);
+}
+.bl-prose h2 + *, .bl-prose h3 + * { margin-top: 0.75em; }
+
+.bl-prose a {
+  color: var(--bl-accent);
+  text-decoration: underline;
+  text-decoration-color: rgba(var(--brand-rgb), 0.35);
+  text-underline-offset: 3px;
+  transition: text-decoration-color 0.25s ease;
+}
+.bl-prose a:hover { text-decoration-color: var(--bl-accent); }
+
+.bl-prose strong { color: var(--bl-ink); font-weight: 600; }
+
+.bl-prose ul, .bl-prose ol { padding-left: 1.35em; }
+.bl-prose ul { list-style: disc; }
+.bl-prose ol { list-style: decimal; }
+.bl-prose li::marker { color: var(--bl-accent); }
+.bl-prose li + li { margin-top: 0.5em; }
+.bl-prose li > ul, .bl-prose li > ol { margin-top: 0.5em; }
+
+/* Pull quote — blue rule, per the reference article */
+.bl-prose blockquote {
+  border-left: 4px solid var(--bl-accent);
+  padding: 4px 0 4px 28px;
+  margin-block: 1.8em;
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 28px;
+  font-style: italic;
+  color: var(--bl-ink-70);
+}
+.bl-prose blockquote p { margin: 0; }
+
+.bl-prose code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.875em;
+  padding: 0.15em 0.4em;
+  border-radius: var(--bl-r);
+  background: var(--bl-sand-soft);
+  border: 1px solid var(--bl-sand);
+  color: var(--bl-ink);
+  overflow-wrap: anywhere;
+}
+.bl-prose pre {
+  padding: 20px 22px;
+  border-radius: var(--bl-r-lg);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bl-ink) !important;
+  color: #E8E8E8;
+  overflow-x: auto;
+  font-size: 13.5px;
+  line-height: 1.7;
+  -webkit-overflow-scrolling: touch;
+}
+.bl-prose pre code {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font-size: inherit;
+  overflow-wrap: normal;
+}
+
+.bl-prose img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--bl-r-lg);
+}
+
+.bl-prose hr {
+  border: 0;
+  border-top: 1px solid var(--bl-sand);
+  margin-block: 2.5em;
+}
+
+.bl-prose .bl-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.bl-prose table {
+  width: 100%;
+  min-width: 420px;
+  border-collapse: collapse;
+  font-size: 15px;
+}
+.bl-prose th, .bl-prose td {
+  border: 1px solid var(--bl-sand);
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+.bl-prose th {
+  background: var(--bl-sand-soft);
+  color: var(--bl-ink);
+  font-weight: 600;
+}
+
+/* ============================================================
+   TABLE OF CONTENTS
+   ============================================================ */
+.bl-toc a {
+  display: block;
+  padding: 7px 0 7px 14px;
+  border-left: 2px solid var(--bl-sand);
+  font-family: var(--font-body);
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--bl-ink-60);
+  transition: color 0.25s ease, border-color 0.25s ease;
+}
+.bl-toc a:hover,
+.bl-toc a.is-active { color: var(--bl-accent); border-left-color: var(--bl-accent); }
+.bl-toc a[data-depth='3'] { padding-left: 28px; font-size: 12.5px; }
+
+/* ============================================================
+   PAGINATION + CARD FLIP
+   ------------------------------------------------------------
+   Card-level 3D flip when moving between pages. Applied in two
+   phases (out → swap → in) rather than one continuous rotation
+   so the reader never sees a "back-to-front" mirror of the old
+   card while the new one is loading.
+   ============================================================ */
+.bl-flip-grid {
+  perspective: 1400px;
+  perspective-origin: 50% 30%;
+}
+.bl-flip-grid > * {
+  transform-origin: center center;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+@keyframes bl-flip-out {
+  from { transform: rotateY(0) translateZ(0);    opacity: 1; }
+  to   { transform: rotateY(-92deg) translateZ(0); opacity: 0; }
+}
+@keyframes bl-flip-in {
+  from { transform: rotateY(92deg) translateZ(0);  opacity: 0; }
+  to   { transform: rotateY(0) translateZ(0);      opacity: 1; }
+}
+
+/* Wave the animation across the row so cards don't all snap in
+   simultaneously — --i is set by JS on each card as it becomes visible. */
+.is-flipping-out > *:not([hidden]) {
+  animation: bl-flip-out 0.36s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.is-flipping-in > *:not([hidden]) {
+  animation: bl-flip-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Slide variant — a gentler horizontal transition, used on the tools
+   page where the reader is browsing labelled cards rather than
+   headline media. Cards ride out to the left and the new page enters
+   from the right, with the same per-item stagger. */
+@keyframes bl-slide-out {
+  from { transform: translate3d(0, 0, 0);    opacity: 1; }
+  to   { transform: translate3d(-40px, 0, 0); opacity: 0; }
+}
+@keyframes bl-slide-in {
+  from { transform: translate3d(40px, 0, 0); opacity: 0; }
+  to   { transform: translate3d(0, 0, 0);    opacity: 1; }
+}
+.is-sliding-out > *:not([hidden]) {
+  animation: bl-slide-out 0.36s cubic-bezier(0.4, 0, 0.2, 1) both;
+  animation-delay: calc(var(--i, 0) * 45ms);
+}
+.is-sliding-in > *:not([hidden]) {
+  animation: bl-slide-in 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+/* Numeric page buttons — reference style: current page underlined */
+.bl-page-btn {
+  position: relative;
+  padding: 4px 2px;
+  background: transparent;
+  color: var(--bl-ink-40);
+  transition: color 0.25s ease;
+  font-variant-numeric: tabular-nums;
+}
+.bl-page-btn:hover { color: var(--bl-ink); }
+.bl-page-btn[aria-current='page'] {
+  color: var(--bl-ink);
+  border-bottom: 2px solid var(--bl-ink);
+}
+
+[data-page-prev][disabled],
+[data-page-next][disabled] {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+[data-page-prev]:not([disabled]):hover svg,
+[data-page-next]:not([disabled]):hover svg {
+  transform: translateX(2px);
+  transition: transform 0.25s ease;
+}
+[data-page-prev]:not([disabled]):hover svg { transform: translateX(-2px); }
+
+@media (prefers-reduced-motion: reduce) {
+  .is-flipping-out > *:not([hidden]),
+  .is-flipping-in > *:not([hidden]),
+  .is-sliding-out > *:not([hidden]),
+  .is-sliding-in > *:not([hidden]) { animation: none !important; }
+}
+
+/* ============================================================
+   ANIMATED FOOTER — moving line wallpaper on the obsidian block
+   ------------------------------------------------------------
+   Two crossed diagonal grids scrolling in opposite directions
+   very slowly. Values are tuned to stay ambient: the base ink
+   colour is still the dominant surface, the lines only catch
+   the eye if you're looking for them.
+   ============================================================ */
+.bl-band-ink {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+}
+.bl-band-ink::before,
+.bl-band-ink::after {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  z-index: -1;
+  pointer-events: none;
+  will-change: transform;
+}
+.bl-band-ink::before {
+  background-image:
+    repeating-linear-gradient(45deg,
+      transparent 0 36px,
+      rgba(255, 255, 255, 0.035) 36px 37px);
+  animation: bl-lines-a 28s linear infinite;
+}
+.bl-band-ink::after {
+  background-image:
+    repeating-linear-gradient(-45deg,
+      transparent 0 60px,
+      rgba(var(--brand-rgb), 0.05) 60px 61px);
+  animation: bl-lines-b 44s linear infinite;
+}
+
+@keyframes bl-lines-a {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(74px, 74px, 0); }
+}
+@keyframes bl-lines-b {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-122px, 122px, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-band-ink::before, .bl-band-ink::after { animation: none; }
+}
+
+/* ============================================================
+   MISC
+   ============================================================ */
+.bl-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  background: var(--bl-accent);
+  z-index: 60;
+  will-change: transform;
+}
+
+.bl-divider-v {
+  width: 1px;
+  align-self: stretch;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.bl-line-clamp-2 { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.bl-line-clamp-3 { display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+
+.bl-scroll-x {
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+.bl-scroll-x::-webkit-scrollbar { display: none; }
+
+/* Snap the mobile related-articles rail */
+.bl-snap-x { scroll-snap-type: x mandatory; }
+.bl-snap-x > * { scroll-snap-align: start; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bl-media img, .bl-media svg,
+  .bl-hero-media img, .bl-hero-media svg { transition: none; }
+  .group:hover .bl-media img,
+  .group:hover .bl-media svg,
+  .bl-hero:hover .bl-hero-media img,
+  .bl-hero:hover .bl-hero-media svg { transform: none; }
+  .bl-btn:active     { transform: none; }
+  .bl-btn-light:hover { transform: none; }
+  .bl-fade, .bl-dropdown { animation: none; }
+}
+
+} /* @layer components */

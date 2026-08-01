@@ -1,0 +1,93 @@
+---
+/**
+ * ArticleCTA — the conversion block at the end of every article.
+ *
+ * Two jobs at once:
+ *   1. push the reader into the main giattech.com funnel (#cta / #services)
+ *   2. hand a strong contextual internal link to a real project when the
+ *      post declares `relatedProject` in its frontmatter
+ */
+import { getCollection } from 'astro:content';
+import { t } from '../../data/blog-i18n';
+import type { BlogLang } from '../../data/blog-categories';
+import Icon from './Icon.astro';
+
+interface Props {
+  lang: BlogLang;
+  /** Slug of an entry in the `projects` collection */
+  relatedProject?: string;
+}
+
+const { lang, relatedProject } = Astro.props;
+const copy = t[lang].cta;
+
+// Filtered rather than getEntry() so an unknown slug yields undefined
+// instead of throwing — a typo in frontmatter shouldn't break the build.
+const project = relatedProject
+  ? (await getCollection('projects', (p) => p.id === relatedProject))[0]
+  : undefined;
+---
+
+<section class="bl-ink-block overflow-hidden">
+  <div class="p-8 sm:p-10 lg:p-12">
+    <p class="bl-eyebrow">{copy.eyebrow}</p>
+    <h2 class="bl-headline-lg mt-4 max-w-2xl" style="color: var(--bl-bone);">{copy.title}</h2>
+    <p class="mt-5 max-w-2xl bl-body" style="color: rgba(249, 248, 243, 0.6);">
+      {copy.body}
+    </p>
+
+    <div class="mt-8 flex flex-col sm:flex-row gap-3">
+      <a href="/#cta" class="bl-btn bl-btn-accent">
+        {copy.primary}
+        <Icon name="arrow-right" size={15} stroke={2.5} />
+      </a>
+      <a
+        href="/#services"
+        class="bl-btn"
+        style="border: 1px solid rgba(249, 248, 243, 0.3); color: var(--bl-bone);">{copy.secondary}</a
+      >
+    </div>
+
+    {
+      project && (
+        <a
+          href="/#projects"
+          class="group mt-10 flex items-start gap-5 pt-8"
+          style="border-top: 1px solid rgba(255, 255, 255, 0.1);"
+        >
+          {project.data.thumbnail && (
+            <img
+              src={project.data.thumbnail}
+              alt=""
+              width="128"
+              height="84"
+              loading="lazy"
+              decoding="async"
+              class="hidden sm:block w-32 h-[84px] object-cover shrink-0"
+              style="border-radius: var(--bl-r-md);"
+            />
+          )}
+          <span class="min-w-0 flex-1">
+            <span class="bl-eyebrow">{copy.projectTitle}</span>
+            <span
+              class="block mt-2 font-display font-medium text-[19px] leading-snug transition-colors group-hover:text-[color:var(--bl-accent)]"
+              style="color: var(--bl-bone);"
+            >
+              {project.data.title}
+            </span>
+            <span class="block mt-2 bl-body bl-line-clamp-2" style="color: rgba(249, 248, 243, 0.5);">
+              {project.data.summary}
+            </span>
+            <span
+              class="mt-3 inline-flex items-center gap-2 bl-label-sm transition-all group-hover:gap-3"
+              style="color: var(--bl-accent);"
+            >
+              {copy.viewProject}
+              <Icon name="arrow-right" size={13} stroke={2.5} />
+            </span>
+          </span>
+        </a>
+      )
+    }
+  </div>
+</section>

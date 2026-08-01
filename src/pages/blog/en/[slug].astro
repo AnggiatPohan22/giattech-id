@@ -1,0 +1,24 @@
+---
+/**
+ * English article detail — /blog/en/<slug>/
+ */
+import type { GetStaticPaths } from 'astro';
+import ArticleView from '../../../components/blog/views/ArticleView.astro';
+import { getPosts, type Post } from '../../../utils/blog';
+
+export const getStaticPaths: GetStaticPaths = async () => {
+  const posts = await getPosts('en');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+};
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+---
+
+<ArticleView post={post} lang="en" />

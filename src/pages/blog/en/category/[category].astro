@@ -1,0 +1,18 @@
+---
+/**
+ * English category archive — /blog/en/category/<category>/
+ *
+ * The category slug is shared between languages on purpose: one
+ * canonical id makes the hreflang pairing trivial.
+ */
+import type { GetStaticPaths } from 'astro';
+import CategoryView from '../../../../components/blog/views/CategoryView.astro';
+import { blogCategories } from '../../../../data/blog-categories';
+
+export const getStaticPaths: GetStaticPaths = () =>
+  blogCategories.map((cat) => ({ params: { category: cat.slug } }));
+
+const { category } = Astro.params;
+---
+
+<CategoryView lang="en" category={category!} />
