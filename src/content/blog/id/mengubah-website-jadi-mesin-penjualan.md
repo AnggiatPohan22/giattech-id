@@ -8,7 +8,7 @@ category: tips-bisnis-digital
 tags: ["Konversi", "Leads", "CTA", "Copywriting", "Funnel"]
 publishDate: 2026-06-13
 author: Giattech
-cover: /images/blog/website-jadi-mesin-penjualan.webp
+cover: /images/blog/turn-on-your-website-into-sales-engine-giattech.webp
 coverAlt: "Mengubah Website Jadi Mesin Penjualan, Bukan Sekadar Brosur Online"
 ---
 

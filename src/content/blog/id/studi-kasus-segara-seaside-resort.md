@@ -9,7 +9,7 @@ tags: ["Studi Kasus", "Network", "Resort", "Maintenance", "Setup", "MikroTik", "
 publishDate: 2026-05-30
 author: Giattech
 relatedProject: segara-seaside-resort
-cover: /images/blog/studi-kasus-segara-seaside.webp
+cover: /images/blog/segara-seaside-giattech.webp
 coverAlt: "Studi Kasus: Segara Seaside Resort — Merapikan Jalur Jaringan Internet itu Penting"
 ---
 

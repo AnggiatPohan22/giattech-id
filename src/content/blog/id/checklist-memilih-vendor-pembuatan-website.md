@@ -8,7 +8,7 @@ category: tips-bisnis-digital
 tags: ["Vendor", "Kontrak", "Brief", "Manajemen Proyek"]
 publishDate: 2026-05-09
 author: Giattech
-cover: /images/blog/checklist-brief-vendor.webp
+cover: /images/blog/find-good-vendor-giattech.webp
 coverAlt: "Checklist Memilih Vendor Pembuatan Website (dan Tanda Bahayanya)"
 ---
 

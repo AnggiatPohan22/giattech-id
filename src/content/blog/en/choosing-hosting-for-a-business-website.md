@@ -8,7 +8,7 @@ category: teknologi-tools
 tags: ["Hosting", "VPS", "Cloudflare", "Infrastructure", "Uptime"]
 publishDate: 2026-04-28
 author: Giattech
-cover: /images/blog/hosting-indonesia.webp
+cover: /images/blog/choosing-hosting-for-your-business-giattech.webp
 coverAlt: "Choosing Hosting for a Business Website: A Jargon-Free Guide"
 ---
 

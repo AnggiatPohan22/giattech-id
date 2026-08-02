@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["Opini", "Template", "Custom", "Budget", "Strategi"]
 publishDate: 2026-06-27
 author: Giattech
-cover: /images/blog/template-vs-custom.webp
+cover: /images/blog/cheap-template-or-custom-template-website-giattech.webp
 coverAlt: "Template Murah vs Website Custom: Kapan Masing-Masing Masuk Akal"
 ---
 

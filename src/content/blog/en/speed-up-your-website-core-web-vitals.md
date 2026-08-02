@@ -8,7 +8,7 @@ category: tutorial-panduan
 tags: ["Performance", "Core Web Vitals", "SEO", "Optimization", "Lighthouse"]
 publishDate: 2026-06-20
 author: Giattech
-cover: /images/blog/optimasi-kecepatan-website.webp
+cover: /images/blog/how-to-speed-your-website-giattech.webp
 coverAlt: "How to Speed Up Your Website: A Practical Core Web Vitals Guide"
 ---
 

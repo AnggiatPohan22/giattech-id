@@ -17,6 +17,7 @@ export const navLinks: NavLink[] = [
   { label: 'Services', href: '#services' },
   { label: 'Projects', href: '#projects' },
   { label: 'Contact', href: '#cta' },
+  { label: 'Blog', href: '/blog' },
 ];
 
 export const primaryCta: NavLink = {
@@ -32,7 +33,6 @@ export const primaryCta: NavLink = {
 export const socialLinks: SocialLink[] = [
   social.github    && { label: 'GitHub',     href: social.github,               icon: 'github'    },
   social.linkedin  && { label: 'LinkedIn',   href: social.linkedin,             icon: 'linkedin'  },
-  social.twitter   && { label: 'X / Twitter', href: social.twitter,             icon: 'twitter'   },
   social.instagram && { label: 'Instagram',  href: social.instagram,            icon: 'instagram' },
   contact.whatsappHref && { label: 'WhatsApp', href: contact.whatsappHref,      icon: 'whatsapp'  },
                        { label: 'Email',      href: contact.emailHref,          icon: 'email'     },

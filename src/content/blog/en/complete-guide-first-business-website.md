@@ -9,7 +9,7 @@ tags: ["Business Website", "Beginner Guide", "SEO", "Domain", "Hosting"]
 publishDate: 2026-07-24
 author: Giattech
 featured: true
-cover: /images/blog/panduan-website-bisnis-pertama.webp
+cover: /images/blog/complete-guide-your-building-first-website-giattech.webp
 coverAlt: "The Complete Guide to Building Your First Business Website (2026)"
 ---
 

@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["AI", "Opinion", "Productivity", "Workflow", "Code Quality"]
 publishDate: 2026-05-23
 author: Giattech
-cover: /images/blog/ai-dalam-development.webp
+cover: /images/blog/ai-isn't-replace-developer-giattech.webp
 coverAlt: "AI Isn't Replacing Developers — But It Is Changing the Job"
 ---
 

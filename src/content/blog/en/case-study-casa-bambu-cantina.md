@@ -9,7 +9,7 @@ tags: ["Case Study", "Branding", "Restaurant", "Online Reservation", "OpenTable"
 publishDate: 2026-04-18
 author: Giattech
 relatedProject: casa-bambu-cantina
-cover: /images/blog/studi-kasus-casa-bambu.webp
+cover: /images/blog/casa-bambu-cantina-giattech.webp
 coverAlt: "Case Study: Casa Bambu Cantina — Branding a Mexican Restaurant Through Its First Website"
 ---
 

@@ -383,9 +383,11 @@ a.bl-tag:hover { background: var(--bl-ink); color: var(--bl-bone); }
   border-radius: var(--bl-r-md);
 }
 
-/* Dark bento block — newsletter, CTA */
+/* Dark bento block — newsletter, CTA. Painted background is the
+   solid ink; the "aurora" animated layers (spotlights + drifting
+   grids) attach further down where .bl-band-ink also picks them up,
+   so every dark surface on the blog shares one system. */
 .bl-ink-block {
-  background: var(--bl-ink);
   color: var(--bl-bone);
   border-radius: var(--bl-r-md);
 }
@@ -958,20 +960,64 @@ a.bl-tag:hover { background: var(--bl-ink); color: var(--bl-bone); }
 }
 
 /* ============================================================
-   ANIMATED FOOTER — moving line wallpaper on the obsidian block
+   AURORA — animated ambient wallpaper on every dark surface
    ------------------------------------------------------------
-   Two crossed diagonal grids scrolling in opposite directions
-   very slowly. Values are tuned to stay ambient: the base ink
-   colour is still the dominant surface, the lines only catch
-   the eye if you're looking for them.
+   Every element with `.bl-band-ink` (footer, related-articles
+   band) or `.bl-ink-block` (newsletter bento, article CTA, tools
+   CTA) shares one visual system:
+
+     · Base:   solid obsidian
+     · Layer 1 (element background): two soft radial spotlights
+       that orbit through the surface — driven by @property so
+       the gradient positions interpolate smoothly, not step.
+     · Layer 2 (::before): 45° drafting lines drifting NE
+     · Layer 3 (::after):  −45° blue-tinted lines drifting NW
+
+   Values stay ambient — the ink is still the dominant tone.
+   Effects only catch the eye if you're looking for them.
    ============================================================ */
-.bl-band-ink {
+
+/* @property lets us animate percentages inside gradient
+   position()s. Without it the browser can't interpolate custom
+   properties; the spotlight would jump between keyframes instead
+   of orbiting. Chrome 85+, Safari 16.4+, Firefox 128+ — older
+   browsers just see the initial spot position, still dark & fine. */
+@property --auro-x  { syntax: '<percentage>'; initial-value: 22%; inherits: false; }
+@property --auro-y  { syntax: '<percentage>'; initial-value: 28%; inherits: false; }
+@property --auro-x2 { syntax: '<percentage>'; initial-value: 78%; inherits: false; }
+@property --auro-y2 { syntax: '<percentage>'; initial-value: 72%; inherits: false; }
+
+.bl-band-ink,
+.bl-ink-block {
   position: relative;
   isolation: isolate;
   overflow: hidden;
+  background:
+    /* Primary electric-blue spotlight — the main "digital thread" */
+    radial-gradient(circle at var(--auro-x) var(--auro-y),
+      rgba(var(--brand-rgb), 0.22),
+      transparent 42%),
+    /* Softer white spotlight orbiting the opposite corner */
+    radial-gradient(circle at var(--auro-x2) var(--auro-y2),
+      rgba(255, 255, 255, 0.07),
+      transparent 46%),
+    var(--bl-ink);
+  animation: bl-aurora 26s ease-in-out infinite;
+  will-change: --auro-x, --auro-y, --auro-x2, --auro-y2;
 }
+
+@keyframes bl-aurora {
+  0%   { --auro-x: 22%; --auro-y: 28%; --auro-x2: 78%; --auro-y2: 72%; }
+  25%  { --auro-x: 58%; --auro-y: 18%; --auro-x2: 42%; --auro-y2: 82%; }
+  50%  { --auro-x: 82%; --auro-y: 58%; --auro-x2: 18%; --auro-y2: 42%; }
+  75%  { --auro-x: 40%; --auro-y: 78%; --auro-x2: 60%; --auro-y2: 22%; }
+  100% { --auro-x: 22%; --auro-y: 28%; --auro-x2: 78%; --auro-y2: 72%; }
+}
+
 .bl-band-ink::before,
-.bl-band-ink::after {
+.bl-band-ink::after,
+.bl-ink-block::before,
+.bl-ink-block::after {
   content: '';
   position: absolute;
   inset: -40%;
@@ -979,18 +1025,20 @@ a.bl-tag:hover { background: var(--bl-ink); color: var(--bl-bone); }
   pointer-events: none;
   will-change: transform;
 }
-.bl-band-ink::before {
+.bl-band-ink::before,
+.bl-ink-block::before {
   background-image:
     repeating-linear-gradient(45deg,
       transparent 0 36px,
       rgba(255, 255, 255, 0.035) 36px 37px);
   animation: bl-lines-a 28s linear infinite;
 }
-.bl-band-ink::after {
+.bl-band-ink::after,
+.bl-ink-block::after {
   background-image:
     repeating-linear-gradient(-45deg,
       transparent 0 60px,
-      rgba(var(--brand-rgb), 0.05) 60px 61px);
+      rgba(var(--brand-rgb), 0.055) 60px 61px);
   animation: bl-lines-b 44s linear infinite;
 }
 
@@ -1004,7 +1052,10 @@ a.bl-tag:hover { background: var(--bl-ink); color: var(--bl-bone); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .bl-band-ink::before, .bl-band-ink::after { animation: none; }
+  .bl-band-ink,
+  .bl-ink-block,
+  .bl-band-ink::before, .bl-band-ink::after,
+  .bl-ink-block::before, .bl-ink-block::after { animation: none; }
 }
 
 /* ============================================================

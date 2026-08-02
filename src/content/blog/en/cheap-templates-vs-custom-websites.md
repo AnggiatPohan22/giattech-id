@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["Opinion", "Templates", "Custom", "Budget", "Strategy"]
 publishDate: 2026-06-27
 author: Giattech
-cover: /images/blog/template-vs-custom.webp
+cover: /images/blog/cheap-template-or-custom-template-website-giattech.webp
 coverAlt: "Cheap Templates vs Custom Websites: When Each One Makes Sense"
 ---
 

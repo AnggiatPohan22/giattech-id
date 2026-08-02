@@ -9,7 +9,7 @@ tags: ["Laravel", "Dashboard", "Backend", "PHP", "Admin Panel"]
 publishDate: 2026-05-16
 author: Giattech
 relatedProject: segara-seaside-resort
-cover: /images/blog/laravel-admin-dashboard.webp
+cover: /images/blog/build-laravel-admin-dashboard-giattech.webp
 coverAlt: "Cara Membangun Dashboard Admin Laravel yang Benar-Benar Dipakai"
 ---
 

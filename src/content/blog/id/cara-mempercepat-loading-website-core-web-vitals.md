@@ -8,7 +8,7 @@ category: tutorial-panduan
 tags: ["Performance", "Core Web Vitals", "SEO", "Optimasi", "Lighthouse"]
 publishDate: 2026-06-20
 author: Giattech
-cover: /images/blog/optimasi-kecepatan-website.webp
+cover: /images/blog/how-to-speed-your-website-giattech.webp
 coverAlt: "Cara Mempercepat Loading Website: Panduan Core Web Vitals"
 ---
 

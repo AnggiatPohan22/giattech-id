@@ -8,7 +8,7 @@ category: tips-bisnis-digital
 tags: ["Conversion", "Leads", "CTA", "Copywriting", "Funnel"]
 publishDate: 2026-06-13
 author: Giattech
-cover: /images/blog/website-jadi-mesin-penjualan.webp
+cover: /images/blog/turn-on-your-website-into-sales-engine-giattech.webp
 coverAlt: "Turn Your Website Into a Sales Engine, Not an Online Brochure"
 ---
 

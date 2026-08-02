@@ -8,7 +8,7 @@ category: tips-bisnis-digital
 tags: ["Vendor", "Contracts", "Brief", "Project Management"]
 publishDate: 2026-05-09
 author: Giattech
-cover: /images/blog/checklist-brief-vendor.webp
+cover: /images/blog/find-good-vendor-giattech.webp
 coverAlt: "A Checklist for Choosing a Web Development Vendor (and the Red Flags)"
 ---
 

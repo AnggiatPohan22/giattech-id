@@ -10,7 +10,7 @@ publishDate: 2026-07-04
 author: Giattech
 relatedProject: bintan-prestige
 featured: true
-cover: /images/blog/studi-kasus-bintan-prestige.webp
+cover: /images/blog/bintan-prestige-giattech.webp
 coverAlt: "Case Study: Bintan Prestige Transport — Introducing Luxury and Comfort Taxi as Bintan's Leading Transport Pillar"
 ---
 

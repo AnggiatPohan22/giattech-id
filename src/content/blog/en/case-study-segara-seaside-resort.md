@@ -9,7 +9,7 @@ tags: ["Case Study", "Network", "Resort", "Maintenance", "Setup", "MikroTik", "V
 publishDate: 2026-05-30
 author: Giattech
 relatedProject: segara-seaside-resort
-cover: /images/blog/studi-kasus-segara-seaside.webp
+cover: /images/blog/segara-seaside-giattech.webp
 coverAlt: "Case Study: Segara Seaside Resort — Why Proper Network Cabling Matters"
 ---
 

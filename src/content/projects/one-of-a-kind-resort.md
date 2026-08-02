@@ -5,11 +5,12 @@ year: 2024
 order: 4
 tags:
   - Astro
-  - Shopify
+  - Resort
   - Tailwind
   - GSAP
 role: Design + Build
-client: Rimba Kopi
+client: One of A Kind Resort
+url: https://ooak-resort.pages.dev/
 thumbnail: /images/projects/ooak.webp
 accent: clay
 ---

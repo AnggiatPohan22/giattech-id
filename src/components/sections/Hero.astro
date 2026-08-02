@@ -10,6 +10,18 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
   class="section-light relative min-h-[100svh] overflow-hidden flex flex-col"
 >
   <!-- ═══════════════════════════════════════════════════════════════
+       ANIMATED NETWORK BACKGROUND
+       ─────────────────────────────────────────────────────────────
+       Constellation-style mesh: glowing dots drift randomly and
+       auto-connect with thin lines when close. Canvas is behind
+       everything (z-0) and honors prefers-reduced-motion.
+       ═══════════════════════════════════════════════════════════════ -->
+  <canvas
+    id="hero-network"
+    aria-hidden="true"
+    class="absolute inset-0 w-full h-full z-0 pointer-events-none"
+  ></canvas>
+  <!-- ═══════════════════════════════════════════════════════════════
        GIANT BRAND WORD "GIAT" (background text)
        ─────────────────────────────────────────────────────────────
        Mobile: 2 baris (GI / AT). Desktop (md+): 1 baris.
@@ -234,3 +246,193 @@ import { hero, heroNavLeft, heroNavRight } from '../../data/hero';
     {hero.subheadline}
   </p>
 </section>
+
+<style>
+  /* Soft radial vignette on top of the canvas so the mesh fades
+     toward the edges — matches the reference's centered glow. */
+  #hero-network {
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 55%, transparent 92%);
+    mask-image: radial-gradient(ellipse at center, #000 55%, transparent 92%);
+  }
+</style>
+
+<script>
+  // Animated network / constellation background.
+  // Nodes drift with random velocity, bounce off edges, and draw
+  // lines to nearby neighbors — line opacity scales with proximity.
+  // Cursor gently pulls nearby nodes for an "alive" feel.
+  const canvas = document.getElementById('hero-network') as HTMLCanvasElement | null;
+  if (canvas) {
+    const ctx = canvas.getContext('2d');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (ctx) {
+      // Tuning
+      const DENSITY = 0.00009;   // nodes per px² of section
+      const MAX_NODES = 110;
+      const LINK_DIST = 140;     // px — max distance to draw a line
+      const SPEED = 0.35;        // base drift speed (px/frame @ 60fps)
+      const MOUSE_RADIUS = 160;
+
+      // Brand accent → rgb for line/dot fills
+      const accentVar = getComputedStyle(document.documentElement)
+        .getPropertyValue('--color-accent').trim() || '#3B82F6';
+      const rgb = hexToRgb(accentVar) ?? { r: 59, g: 130, b: 246 };
+
+      type Node = { x: number; y: number; vx: number; vy: number; r: number; pulse: number };
+      let nodes: Node[] = [];
+      let w = 0, h = 0, dpr = 1;
+      const mouse = { x: -9999, y: -9999 };
+
+      function hexToRgb(hex: string) {
+        const m = hex.replace('#', '').match(/^([0-9a-f]{3}|[0-9a-f]{6})$/i);
+        if (!m) return null;
+        let s = m[1];
+        if (s.length === 3) s = s.split('').map((c) => c + c).join('');
+        const n = parseInt(s, 16);
+        return { r: (n >> 16) & 255, g: (n >> 8) & 255, b: n & 255 };
+      }
+
+      function resize() {
+        dpr = Math.min(window.devicePixelRatio || 1, 2);
+        const rect = canvas.getBoundingClientRect();
+        w = rect.width;
+        h = rect.height;
+        canvas.width = Math.round(w * dpr);
+        canvas.height = Math.round(h * dpr);
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        seed();
+      }
+
+      function seed() {
+        const target = Math.min(MAX_NODES, Math.round(w * h * DENSITY));
+        nodes = [];
+        for (let i = 0; i < target; i++) {
+          nodes.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            vx: (Math.random() - 0.5) * SPEED,
+            vy: (Math.random() - 0.5) * SPEED,
+            r: 1.2 + Math.random() * 1.8,
+            pulse: Math.random() * Math.PI * 2,
+          });
+        }
+      }
+
+      function step() {
+        ctx.clearRect(0, 0, w, h);
+
+        // Update positions
+        for (const n of nodes) {
+          n.x += n.vx;
+          n.y += n.vy;
+          n.pulse += 0.02;
+
+          // Occasional random nudge → less mechanical, more organic drift
+          if (Math.random() < 0.008) {
+            n.vx += (Math.random() - 0.5) * 0.12;
+            n.vy += (Math.random() - 0.5) * 0.12;
+            // Clamp speed
+            const s = Math.hypot(n.vx, n.vy);
+            const max = SPEED * 1.6;
+            if (s > max) { n.vx = (n.vx / s) * max; n.vy = (n.vy / s) * max; }
+          }
+
+          // Mouse repulsion / attraction
+          const dx = n.x - mouse.x;
+          const dy = n.y - mouse.y;
+          const d2 = dx * dx + dy * dy;
+          if (d2 < MOUSE_RADIUS * MOUSE_RADIUS) {
+            const d = Math.sqrt(d2) || 1;
+            const force = (1 - d / MOUSE_RADIUS) * 0.35;
+            n.vx += (dx / d) * force;
+            n.vy += (dy / d) * force;
+          }
+
+          // Bounce off edges
+          if (n.x < 0) { n.x = 0; n.vx *= -1; }
+          else if (n.x > w) { n.x = w; n.vx *= -1; }
+          if (n.y < 0) { n.y = 0; n.vy *= -1; }
+          else if (n.y > h) { n.y = h; n.vy *= -1; }
+        }
+
+        // Draw links
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = a.x - b.x;
+            const dy = a.y - b.y;
+            const d2 = dx * dx + dy * dy;
+            if (d2 < LINK_DIST * LINK_DIST) {
+              const d = Math.sqrt(d2);
+              const alpha = (1 - d / LINK_DIST) * 0.55;
+              ctx.strokeStyle = `rgba(${rgb.r},${rgb.g},${rgb.b},${alpha})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(a.x, a.y);
+              ctx.lineTo(b.x, b.y);
+              ctx.stroke();
+            }
+          }
+        }
+
+        // Draw nodes with a soft glow
+        for (const n of nodes) {
+          const pulse = 0.7 + Math.sin(n.pulse) * 0.3;
+          const r = n.r * pulse;
+          const grad = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, r * 6);
+          grad.addColorStop(0, `rgba(${rgb.r},${rgb.g},${rgb.b},0.9)`);
+          grad.addColorStop(0.4, `rgba(${rgb.r},${rgb.g},${rgb.b},0.25)`);
+          grad.addColorStop(1, `rgba(${rgb.r},${rgb.g},${rgb.b},0)`);
+          ctx.fillStyle = grad;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r * 6, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.fillStyle = `rgba(${rgb.r},${rgb.g},${rgb.b},0.95)`;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, r, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        raf = requestAnimationFrame(step);
+      }
+
+      let raf = 0;
+      function start() {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(step);
+      }
+      function stop() {
+        cancelAnimationFrame(raf);
+        ctx.clearRect(0, 0, w, h);
+        // Draw one static frame so it isn't blank for reduced-motion users
+        step();
+        cancelAnimationFrame(raf);
+      }
+
+      resize();
+      window.addEventListener('resize', resize);
+
+      // Track cursor relative to the canvas
+      window.addEventListener('pointermove', (e) => {
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
+      });
+      window.addEventListener('pointerleave', () => { mouse.x = -9999; mouse.y = -9999; });
+
+      // Pause when the section is off-screen to save CPU
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (reduced) { stop(); return; }
+          if (e.isIntersecting) start(); else cancelAnimationFrame(raf);
+        }
+      });
+      io.observe(canvas);
+
+      if (reduced) stop(); else start();
+    }
+  }
+</script>

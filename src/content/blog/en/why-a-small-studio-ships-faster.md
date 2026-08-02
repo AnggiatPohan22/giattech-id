@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["Opinion", "Studio", "Agency", "Process", "Project Management"]
 publishDate: 2026-04-04
 author: Giattech
-cover: /images/blog/studio-kecil.webp
+cover: /images/blog/small-studio-often-faster-giattech.webp
 coverAlt: "Why a Small Studio Often Ships Faster Than a Large Agency"
 ---
 

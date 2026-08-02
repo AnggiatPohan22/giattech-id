@@ -8,7 +8,7 @@ category: teknologi-tools
 tags: ["Astro", "WordPress", "CMS", "Performance", "Perbandingan"]
 publishDate: 2026-07-11
 author: Giattech
-cover: /images/blog/astro-vs-wordpress.webp
+cover: /images/blog/astro-vs-wordpress-giattech.webp
 coverAlt: "Astro vs WordPress: Mana yang Cocok untuk Website Bisnis Anda?"
 ---
 

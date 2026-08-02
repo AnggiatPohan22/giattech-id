@@ -8,7 +8,7 @@ category: teknologi-tools
 tags: ["Stack", "Tools", "Laravel", "Astro", "Productivity"]
 publishDate: 2026-06-06
 author: Giattech
-cover: /images/blog/stack-giattech.webp
+cover: /images/blog/tools-develop-website-giattech.webp
 coverAlt: "The Tools We Use Every Day at Giattech (and Why)"
 ---
 

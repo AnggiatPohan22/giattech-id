@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["Opini", "Studio", "Agensi", "Proses", "Manajemen Proyek"]
 publishDate: 2026-04-04
 author: Giattech
-cover: /images/blog/studio-kecil.webp
+cover: /images/blog/small-studio-often-faster-giattech.webp
 coverAlt: "Kenapa Studio Kecil Sering Mengirim Lebih Cepat dari Agensi Besar"
 ---
 

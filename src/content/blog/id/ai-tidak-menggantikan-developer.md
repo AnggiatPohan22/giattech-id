@@ -8,7 +8,7 @@ category: opini-insight
 tags: ["AI", "Opini", "Produktivitas", "Workflow", "Kualitas Kode"]
 publishDate: 2026-05-23
 author: Giattech
-cover: /images/blog/ai-dalam-development.webp
+cover: /images/blog/ai-isn't-replace-developer-giattech.webp
 coverAlt: "AI Tidak Menggantikan Developer — Tapi Mengubah Pekerjaannya"
 ---
 

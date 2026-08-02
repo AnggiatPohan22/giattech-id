@@ -9,7 +9,7 @@ tags: ["Harga", "Budget", "Jasa Website", "Bisnis"]
 publishDate: 2026-07-18
 author: Giattech
 featured: true
-cover: /images/blog/biaya-jasa-website.webp
+cover: /images/blog/how-much-does-website-cost-in-indonesia-giattech.webp
 coverAlt: "Berapa Biaya Jasa Pembuatan Website di Indonesia? (Rincian 2026)"
 ---
 
